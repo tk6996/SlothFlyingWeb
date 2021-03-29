@@ -1,0 +1,111 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html {
+  font-size: 20px;
+  font-family: Roboto, sans-serif;
+}
+
+body {
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: #EFEFEF;
+}
+
+.container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  background: #ffffff;
+  width: 80%;
+  border-radius: 5rem;
+  box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+}
+
+.container > * {
+  margin: 15px 0;
+}
+
+.container .logo {
+  height: 180px;
+  width: 180px;
+  border-radius: 50%;
+}
+
+.container .register-form {
+  display: grid;
+  grid-template-columns: auto auto;
+  grid-template-rows: auto auto auto;
+  column-gap: 80px;
+  row-gap: 20px;
+}
+
+.container .input-field {
+  display: flex;
+}
+
+.container .input-field * {
+  font-size: 20px;
+  margin: 0;
+}
+
+.container .icon-input {
+  height: 50px;
+  width: 50px;
+  border-radius: 15px 0 0 15px;
+  border: 1px solid #000000;
+  border-right: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: #0275d880;
+}
+
+.icon-input > i {
+  color: #ffffff;
+}
+
+.container input[type="text"],
+.container input[type="tel"],
+.container input[type="email"],
+.container input[type="password"] {
+  height: 50px;
+  width: 300px;
+  font-size: 20px;
+  padding: 10px;
+  border-radius: 0 15px 15px 0;
+  border: 1px solid #000000;
+}
+
+.container input[type="submit"] {
+  height: 60px;
+  width: 350px;
+  background: #0275d8;
+  border-radius: 15px;
+  color: white;
+  font-size: 24px;
+  border: none;
+  box-shadow: 0 4px 4px 0 rgba(0, 47, 80, 0.2);
+}
+
+.container input[type="submit"]:hover {
+    cursor: pointer;
+}
+
+.container input[type="submit"]:active {
+    background: #002f50;
+}
+
+input:focus {
+  outline: none;
+}
+
+.container a {
+    color: #0275d8;
+}

@@ -1,0 +1,70 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html {
+  font-size: 20px;
+  font-family: Roboto, sans-serif;
+}
+
+@font-face {
+  font-family: "Cherry Bomb";
+  src: url("../assets/CherryBomb-Regular.ttf") format("truetype");
+}
+
+.navbar {
+  display: flex;
+  background: #333333;
+  justify-content: space-between;
+  padding: 0 7.5%;
+  line-height: 60px;
+}
+
+.brand {
+  display: flex;
+  flex-direction: row;
+}
+
+.brand-img {
+  height: 60px;
+  width: 60px;
+  border-radius: 50%;
+}
+
+.brand-text {
+  font-family: "Cherry Bomb", sans-serif;
+  font-size: 32px;
+  color: #ffffff;
+  margin: 0 10px;
+}
+
+.menu {
+  display: flex;
+}
+
+.menu a {
+  text-decoration: none;
+  color: #ffffff;
+  padding: 0 15px;
+}
+
+.menu :not(.logout):hover {
+  background-color: #555555;
+}
+
+.menu a:first-child {
+  margin-left: 0;
+}
+
+.menu a.active {
+  color: #28A745;
+}
+
+.logout {
+  background-color: #28A745;
+  height: 30px;
+  line-height: 30px;
+  margin: 15px;
+}
