@@ -10,35 +10,57 @@
   </head>
   <body>
     <form action="#" class="container">
-      <img src="../assets/brand.png" alt="logo" class="logo" />
+      <img src="../assets/brand1.JPG" alt="logo" class="logo" />
       <div class="register-form">
         <div class="input-field">
-          <div class="icon-input"><i class="fas fa-user"></i></div>
-          <input type="text" placeholder="First Name" />
+          <label class="icon-input" for="fname"
+            ><i class="fas fa-user"></i
+          ></label>
+          <input type="text" placeholder="First Name" name="fname" id="fname" />
         </div>
         <div class="input-field">
-          <div class="icon-input"><i class="fas fa-user"></i></div>
-          <input type="text" placeholder="Last Name" />
+          <label class="icon-input" for="lname"
+            ><i class="fas fa-user"></i
+          ></label>
+          <input type="text" placeholder="Last Name" name="lname" id="lname" />
         </div>
         <div class="input-field">
-          <div class="icon-input"><i class="fas fa-envelope"></i></div>
-          <input type="email" placeholder="Email" />
+          <label class="icon-input" for="email"
+            ><i class="fas fa-envelope"></i
+          ></label>
+          <input type="email" placeholder="Email" name="email" id="email" />
         </div>
         <div class="input-field">
-          <div class="icon-input"><i class="fas fa-lock"></i></div>
-          <input type="password" placeholder="Password" />
+          <label class="icon-input" for="password"
+            ><i class="fas fa-lock"></i
+          ></label>
+          <input
+            type="password"
+            placeholder="Password"
+            name="password"
+            id="password"
+          />
         </div>
         <div class="input-field">
-          <div class="icon-input"><i class="fas fa-phone-alt"></i></div>
-          <input type="tel" placeholder="Phone" />
+          <label class="icon-input" for="phone"
+            ><i class="fas fa-phone-alt"></i
+          ></label>
+          <input type="tel" placeholder="Phone" name="phone" id="phone" />
         </div>
         <div class="input-field">
-          <div class="icon-input"><i class="fas fa-lock"></i></div>
-          <input type="password" placeholder="Confirm Password" />
+          <label class="icon-input" for="confirm-password"
+            ><i class="fas fa-lock"></i
+          ></label>
+          <input
+            type="password"
+            placeholder="Confirm Password"
+            name="confirm-password"
+            id="confirm-password"
+          />
         </div>
       </div>
-      <input type="submit" value="Register" />
-      <p>Do have an account? <a href="login.html">Sign in here</a></p>
+      <input type="submit" value="Register" id="submit"/>
+      <p>Do have an account? <a href="login.html" id="to-sign-in">Sign in here</a></p>
     </form>
   </body>
 </html>

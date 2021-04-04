@@ -32,10 +32,16 @@ body {
   margin: 20px 0;
 }
 
+.container .title {
+  font-size: 32px;
+  font-weight: bold;
+}
+
 .container .logo {
   height: 180px;
   width: 180px;
   border-radius: 50%;
+  box-shadow: 0 2px 2px 2px rgba(0, 0, 0, 0.25);
 }
 
 .container .login-form {

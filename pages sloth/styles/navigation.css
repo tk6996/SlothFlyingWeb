@@ -21,6 +21,9 @@ html {
   padding: 0 7.5%;
   line-height: 60px;
   filter: drop-shadow(0 0.2rem 0.25rem rgba(0, 0, 0, 0.2));
+  position: sticky;
+  top: 0px;
+  z-index: 99;
 }
 
 .brand {
@@ -39,6 +42,7 @@ html {
   font-size: 32px;
   color: #ffffff;
   margin: 0 10px;
+  white-space: nowrap;
 }
 
 .menu {
@@ -60,7 +64,7 @@ html {
 }
 
 .menu a.active {
-  color: #28A745;
+  background-color: #28A745;
 }
 
 .logout {
@@ -68,4 +72,7 @@ html {
   height: 30px;
   line-height: 30px;
   margin: 15px;
+}
+.logout:active {
+  background: #10471d;
 }

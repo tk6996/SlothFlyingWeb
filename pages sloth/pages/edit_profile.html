@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="../assets/fontawesome/css/all.css" />
+    <link rel="stylesheet" href="../styles/navigation.css" />
+    <link rel="stylesheet" href="../styles/edit_profile.css" />
+    <title>Login</title>
+    <script>
+      function readURL(input) {
+        if (input.files && input.files[0]) {
+          let reader = new FileReader();
+
+          reader.onload = (event) => {
+            document
+              .getElementById("user_image")
+              .setAttribute("src", event.target.result);
+          };
+
+          reader.readAsDataURL(input.files[0]);
+        }
+      }
+    </script>
+  </head>
+
+  <body>
+    <nav class="navbar">
+      <div class="brand">
+        <img src="../assets/brand.png" alt="logo" class="brand-img" />
+        <div class="brand-text">Sloth Flying Lab</div>
+      </div>
+      <div class="menu">
+        <a href="home.html">Home</a>
+        <a href="lab.html">Lab</a>
+        <a href="booklist.html">Booklist</a>
+        <a href="profile.html" class="active">Profile</a>
+        <a href="logout.html" class="logout">Logout</a>
+        <!-- <a href="login.html">Login</a>
+        <a href="register.html">Register</a> -->
+      </div>
+    </nav>
+    <form action="" method="" class="container">
+      <div class="image">
+        <img src="../assets/brand.png" alt="user_image" id="user_image" />
+          <input
+            type="file"
+            name="imageurl"
+            id="imageurl"
+            accept="image/*"
+            onchange="readURL(this);"
+            hidden
+          />
+          <label for="imageurl" class="upload">Upload a Photo</label>
+      </div>
+      <div class="information">
+        <label for="fname">First Name</label>
+        <input
+          type="text"
+          placeholder="First Name"
+          id="fname"
+          name="fname"
+          value="Watcharin"
+        />
+        <label for="lname">Last Name</label>
+        <input
+          type="text"
+          placeholder="Last Name"
+          id="lname"
+          name="lname"
+          value="Kanha"
+        />
+        <label for="email">Email</label>
+        <input
+          type="email"
+          placeholder="Email"
+          id="email"
+          name="email"
+          value="watcarin@gmail.com"
+          disabled="true"
+        />
+        <label for="phone">Phone</label>
+        <input
+          type="tel"
+          placeholder="Phone"
+          id="phone"
+          name="phone"
+          value="09x-xxx-xxxx"
+        />
+        <label for="id">User ID</label>
+        <input type="text" name="id" id="id" value="00000001" disabled="true" />
+      </div>
+      <button type="submit" onclick="window.location = './edit_profile'" id="submit">
+        SAVE
+      </button>
+    </form>
+  </body>
+</html>

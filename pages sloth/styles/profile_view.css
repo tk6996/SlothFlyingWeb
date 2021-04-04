@@ -14,13 +14,44 @@ html {
   src: url("../assets/CherryBomb-Regular.ttf") format("truetype");
 }
 
+body {
+  background-color: #328a32;
+}
+
+.head {
+  display: flex;
+  justify-content: flex-start;
+  margin: 50px 7.5% 0;
+  height: 60px;
+}
+
+.head > * {
+  width: 12.5%;
+  color: #333333;
+  display: flex;
+  background-color: #ffffff;
+  justify-content: center;
+  align-items: center;
+  font-weight: bold;
+  padding: 0 10px;
+}
+
+.head > * > * {
+  margin: 0 4px;
+}
+
+.head > .click{
+  background-color: #e5e5e5;
+  cursor: pointer;
+}
 
 .container {
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  margin: 30px;
+  margin: 0 7.5%;
+  background-color: #ffffff;
 }
 
 .container * {
@@ -53,12 +84,12 @@ html {
 .container button {
   width: 350px;
   height: 60px;
-  background-color: #0275d8;
+  background-color: #DD3631;
   border-radius: 15px;
   color: white;
   font-size: 24px;
   border: none;
-  box-shadow: 0 4px 4px 0 rgba(0, 47, 80, 0.2);
+  box-shadow: 0 4px 4px 0 rgba(102, 26, 26, 0.2);
 }
 
 .container button:hover {
@@ -66,7 +97,7 @@ html {
 }
 
 .container button:active {
-    background: #002f50;
+    background: #5c1714;
 }
 
 input:focus,button:focus {

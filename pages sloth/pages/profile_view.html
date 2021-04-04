@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="../assets/fontawesome/css/all.css" />
+    <link rel="stylesheet" href="../styles/navigation.css" />
+    <link rel="stylesheet" href="../styles/profile_view.css" />
+    <link rel="stylesheet" href="../styles/confirm_popup.css" />
+    <script src="../script/confirm_popup.js"></script>
+    <title>Login</title>
+  </head>
+
+  <body>
+    <nav class="navbar">
+      <div class="brand">
+        <img src="../assets/brand.png" alt="logo" class="brand-img" />
+        <div class="brand-text">Sloth Flying Lab</div>
+      </div>
+      <div class="menu">
+        <a href="home.html">Home</a>
+        <a href="lab.html">Lab</a>
+        <a href="booklist.html">Booklist</a>
+        <a href="profile.html" class="active">Profile</a>
+        <!-- <a href="logout.html">Logout</a> -->
+        <a href="login.html">Login</a>
+        <a href="register.html">Register</a>
+      </div>
+    </nav>
+    <header class="head">
+      <div id="profile_nav"><i class="fas fa-id-card"></i><span>Profile</span></div>
+      <div class="click" id="booklist_nav"><i class="fas fa-list-alt"></i><span>Booklist</span></div>
+    </header>
+    <div class="container">
+      <div class="image">
+        <img src="../assets/brand.png" alt="user_image" />
+      </div>
+      <div class="information">
+        <div>Name</div>
+        <div id="fullname">Watcharin Kanha</div>
+        <div>Email</div>
+        <div id="email">watcarin@gmail.com</div>
+        <div>Phone</div>
+        <div id="phone">09x-xxx-xxxx</div>
+        <div>User ID</div>
+        <div id="id">00000001</div>
+      </div>
+      <button type="button" id="blacklist" onclick="onPopUp('Would you like to blacklist<br><span style=\'color: #0275D8;\'>Watcharin Kanha</span> ?',{'id':'00000001'});">Blacklist</button>
+    </div>
+    <div class="plane-off" id="plane">
+      <form class="card">
+        <input type="text" name="" value="" id="data" hidden>
+        <p class="text" id="text"></p>
+        <div class="button-field">
+          <button type="submit" class="submit" id="sumbit">OK</button>
+          <button type="button" class="cancel" onclick="offPopUp();" id="cancel">Cancel</button>
+        </div>
+      </form>
+  </body>
+</html>

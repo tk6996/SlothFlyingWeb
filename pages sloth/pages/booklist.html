@@ -1,30 +1,77 @@
 <!DOCTYPE html>
 <html lang="en">
-
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="../styles/navigation.css">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="../assets/fontawesome/css/all.css" />
+    <link rel="stylesheet" href="../styles/navigation.css" />
+    <link rel="stylesheet" href="../styles/booklist.css" />
     <title>Navigation</title>
-</head>
+    
+  </head>
 
-<body>
+  <body style="position: relative;">
     <nav class="navbar">
-        <div class="brand">
-            <img src="../assets/brand.png" alt="logo" class="brand-img">
-            <div class="brand-text">Sloth Flying Lab</div>
-        </div>
-        <div class="menu">
-            <a href="home.html">Home</a>
-            <a href="lab.html">Lab</a>
-            <a href="booklist.html" class="active">Booklist</a>
-            <a href="profile.html">Profile</a>
-            <!-- <a href="logout.html" class="logout">Logout</a> -->
-            <a href="login.html">Login</a>
-            <a href="register.html">Register</a>
-        </div>
+      <div class="brand">
+        <img src="../assets/brand.png" alt="logo" class="brand-img" />
+        <div class="brand-text">Sloth Flying Lab</div>
+      </div>
+      <div class="menu">
+        <a href="home.html">Home</a>
+        <a href="lab.html">Lab</a>
+        <a href="booklist.html" class="active">Booklist</a>
+        <a href="profile.html">Profile</a>
+        <!-- <a href="logout.html" class="logout">Logout</a> -->
+        <a href="login.html">Login</a>
+        <a href="register.html">Register</a>
+      </div>
     </nav>
-</body>
-
+    <table>
+      <thead>
+        <tr>
+          <th>Lab</th>
+          <th>Date</th>
+          <th>From</th>
+          <th>To</th>
+          <th>Status</th>
+          <th></th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Lab 1 Oscilloscope</td>
+          <td>Mon 15 Mar 2021</td>
+          <td>08.00</td>
+          <td>17.00</td>
+          <td class="status"><span class="using">Using</span></td>
+          <td class="icon"><i class="fas fa-times-circle"></i></td>
+        </tr>
+        <tr>
+          <td>Lab 2 Meter</td>
+          <td>Fri 19 Mar 2021</td>
+          <td>08.00</td>
+          <td>17.00</td>
+          <td class="status"><span class="coming">Coming</span></td>
+          <td class="icon"><i class="fas fa-times-circle"></i></td>
+        </tr>
+        <tr>
+          <td>Lab 2 Meter</td>
+          <td>Fir 12 Mar 2021</td>
+          <td>08.00</td>
+          <td>17.00</td>
+          <td class="status"><span>Finished</span></td>
+          <td class="icon"><i class="fas fa-times-circle"></i></td>
+        </tr>
+        <tr>
+          <td>Lab 2 Meter</td>
+          <td>Fir 12 Mar 2021</td>
+          <td>08.00</td>
+          <td>17.00</td>
+          <td class="status"><span>Cancel</span></td>
+          <td class="icon"><i class="fas fa-times-circle"></i></td>
+        </tr>
+      </tbody>
+    </table>
+  </body>
 </html>
