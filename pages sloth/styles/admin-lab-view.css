@@ -1,0 +1,166 @@
+* {
+    padding: 0;
+    margin: 0;
+}
+
+html {
+    font-size: 20px;
+    font-family: Roboto, sans-serif;
+}
+
+body {
+    background: url("../assets/bg-1.png");
+    background-attachment: fixed;
+    background-repeat: no-repeat;
+    background-size: cover;
+}
+
+.container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 2% 7.5% 2% 7.5%;
+} 
+
+.time-table {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.time-table table, 
+.time-table th, 
+.time-table td {
+    border: 1px solid white;
+    border-collapse: collapse;
+    text-align: center;
+}
+
+.time-table th, 
+.time-table td {
+    padding: 1% 0;
+}
+
+.time-table tr:first-child > th:first-child {
+    width: 10%;
+}
+
+.time-table tr:first-child > th{
+    width: 4%;
+}
+
+.time-table th {
+    background-color: #333333;
+    color: white;
+}
+
+.time-table td {
+    background-color: #5CB85C;
+}
+
+.time-table td:hover {
+    background-color: rgba(255, 255, 255, 0.5);
+    cursor: pointer;
+}
+
+.time-table .not-enable {
+    background-color: #EFEFEF;
+}
+
+.time-table .not-enable:hover {
+    background-color: #EFEFEF;
+    cursor: default;
+}
+
+.time-table .full,
+.time-table .lab-close {
+    background-color: #B85C5C;
+}
+
+.time-table tr > .full:hover {
+    background-color: rgba(184, 92, 92, 0.5);
+}
+
+.title {
+    text-align: center;
+    width: 100%;
+    padding-bottom: 1%;
+    font-weight: bold;
+    
+}
+
+.title > p {
+    padding-bottom: 10px;
+}
+
+.user-table {
+    padding: 4%;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.user-table table {
+    display: grid;
+    margin: 20px 7.5% 0 7.5%;
+    border-collapse: collapse;
+    grid-template-columns: 1.25fr 1.25fr 0.5fr 0.5fr 1fr 0.5fr;
+    background-color: #ffffff;
+}
+  
+.user-table thead, 
+.user-table tbody, 
+.user-table tr {
+    display: contents;
+}
+  
+.user-table th,
+.user-table td {
+    text-align: center;
+}
+  
+.user-table th {
+    background-color: #333333;
+    color: #ffffff;
+    height: 60px;
+    line-height: 60px;
+    font-size: 24px;
+    padding: 0px 20px;
+    margin-bottom: 20px;
+}
+  
+.user-table td {
+    border-bottom: 1px solid #333333;
+    padding: 20px 20px;
+}
+  
+.status {
+    padding: 0 20px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+  
+.status > span {
+    padding: 5px;
+    width: 120px;
+    color: #ffffff;
+    border-radius: 15px;
+    background-color: #6c757d;
+  }
+  
+.status > .using {
+    background-color: #28a745;
+}
+  
+.status > .coming {
+    background-color: #0275d8;
+}
+  
+.icon i {
+    font-size: 28px;
+    color: #dd3631 ;
+    cursor: pointer;
+}
