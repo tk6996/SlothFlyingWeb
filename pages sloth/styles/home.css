@@ -78,7 +78,7 @@ body {
 }
 .modal {
   display: none;
-  position: fixed;
+  position: absolute;
   z-index: 1;
   padding-top: 100px;
   left: 0;
@@ -88,22 +88,44 @@ body {
   overflow: auto;
   background-color: rgb(0, 0, 0);
   background-color: rgba(0, 0, 0, 0.4);
+  justify-content: center;
+  align-items: center;
 }
 
 /* Modal Content */
 .modal-content {
   background-color: #fefefe;
   margin: auto;
-  padding: 20px;
+  /* padding: 20px; */
   border: 1px solid #888;
-  width: 80%;
+  width: 35%;
   display: flex;
   flex-direction: column;
+  font-size: 32px;
+  border-radius: 30px;
+  justify-self: center;
+  align-self: center;
+  font-family: "Roboto";
+  padding-bottom: 80px;
+  box-shadow: 0 4px 4px 0 rgba(0, 47, 80, 0.2);
+  margin-top: 10%;
 }
-
+.member-table {
+  /* justify-content: center; */
+  text-align: left;
+  border-spacing: 30px 5px;
+  padding-right: 30px;
+  margin-left: 15%;
+}
 .modal-header {
   display: flex;
   flex-direction: row;
+  align-items: center;
+  justify-content: center;
+}
+.modal-table {
+  text-align: center;
+  justify-content: center;
   align-items: center;
 }
 /* The Close Button */
@@ -113,6 +135,7 @@ body {
   float: right;
   font-size: 28px;
   font-weight: bold;
+  display: none;
 }
 
 .close:hover,
