@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <link
+      href="https://fonts.googleapis.com/css?family=Roboto&display=swap"
+      rel="stylesheet"
+    />
+    <link href="./main.css" rel="stylesheet" />
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="../styles/home.css" />
+    <title>Home</title>
+  </head>
+
+  <body>
+    <div class="v98_250">
+      <div class="container">
+        <img src="../assets/brand1.JPG" alt="logo" class="logo" />
+        <div class="label">
+          <span>Welcome To <br />Sloth Flying Laboratory</span>
+          <a href="login.html" id="login"
+            ><button class="start">Let’s Start</button></a
+          >
+        </div>
+      </div>
+
+      <div class="member">
+        <button class="btmember" id="myBtn">
+          <img
+            src="https://img.icons8.com/color/48/000000/group-background-selected.png"
+          />Member
+        </button>
+        <div id="myModal" class="modal">
+          <!-- Modal content -->
+          <div class="modal-content">
+            <div class="modal-header">
+              <h3>Member</h3>
+              <span class="close">&times;</span>
+            </div>
+            <table>
+              <tr>
+                <td>61010416</td>
+                <td>ธนกฤต</td>
+                <td>เจริญบูลย์วิวัฒน์</td>
+              </tr>
+              <tr>
+                <td>61010888</td>
+                <td>รวิสรา</td>
+                <td>หนูเพ็ง</td>
+              </tr>
+              <tr>
+                <td>61010940</td>
+                <td>วราวุธ</td>
+                <td>พรบัณฑิตวงศ์</td>
+              </tr>
+              <tr>
+                <td>61010960</td>
+                <td>วัชรินทร์</td>
+                <td>กัณหา</td>
+              </tr>
+              <tr>
+                <td>61011144</td>
+                <td>สุภามาศ</td>
+                <td>สมสายผล</td>
+              </tr>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+    <script>
+      // Get the modal
+      var modal = document.getElementById("myModal");
+
+      // Get the button that opens the modal
+      var btn = document.getElementById("myBtn");
+
+      // Get the <span> element that closes the modal
+      var span = document.getElementsByClassName("close")[0];
+
+      // When the user clicks the button, open the modal
+      btn.onclick = function () {
+        modal.style.display = "block";
+      };
+
+      // When the user clicks on <span> (x), close the modal
+      span.onclick = function () {
+        modal.style.display = "none";
+      };
+
+      // When the user clicks anywhere outside of the modal, close it
+      window.onclick = function (event) {
+        if (event.target == modal) {
+          modal.style.display = "none";
+        }
+      };
+    </script>
+  </body>
+</html>
