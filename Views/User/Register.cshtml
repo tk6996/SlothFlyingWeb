@@ -1,0 +1,65 @@
+@model SlothFlyingWeb.Models.User
+
+@section Styles {
+    <link rel="stylesheet" href="~/css/register.css" />
+}
+
+@{
+    ViewData["Title"] = "Register";
+}
+
+<div class="body">
+    <form method="POST" asp-action="Register" class="container">
+    <img src="~/assets/images/brand.jpg" alt="logo" class="logo" />
+    <div class="register-form">
+        <div class="field-data">
+            <div class="input-field">
+                <label class="icon-input" asp-for="FirstName"><i class="fas fa-user"></i></label>
+                <input type="text" placeholder="First Name" name="FirstName" id="FirstName" asp-for="FirstName"/>
+            </div>
+            <span asp-validation-for="FirstName" class="warning"></span>
+        </div>
+        <div class="field-data">
+            <div class="input-field">
+                <label class="icon-input" asp-for="LastName"><i class="fas fa-user"></i></label>
+                <input type="text" placeholder="Last Name" name="LastName" id="LastName" asp-for="LastName"/>
+            </div>
+            <span asp-validation-for="LastName" class="warning"></span>
+        </div>
+        <div class="field-data">
+            <div class="input-field">
+                <label class="icon-input" asp-for="Email"><i class="fas fa-envelope"></i></label>
+                <input type="email" placeholder="Email" name="Email" id="Email" asp-for="Email"/>
+            </div>
+            <span asp-validation-for="Email" class="warning"></span>
+        </div>
+        <div class="field-data">
+            <div class="input-field">
+                <label class="icon-input" asp-for="Password"><i class="fas fa-lock"></i></label>
+                <input type="password" placeholder="Password" name="Password" id="Password" asp-for="Password"/>
+            </div>
+            <span asp-validation-for="Password" class="warning"></span>
+        </div>
+        <div class="field-data">
+            <div class="input-field">
+                <label class="icon-input" asp-for="Phone"><i class="fas fa-phone-alt"></i></label>
+                <input type="tel" placeholder="Phone" name="Phone" id="Phone" asp-for="Phone"/>
+            </div>
+            <span asp-validation-for="Phone" class="warning"></span>
+        </div>
+        <div class="field-data">
+            <div class="input-field">
+                <label class="icon-input" asp-for="ConfirmPassword"><i class="fas fa-lock"></i></label>
+                <input type="password" placeholder="Confirm Password" name="ConfirmPassword" id="ConfirmPassword" asp-for="ConfirmPassword"/>
+            </div>
+            <span asp-validation-for="ConfirmPassword" class="warning"></span>
+        </div>
+    </div>
+    @if (ViewBag.MessageError != null)
+    {
+        <div class="message_error">@ViewBag.MessageError</div>
+    }
+    <input type="submit" value="Register" id="submit" />
+    <p>Do have an account? <a asp-controller="User" asp-action="Login" id="to-sign-in">Sign in here</a></p>
+</form>
+</div>

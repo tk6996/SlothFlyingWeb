@@ -1,0 +1,26 @@
+@model SlothFlyingWeb.Models.User
+
+@section Styles {
+    <link rel="stylesheet" href="~/css/profile.css" />
+}
+
+@{
+    ViewData["Title"] = "Profile";
+}
+
+<div class="container">
+  <div class="image">
+    <img src='@Url.Content(Model.ImageURL != "" ? Model.ImageURL : "~/assets/images/brand.jpg")' alt="user_image" />
+  </div>
+  <div class="information">
+    <div>Name</div>
+    <div id="FullName">@($"{Model.FirstName} {Model.LastName}")</div>
+    <div>Email</div>
+    <div id="Email">@Model.Email</div>
+    <div>Phone</div>
+    <div id="Phone">@($"{Convert.ToInt64(Model.Phone):000-000-0000}")</div>
+    <div>User ID</div>
+    <div id="Id">@Model.Id.ToString("D8")</div>
+  </div>
+  <a asp-asp-controller="User" asp-action="EditProfile" id="edit">Edit Profile</a>
+</div>

@@ -1,0 +1,64 @@
+.navbar {
+  background-color: #333333;
+  display: flex;
+  filter: drop-shadow(0 0.2rem 0.25rem rgba(0, 0, 0, 0.2));
+  justify-content: space-between;
+  padding: 0 7.5%;
+  line-height: 60px;
+  z-index: 99;
+}
+
+.brand {
+  display: flex;
+  flex-direction: row;
+}
+
+.brand-img {
+  border-radius: 50%;
+  height: 60px;
+  width: 60px;
+}
+
+.brand-text {
+  color: #ffffff;
+  font-family: "Cherry Bomb", sans-serif;
+  font-size: 32px;
+  margin: 0 10px;
+  white-space: nowrap;
+}
+
+.menu {
+  display: flex;
+}
+
+.menu a {
+  color: #ffffff;
+  padding: 0 15px;
+  text-decoration: none;
+  font-size: 20px;
+}
+
+.menu :not(.logout):hover {
+  background-color: #555555;
+}
+
+.menu a:first-child {
+  margin-left: 0;
+}
+
+.menu a.active {
+  background-color: #28A745;
+}
+
+.logout {
+  background-color: #28A745;
+  cursor: pointer;
+  height: 30px;
+  line-height: 30px;
+  margin: 15px;
+  user-select: none;
+}
+
+.logout:active {
+  background-color: #10471d;
+}

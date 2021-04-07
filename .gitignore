@@ -431,3 +431,9 @@ $RECYCLE.BIN/
 !.vscode/tasks.json
 !.vscode/launch.json
 !.vscode/extensions.json
+
+## SQLite Database
+*.db
+
+## Images File
+wwwroot/images/users/*

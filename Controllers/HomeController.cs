@@ -5,6 +5,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
+using Microsoft.AspNetCore.Http;
 using SlothFlyingWeb.Models;
 
 namespace SlothFlyingWeb.Controllers
@@ -20,11 +21,10 @@ namespace SlothFlyingWeb.Controllers
 
         public IActionResult Index()
         {
-            return View();
-        }
-
-        public IActionResult Privacy()
-        {
+            if (SessionExtensions.GetInt32(HttpContext.Session, "Id") != null)
+            {
+                return RedirectToAction("Lab","User");
+            }
             return View();
         }
 
