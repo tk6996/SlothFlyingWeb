@@ -1,6 +1,7 @@
 using System.ComponentModel.DataAnnotations.Schema;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel;
+using System.Collections.Generic;
 using System;
 using Microsoft.AspNetCore.Http;
 
@@ -42,14 +43,18 @@ namespace SlothFlyingWeb.Models
         public DateTime CreateAt { get; set; }
 
         [Required]
+        [DataType(DataType.PhoneNumber)]
         [RegularExpression(@"^\d{3}-?\d{3}-?\d{3,4}$", ErrorMessage = "Incorrect phone number format.")]
         public string Phone { get; set; }
 
+        [DataType(DataType.ImageUrl)]
         public string ImageUrl { get; set; } = "";
 
         [NotMapped]
         [DisplayName("Upload a Photo")]
         public IFormFile ImageFile { get; set; }
+
+        public ICollection<BookList> BookLists { get; set; }
 
         public bool BlackList { get; set; } = false;
 

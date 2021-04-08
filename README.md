@@ -10,6 +10,11 @@ $ dotnet restore
 $ dotnet tool install --global dotnet-ef
 ```
 
+สามารถ Run ได้เลยโดยไม่ต้องทำตาม Step ด้านหลัง
+```shell
+$ dotnet watch run
+```
+
 ถ้าติดตั้งคำสั่งด้านบนเรียบร้อยแล้วสามารใช้คำสั่งเพื่อสร้าง Migration File ได้
 ```shell
 $ dotnet ef migrations add "NAME_OF_MIGRATION"

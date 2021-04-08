@@ -33,6 +33,9 @@ header {
 main {
   width: 100%;
   height: 100%;
+  background-image: url("../assets/images/background.jpg");
+  background-repeat: no-repeat;
+  background-size: cover;
 }
 
 :root {
@@ -46,5 +49,6 @@ main {
   --blackgray: #333333;
   --green: #28a745;
   --darkgreen: #10471d;
-  --greenshadow: rgba(40, 167, 69,0.2)
+  --greenshadow: rgba(40, 167, 69,0.2);
+  --white80: rgba(255,255,255,0.5);
 }

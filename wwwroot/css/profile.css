@@ -3,7 +3,9 @@
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  margin: 30px;
+  padding: 30px;
+  background-color: var(--white80);
+  min-height: 100vh;
 }
 
 .container * {

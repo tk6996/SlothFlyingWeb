@@ -1,3 +1,5 @@
+@model IEnumerable<Lab>;
+
 @{
     ViewData["Title"] = "Lab";
 }
@@ -7,54 +9,17 @@
 }
 
 <div class="container">
+    @foreach (Lab lab in Model)
+    {
     <div class="lab">
         <div>
-            <img src="../assets/Oscilloscope.png" alt="logo" class="lab-img">
+            <img src="@Url.Content(lab.ImageUrl)" alt="logo" class="lab-img">
         </div>
         <div>
-            <div>Laboratory 1</div>
-            <div>Oscilloscope</div>
-            <button type="button" onclick="window.location.href='lab-view.html'">View</button>
+            <div>Laboratory @lab.Id</div>
+            <div>@lab.ItemName</div>
+            <a asp-controller="Lab" asp-action="Booking" asp-route-Id="@lab.Id">View</a>
         </div>
     </div>
-    <div class="lab">
-        <div>
-            <img src="../assets/Digital-multimeter.jpg" alt="logo" class="lab-img">
-        </div>
-        <div>
-            <div>Laboratory 2</div>
-            <div>Multimeter</div>
-            <button type="button">View</button>
-        </div>
-    </div>
-    <div class="lab">
-        <div>
-            <img src="../assets/Rasberry_Pi.jpg" alt="logo" class="lab-img">
-        </div>
-        <div>
-            <div>Laboratory 3</div>
-            <div>Raspberry Pi</div>
-            <button type="button">View</button>
-        </div>
-    </div>
-    <div class="lab">
-        <div>
-            <img src="../assets/Arduino.jpg" alt="logo" class="lab-img">
-        </div>
-        <div>
-            <div>Laboratory 4</div>
-            <div>Arduino</div>
-            <button type="button">View</button>
-        </div>
-    </div>
-    <div class="lab">
-        <div>
-            <img src="../assets/Router.jpg" alt="logo" class="lab-img">
-        </div>
-        <div>
-            <div>Laboratory 5</div>
-            <div>Router</div>
-            <button type="button">View</button>
-        </div>
-    </div>
+    }
 </div>

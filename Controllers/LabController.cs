@@ -1,8 +1,11 @@
 using System.Threading.Tasks;
+using System.Collections.Generic;
+using System.Linq;
 using Microsoft.Extensions.Logging;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using SlothFlyingWeb.Data;
+using SlothFlyingWeb.Models;
 
 namespace SlothFlyingWeb.Controllers
 {
@@ -22,7 +25,8 @@ namespace SlothFlyingWeb.Controllers
             {
                 return RedirectToAction("Login", "User");
             }
-            return View();
+            IEnumerable<Lab> labs = _db.Lab;
+            return View(labs);
         }
     }
 }
