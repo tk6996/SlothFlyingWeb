@@ -10,7 +10,7 @@ $ dotnet restore
 $ dotnet tool install --global dotnet-ef
 ```
 
-สามารถ Run ได้เลยโดยไม่ต้องทำตาม Step ด้านหลัง
+<span style="background-color: #FFFF00">สามารถ Run ได้เลยโดยไม่ต้องทำตาม Step ด้านหลังถัดจากนี้ใช้คำสั่ง</span>
 ```shell
 $ dotnet watch run
 ```
