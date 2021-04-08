@@ -22,11 +22,11 @@ namespace SlothFlyingWeb.Data
 
             Lab[] labs = new Lab[]
             {
-                new Lab{Id = 1, ItemName = "Osciloscope",ImageUrl = "~/assets/images/Oscilloscope.png", Amount = 0},
-                new Lab{Id = 2, ItemName = "Multimeter",ImageUrl = "~/assets/images/Digital-multimeter.jpg", Amount = 0},
-                new Lab{Id = 3, ItemName = "Rasberry Pi",ImageUrl = "~/assets/images/Rasberry_Pi.jpg", Amount = 0},
-                new Lab{Id = 4, ItemName = "Arduino",ImageUrl = "~/assets/images/Arduino.jpg", Amount = 0},
-                new Lab{Id = 5, ItemName = "Router",ImageUrl = "~/assets/images/Router.jpg", Amount = 0}
+                new Lab{Id = 1, ItemName = "Osciloscope",ImageUrl = "~/images/labs/Oscilloscope.png", Amount = 0},
+                new Lab{Id = 2, ItemName = "Multimeter",ImageUrl = "~/images/labs/Digital-multimeter.jpg", Amount = 0},
+                new Lab{Id = 3, ItemName = "Rasberry Pi",ImageUrl = "~/images/labs/Rasberry_Pi.jpg", Amount = 0},
+                new Lab{Id = 4, ItemName = "Arduino",ImageUrl = "~/images/labs/Arduino.jpg", Amount = 0},
+                new Lab{Id = 5, ItemName = "Router",ImageUrl = "~/images/labs/Router.jpg", Amount = 0}
             };
             foreach (Lab lab in labs)
             {

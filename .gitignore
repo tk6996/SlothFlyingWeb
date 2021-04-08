@@ -437,3 +437,4 @@ $RECYCLE.BIN/
 
 ## Images File
 wwwroot/images/users/*
+!wwwroot/images/users/.placeholder
