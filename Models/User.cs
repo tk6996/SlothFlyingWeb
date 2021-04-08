@@ -45,7 +45,7 @@ namespace SlothFlyingWeb.Models
         [RegularExpression(@"^\d{3}-?\d{3}-?\d{3,4}$", ErrorMessage = "Incorrect phone number format.")]
         public string Phone { get; set; }
 
-        public string ImageURL { get; set; } = "";
+        public string ImageUrl { get; set; } = "";
 
         [NotMapped]
         [DisplayName("Upload a Photo")]

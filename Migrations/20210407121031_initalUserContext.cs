@@ -19,7 +19,7 @@ namespace SlothFlyingWeb.Migrations
                     Password = table.Column<string>(type: "TEXT", maxLength: 64, nullable: false),
                     CreateAt = table.Column<DateTime>(type: "TEXT", nullable: false),
                     Phone = table.Column<string>(type: "TEXT", nullable: false),
-                    ImageURL = table.Column<string>(type: "TEXT", nullable: true),
+                    ImageUrl = table.Column<string>(type: "TEXT", nullable: true),
                     BlackList = table.Column<bool>(type: "INTEGER", nullable: false)
                 },
                 constraints: table =>

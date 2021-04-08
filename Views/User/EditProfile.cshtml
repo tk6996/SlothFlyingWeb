@@ -11,11 +11,11 @@
 <form asp-asp-controller="User" asp-action="EditProfile" method="POST" enctype="multipart/form-data" class="container">
   <div class="image">
     <img
-      src='@Url.Content(Model.ImageURL != "" ? Model.ImageURL : "~/assets/images/brand.jpg")'
+      src='@Url.Content(Model.ImageUrl != "" ? Model.ImageUrl : "~/assets/images/brand.jpg")'
       alt="user_image"
       id="user_image"
     />
-    <input asp-for="ImageFile" type="file" name="ImageFile" id="ImageFile" accept="image/*" onchange="readURL(this);" hidden/>
+    <input asp-for="ImageFile" type="file" name="ImageFile" id="ImageFile" accept="image/*" onchange="readUrl(this);" hidden/>
     <span asp-validation-for="ImageFile" class="warning"></span>
     <label asp-for="ImageFile" class="upload">Upload a Photo</label>
   </div>

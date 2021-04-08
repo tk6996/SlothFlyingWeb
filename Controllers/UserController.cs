@@ -173,7 +173,7 @@ namespace SlothFlyingWeb.Controllers
                         {
                             await user.ImageFile.CopyToAsync(fs);
                         }
-                        userLastest.ImageURL = $"~/images/users/{fileName}";
+                        userLastest.ImageUrl = $"~/images/users/{fileName}";
                     }
 
                     _db.User.Update(userLastest);
