@@ -14,10 +14,12 @@
 </head>
 
 <body>
-    @if ("user" == ViewContext.RouteData.Values["Controller"].ToString().ToLower() &&
-    SessionExtensions.GetInt32(Context.Session, "Id") != null)
-    {
+    @{
+        string controller = ViewContext.RouteData.Values["Controller"].ToString().ToLower();
         string action = ViewContext.RouteData.Values["Action"].ToString().ToLower();
+    }
+    @if (("user" == controller || "lab" == controller) && SessionExtensions.GetInt32(Context.Session, "Id") != null)
+    {
         <header>
             <nav class="navbar">
                 <div class="brand">
@@ -25,7 +27,7 @@
                     <div class="brand-text">Sloth Flying Lab</div>
                 </div>
                 <div class="menu">
-                    <a id="lab" asp-controller="User" asp-action="Lab" class='@("lab" == action ? "active" : "")'>Lab</a>
+                    <a id="lab" asp-controller="Lab" asp-action="Index" class='@("lab" == controller ? "active" : "")'>Lab</a>
                     <a id="booklist" asp-controller="User" asp-action="Booklist"
                         class='@("booklist" == action ? "active" : "")'>Booklist</a>
                     <a id="profile" asp-controller="User" asp-action="Profile" class='@("profile" == action ||

@@ -1,7 +1,7 @@
 .navbar {
-  background-color: #333333;
+  background-color: var(--blackgray);
   display: flex;
-  filter: drop-shadow(0 0.2rem 0.25rem rgba(0, 0, 0, 0.2));
+  filter: drop-shadow(0 0.2rem 0.25rem var(--shadow));
   justify-content: space-between;
   padding: 0 7.5%;
   line-height: 60px;
@@ -47,11 +47,11 @@
 }
 
 .menu a.active {
-  background-color: #28A745;
+  background-color: var(--green);
 }
 
 .logout {
-  background-color: #28A745;
+  background-color: var(--green);
   cursor: pointer;
   height: 30px;
   line-height: 30px;
@@ -60,5 +60,5 @@
 }
 
 .logout:active {
-  background-color: #10471d;
+  background-color: var(--darkgreen);
 }

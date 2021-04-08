@@ -20,7 +20,6 @@ namespace SlothFlyingWeb.Controllers
     {
         private readonly ILogger<UserController> _logger;
         private readonly ApplicationDbContext _db;
-
         private readonly IWebHostEnvironment _hostEnvironment;
 
         public UserController(ILogger<UserController> logger, ApplicationDbContext db, IWebHostEnvironment hostEnvironment)
@@ -33,7 +32,7 @@ namespace SlothFlyingWeb.Controllers
         {
             if (SessionExtensions.GetInt32(HttpContext.Session, "Id") != null)
             {
-                return RedirectToAction("Lab");
+                return RedirectToAction("Index","Lab");
             }
             return View();
         }
@@ -74,7 +73,7 @@ namespace SlothFlyingWeb.Controllers
         {
             if (SessionExtensions.GetInt32(HttpContext.Session, "Id") != null)
             {
-                return RedirectToAction("Lab");
+                return RedirectToAction("Index","Lab");
             }
             return View();
         }
@@ -99,22 +98,13 @@ namespace SlothFlyingWeb.Controllers
                 _logger.LogError("Exception: {e}", e);
                 return View(user);
             }
-            return RedirectToAction("Lab");
+            return RedirectToAction("Index","Lab");
         }
 
         public IActionResult Logout()
         {
             HttpContext.Session.Clear();
             return RedirectToAction("Index", "Home");
-        }
-
-        public IActionResult Lab()
-        {
-            if (SessionExtensions.GetInt32(HttpContext.Session, "Id") != null)
-            {
-                return View();
-            }
-            return RedirectToAction("Login");
         }
 
         public async Task<IActionResult> Profile()

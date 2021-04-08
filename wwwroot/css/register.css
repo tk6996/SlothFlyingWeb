@@ -1,5 +1,5 @@
 .body {
-  background-color: #efefef;
+  background-color: var(--whitegray);
   height: 100vh;
   display: flex;
   align-items: center;
@@ -42,7 +42,7 @@
 }
 
 .field-data .warning {
-  color: #dd3631;
+  color: var(--red);
   font-size: 14px;
   margin: 5px 0 0;
   width: 300px;
@@ -65,7 +65,7 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  background-color: #0275d880;
+  background-color: var(--blue80);
 }
 
 .icon-input > i {
@@ -87,12 +87,12 @@
 .container input[type="submit"] {
   height: 50px;
   width: 250px;
-  background-color: #0275d8;
+  background-color: var(--blue);
   border-radius: 15px;
   color: white;
   font-size: 24px;
   border: none;
-  box-shadow: 0 4px 4px 0 rgba(0, 47, 80, 0.2);
+  box-shadow: 0 4px 4px 0 var(--blueshadow);
 }
 
 .container input[type="submit"]:hover {
@@ -100,7 +100,7 @@
 }
 
 .container input[type="submit"]:active {
-  background-color: #002f50;
+  background-color: var(--darkblue);
 }
 
 .container input:focus {
@@ -108,11 +108,11 @@
 }
 
 .container a {
-  color: #0275d8;
+  color: var(--blue);
 }
 
 .message_error {
-  color: #dd3631;
+  color: var(--red);
   font-size: 14px;
   text-align: center;
   margin: 0;

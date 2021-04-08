@@ -32,7 +32,7 @@
 }
 
 .container .upload {
-  background-color: #0275d8;
+  background-color: var(--blue);
   margin: 20px 0 0;
   color: white;
   width: 140px;
@@ -41,7 +41,7 @@
   color: white;
   font-size: 16px;
   border: none;
-  box-shadow: 0 4px 4px 0 rgba(0, 47, 80, 0.2);
+  box-shadow: 0 4px 4px 0 var(--blueshadow);
   text-align: center;
   line-height: 40px;
   display: block;
@@ -50,7 +50,7 @@
 }
 
 .container .upload:active {
-  background: #002f50;
+  background: var(--darkblue);
 }
 
 #ImageURL {
@@ -80,14 +80,15 @@
 
 .container input {
   height: 2em;
-  border: 1px solid #333333;
+  border: 1px solid var(--blackgray);
+  border-radius: 10px;
   width: 250px;
   padding: 5px;
   font-size: 18px;
 }
 
 .container .warning {
-  color: #dd3631;
+  color: var(--red);
   font-size: 14px;
   margin: 5px 0 0;
 }
@@ -95,12 +96,12 @@
 .container button {
   width: 250px;
   height: 50px;
-  background-color: #28a745;
+  background-color: var(--green);
   border-radius: 15px;
   color: white;
   font-size: 24px;
   border: none;
-  box-shadow: 0 4px 4px 0 rgba(26, 102, 44, 0.2);
+  box-shadow: 0 4px 4px 0 var(--greenshadow);
 }
 
 .container button:hover {
@@ -108,7 +109,7 @@
 }
 
 .container button:active {
-  background-color: #10471d;
+  background-color: var(--darkgreen);
 }
 
 input:focus,

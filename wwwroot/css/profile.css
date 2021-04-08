@@ -34,7 +34,7 @@
 
 .container a {
   display: block;
-  background-color: #0275d8;
+  background-color: var(--blue);
   font-size: 24px;
   text-decoration: none;
   line-height: 50px;
@@ -44,7 +44,7 @@
   height: 50px;
   border: none;
   border-radius: 15px;
-  box-shadow: 0 4px 4px 0 rgba(0, 47, 80, 0.2);
+  box-shadow: 0 4px 4px 0 var(--blueshadow);
 }
 
 .container a:hover {
@@ -52,9 +52,9 @@
 }
 
 .container a:active {
-    background: #002f50;
+    background: var(--darkblue);
 }
 
-input:focus,a:focus {
+input:focus {
   outline: none;
 }

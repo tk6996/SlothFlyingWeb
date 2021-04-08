@@ -34,3 +34,17 @@ main {
   width: 100%;
   height: 100%;
 }
+
+:root {
+  --blue: #0275d8;
+  --blue80 : rgba(2, 117, 217, 0.5);
+  --blueshadow: rgba(0, 47, 80, 0.2);
+  --darkblue: #002f50;
+  --red: #dd3631;
+  --whitegray: #efefef;
+  --shadow: rgba(0, 0, 0, 0.25);
+  --blackgray: #333333;
+  --green: #28a745;
+  --darkgreen: #10471d;
+  --greenshadow: rgba(40, 167, 69,0.2)
+}
