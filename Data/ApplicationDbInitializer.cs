@@ -10,7 +10,7 @@ namespace SlothFlyingWeb.Data
         {
             db.Database.EnsureCreated();
 
-            //Look for any  Admin
+            //Look for any Admin
             if (db.Admin.Any())
             {
                 return; // Database has been seeded

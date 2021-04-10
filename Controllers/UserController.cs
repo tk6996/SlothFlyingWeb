@@ -26,7 +26,7 @@ namespace SlothFlyingWeb.Controllers
         {
             _logger = logger;
             _db = db;
-            this._hostEnvironment = hostEnvironment;
+            _hostEnvironment = hostEnvironment;
         }
         public IActionResult Register()
         {
@@ -47,11 +47,11 @@ namespace SlothFlyingWeb.Controllers
             }
             // _logger.LogInformation("User {user}", user);
             user.Password = Md5.GetMd5Hash(user.Password);
-            user.CreateAt = System.DateTime.Now;
+            user.CreateAt = DateTime.Now;
             user.Phone = String.Join("", user.Phone.Split("-"));
 
-            User RegisteredUser = await _db.User.Where(u => u.Email == user.Email).FirstOrDefaultAsync();
-            if (RegisteredUser != null)
+            User registeredUser = await _db.User.Where(u => u.Email == user.Email).FirstOrDefaultAsync();
+            if (registeredUser != null)
             {
                 ViewBag.MessageError = "The Email already exists.";
                 return View(user);
@@ -74,14 +74,13 @@ namespace SlothFlyingWeb.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Login(User user)
         {
-
-            User LoggedInUser = await _db.User.Where(u => u.Email == user.Email && u.Password == Md5.GetMd5Hash(user.Password)).FirstOrDefaultAsync();
-            if (LoggedInUser == null)
+            User loggedInUser = await _db.User.Where(u => u.Email == user.Email && u.Password == Md5.GetMd5Hash(user.Password)).FirstOrDefaultAsync();
+            if (loggedInUser == null)
             {
                 ViewBag.MessageError = "The Email or Password is Incorrect.";
                 return View(user);
             }
-            SessionExtensions.SetInt32(HttpContext.Session, "Id", LoggedInUser.Id);
+            SessionExtensions.SetInt32(HttpContext.Session, "Id", loggedInUser.Id);
             return RedirectToAction("Index", "Lab");
         }
 
@@ -93,66 +92,77 @@ namespace SlothFlyingWeb.Controllers
 
         public async Task<IActionResult> Profile()
         {
-            if (SessionExtensions.GetInt32(HttpContext.Session, "Id") != null)
+            if (SessionExtensions.GetInt32(HttpContext.Session, "Id") == null)
             {
-
-                User user = await _db.User.FindAsync(SessionExtensions.GetInt32(HttpContext.Session, "Id"));
-                return View(user);
-
+                return RedirectToAction("Login");
             }
-            return RedirectToAction("Login");
+            
+            User loggedInUser = await _db.User.FindAsync(SessionExtensions.GetInt32(HttpContext.Session, "Id"));
+            if (loggedInUser == null)
+            {
+                throw new Exception("User not found");
+            }
+            return View(loggedInUser);
         }
 
         public async Task<IActionResult> EditProfile()
         {
-            if (SessionExtensions.GetInt32(HttpContext.Session, "Id") != null)
+            if (SessionExtensions.GetInt32(HttpContext.Session, "Id") == null)
             {
-                User user = await _db.User.FindAsync(SessionExtensions.GetInt32(HttpContext.Session, "Id"));
-                return View(user);
-
+                return RedirectToAction("Login");
             }
-            return RedirectToAction("Login");
+
+            User loggedInUser = await _db.User.FindAsync(SessionExtensions.GetInt32(HttpContext.Session, "Id"));
+            if (loggedInUser == null)
+            {
+                throw new Exception("User not found");
+            }
+            return View(loggedInUser);
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> EditProfile(User user)
         {
-            if (SessionExtensions.GetInt32(HttpContext.Session, "Id") != null)
+            if (SessionExtensions.GetInt32(HttpContext.Session, "Id") == null)
             {
-
-                Match mf = Regex.Match(user.FirstName ?? "", "^[A-Za-z]+$");
-                Match ml = Regex.Match(user.LastName ?? "", "^[A-Za-z]+$");
-                Match mp = Regex.Match(user.Phone ?? "", @"^\d{3}-?\d{3}-?\d{3,4}$");
-                if (!mf.Success || !ml.Success || !mp.Success)
-                {
-                    // _logger.LogInformation("{user}",user);
-                    return View(user);
-                }
-
-                User userLastest = await _db.User.FindAsync(SessionExtensions.GetInt32(HttpContext.Session, "Id"));
-                userLastest.FirstName = user.FirstName;
-                userLastest.LastName = user.LastName;
-                userLastest.Phone = String.Join("", user.Phone.Split("-"));
-
-                if (user.ImageFile != null)
-                {
-                    string wwwRootPath = _hostEnvironment.WebRootPath;
-                    string fileName = $"{DateTime.Now.ToString("yyyymmddhhmmssfff")}_{user.ImageFile.FileName}";
-                    string path = $"{wwwRootPath}/images/users/{fileName}";
-                    // _logger.LogInformation(path);
-                    using (FileStream fs = new FileStream(path, FileMode.Create))
-                    {
-                        await user.ImageFile.CopyToAsync(fs);
-                    }
-                    userLastest.ImageUrl = $"~/images/users/{fileName}";
-                }
-
-                _db.User.Update(userLastest);
-                await _db.SaveChangesAsync();
-                return RedirectToAction("Profile");
+                return RedirectToAction("Login");
             }
-            return RedirectToAction("Login");
+            
+            Match mf = Regex.Match(user.FirstName ?? "", "^[A-Za-z]+$");
+            Match ml = Regex.Match(user.LastName ?? "", "^[A-Za-z]+$");
+            Match mp = Regex.Match(user.Phone ?? "", @"^\d{3}-?\d{3}-?\d{3,4}$");
+            if (!mf.Success || !ml.Success || !mp.Success)
+            {
+                // _logger.LogInformation("{user}",user);
+                return View(user);
+            }
+
+            User loggedInUser = await _db.User.FindAsync(SessionExtensions.GetInt32(HttpContext.Session, "Id"));
+            if (loggedInUser == null)
+            {
+                throw new Exception("User not found");
+            }
+            loggedInUser.FirstName = user.FirstName;
+            loggedInUser.LastName = user.LastName;
+            loggedInUser.Phone = String.Join("", user.Phone.Split("-"));
+
+            if (user.ImageFile != null)
+            {
+                string wwwRootPath = _hostEnvironment.WebRootPath;
+                string fileName = $"{DateTime.Now.ToString("yyyyMMMddhhmmssffff")}_{user.ImageFile.FileName}";
+                string path = $"{wwwRootPath}/images/users/{fileName}";
+                // _logger.LogInformation(path);
+                using (FileStream fs = new FileStream(path, FileMode.Create))
+                {
+                    await user.ImageFile.CopyToAsync(fs);
+                }
+                loggedInUser.ImageUrl = $"~/images/users/{fileName}";
+            }
+
+            _db.User.Update(loggedInUser);
+            await _db.SaveChangesAsync();
+            return RedirectToAction("Profile");
         }
     }
 }

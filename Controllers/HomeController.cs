@@ -25,7 +25,7 @@ namespace SlothFlyingWeb.Controllers
             {
                 return RedirectToAction("Lab","User");
             }
-            return View();
+            return View("Index");
         }
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]

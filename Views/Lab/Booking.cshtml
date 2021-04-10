@@ -1,0 +1,91 @@
+@model SlothFlyingWeb.Models.Lab
+
+@{
+    ViewData["Title"] = "Booking";
+}
+
+@section Styles{
+    <link rel="stylesheet" href="~/css/booking.css">
+}
+
+<div class="container">
+    <div class="title">
+        <h1>Laboratory @(Model.Id)</h1>
+        <h2>แสดงจำนวนอุปกรณ์ที่ว่างในแต่ละวัน</h2>
+    </div>
+    <table>
+        <tr>
+            <th>Time \ Date</th>
+            @{
+                DateTime startDate = ViewBag.startDate;
+                for (int c = 0; c < 14; c++)
+                {
+                    DateTime date = startDate.AddDays(c);
+                    <th class='@(date.ToString("ddd") == "Sat" || date.ToString("ddd") == "Sun" ? "lab-close" : "")'>
+                        @date.ToString("ddd")<br>
+                        @date.ToString("dd")<br>
+                        @date.ToString("MMM")
+                    </th>
+                }
+            }
+        </tr>
+        @for (int r = 0; r < 9; r++)
+        {
+            <tr>
+                <th>@($"{(r+8).ToString("D2")}.00 - {(r+9).ToString("D2")}.00")</th>
+                @for (int c = 0; c < 14; c++)
+                {
+                    DateTime date = startDate.AddDays(c);
+                    if(date.ToString("ddd") == "Sat" || date.ToString("ddd") == "Sun")
+                    {
+                        <td class="not-enable"></td>    
+                    }
+                    else
+                    {
+                        <td class='@(Model.BookSlotTable[r,c] == 0 ? "full" : "")'>@Model.BookSlotTable[r,c]</td>
+                    }
+                }
+            </tr>
+        }
+    </table>
+    <div class="book" id="book">
+        <div class="book-inline" id="book-inline">
+            <div>
+                <label for="date">Date</label>
+                <input type="date" id="date" name="date" min='@(startDate.ToString("yyyy-MM-dd"))' max='@(startDate.AddDays(13).ToString("yyyy-MM-dd"))'>
+            </div>
+            <div class="select-time">
+                <label for="from">From</label>
+                <select name="from" id="from">
+                    <option value="0"></option>
+                    @for (int i = 1; i < 10; i++)
+                    {
+                        <option value="@i">@((i+7).ToString("D2")+".00")</option>
+                    }
+                </select>
+            </div>
+            <div class="select-time">
+                <label for="to">To</label>
+                <select name="to" id="to">
+                    <option value="0"></option>
+                    @for (int i = 1; i < 10; i++)
+                    {
+                        <option value="@i">@((i+8).ToString("D2")+".00")</option>
+                    }
+                </select>
+            </div>
+            <div>
+                <i class="fas fa-plus add" onclick="duplicateBookInline();"></i>
+            </div>
+            <div>
+                <i class="fas fa-minus remove invisible" onclick="removeBookInline(this);"></i>
+            </div>
+        </div>
+    </div>
+    <input type="text" id="startDateString" name="startDateString" value="@startDate" hidden />
+    <button onclick="validation();">Book</button>
+</div>
+
+@section Scripts {
+    <script src="~/js/booking.js"></script>
+}

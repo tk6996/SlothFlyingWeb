@@ -53,9 +53,6 @@ namespace SlothFlyingWeb.Models
         [NotMapped]
         [DisplayName("Upload a Photo")]
         public IFormFile ImageFile { get; set; }
-
-        public ICollection<BookList> BookLists { get; set; }
-
         public bool BlackList { get; set; } = false;
 
         public override string ToString()
