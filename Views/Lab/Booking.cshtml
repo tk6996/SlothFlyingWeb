@@ -21,7 +21,7 @@
                 for (int c = 0; c < 14; c++)
                 {
                     DateTime date = startDate.AddDays(c);
-                    <th class='@(date.ToString("ddd") == "Sat" || date.ToString("ddd") == "Sun" ? "lab-close" : "")'>
+                    <th class='@(date.DayOfWeek == DayOfWeek.Saturday || date.DayOfWeek == DayOfWeek.Sunday ? "lab-close" : "")'>
                         @date.ToString("ddd")<br>
                         @date.ToString("dd")<br>
                         @date.ToString("MMM")
@@ -36,7 +36,7 @@
                 @for (int c = 0; c < 14; c++)
                 {
                     DateTime date = startDate.AddDays(c);
-                    if (date.ToString("ddd") == "Sat" || date.ToString("ddd") == "Sun")
+                    if (date.DayOfWeek == DayOfWeek.Saturday || date.DayOfWeek == DayOfWeek.Sunday)
                     {
                         <td class="not-enable" id='@($"slot{r}_{c}")'></td>
                     }
@@ -88,7 +88,7 @@
             </div>
         </div>
     </form>
-    <input type="text" id="startDateString" name="startDateString" value="@startDate" hidden />
+    <input type="text" id="startDateString" name="startDateString" value="@(new DateTimeOffset(startDate).ToUnixTimeMilliseconds())" hidden />
     <input type="number" id="LabId" name="LabId" value="@Model.Id" hidden />
     <button onclick="validation();">Book</button>
 </div>

@@ -15,6 +15,7 @@ namespace SlothFlyingWeb
     {
         public static void Main(string[] args)
         {
+            System.Globalization.CultureInfo.DefaultThreadCurrentCulture = new System.Globalization.CultureInfo("en-US");
             IHost host = CreateHostBuilder(args).Build();
             CreateDbIfNotExists(host);
             host.Run();

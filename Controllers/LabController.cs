@@ -85,7 +85,7 @@ namespace SlothFlyingWeb.Controllers
             }
 
             ViewBag.userBooked = userBooked;
-            ViewBag.startDate = startDate.AddHours(7);
+            ViewBag.startDate = startDate.Date.AddHours(7);
             return View(lab);
         }
 

@@ -53,7 +53,7 @@ function duplicateBookInline() {
 async function validation() {
   let valid = true;
   // start date
-  let startDate = Date.parse(document.getElementById("startDateString").value);
+  let startDate = Number(document.getElementById("startDateString").value);
 
   //createBookSlot Table
   let bookSlotTable = new Array(14);
