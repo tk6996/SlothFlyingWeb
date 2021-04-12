@@ -96,7 +96,7 @@ namespace SlothFlyingWeb.Controllers
             {
                 return RedirectToAction("Login");
             }
-            
+
             User loggedInUser = await _db.User.FindAsync(SessionExtensions.GetInt32(HttpContext.Session, "Id"));
             if (loggedInUser == null)
             {
@@ -128,7 +128,7 @@ namespace SlothFlyingWeb.Controllers
             {
                 return RedirectToAction("Login");
             }
-            
+
             Match mf = Regex.Match(user.FirstName ?? "", "^[A-Za-z]+$");
             Match ml = Regex.Match(user.LastName ?? "", "^[A-Za-z]+$");
             Match mp = Regex.Match(user.Phone ?? "", @"^\d{3}-?\d{3}-?\d{3,4}$");
@@ -163,6 +163,55 @@ namespace SlothFlyingWeb.Controllers
             _db.User.Update(loggedInUser);
             await _db.SaveChangesAsync();
             return RedirectToAction("Profile");
+        }
+
+        public async Task<IActionResult> Booklist()
+        {
+            if (SessionExtensions.GetInt32(HttpContext.Session, "Id") == null)
+            {
+                return RedirectToAction("Login");
+            }
+            DateTime dateNow = DateTime.Now;
+            int userId = (int)SessionExtensions.GetInt32(HttpContext.Session, "Id");
+
+            Func<BookList, Lab, BookList> joinItemName = (bookList, lab) =>
+              {
+                  bookList.ItemName = lab.ItemName;
+                  return bookList;
+              };
+
+            IEnumerable<BookList> bookLists = _db.BookList.Where(bookList => bookList.UserId == userId)
+                                                          .Join(_db.Lab,
+                                                                bookList => bookList.LabId,
+                                                                lab => lab.Id,
+                                                                joinItemName);
+
+            foreach (BookList bookList in bookLists)
+            {
+                if (bookList.Status == BookList.StatusType.COMING)
+                {
+                    if (bookList.Date.AddHours(bookList.From) <= dateNow && dateNow < bookList.Date.AddHours(bookList.To))
+                    {
+                        bookList.Status = BookList.StatusType.USING;
+                        _db.BookList.Update(bookList);
+                    }
+                    else if (dateNow >= bookList.Date.AddHours(bookList.To))
+                    {
+                        bookList.Status = BookList.StatusType.FINISHED;
+                        _db.BookList.Update(bookList);
+                    }
+                }
+                if (bookList.Status == BookList.StatusType.USING)
+                {
+                    if (dateNow >= bookList.Date.AddHours(bookList.To))
+                    {
+                        bookList.Status = BookList.StatusType.FINISHED;
+                        _db.BookList.Update(bookList);
+                    }
+                }
+            }
+            await _db.SaveChangesAsync();
+            return View(bookLists.OrderBy(bl => bl.Status).ThenByDescending(bl => bl.Date).ThenBy(bl => bl.From).ThenBy(bl => bl.To).ThenBy(bl => bl.LabId));
         }
     }
 }

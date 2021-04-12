@@ -6,8 +6,9 @@ namespace SlothFlyingWeb.Models
 {
     public class BookList
     {
-        public enum StatusType {
-            Book, Cancel, Eject
+        public enum StatusType
+        {
+            USING,COMING,FINISHED,CANCLE,EJECT
         }
 
         [Key]
@@ -18,7 +19,10 @@ namespace SlothFlyingWeb.Models
 
         [ForeignKey("Lab")]
         public int LabId { get; set; }
-        
+
+        [NotMapped]
+        public string ItemName { get; set; }
+
         [DataType(DataType.Date)]
         public DateTime Date { get; set; }
 

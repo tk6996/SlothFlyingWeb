@@ -21,7 +21,7 @@
 }
 
 html {
-  font-family: "Roboto" , sans-serif;
+  font-family: "Roboto", sans-serif;
   font-size: 18px;
 }
 
@@ -42,20 +42,22 @@ main {
   height: 100%;
 }
 
-
 :root {
   --blue: #0275d8;
-  --blue80 : rgba(2, 117, 217, 0.5);
+  --blue80: rgba(2, 117, 217, 0.5);
   --blueshadow: rgba(0, 47, 80, 0.2);
   --darkblue: #002f50;
   --red: #dd3631;
+  --darkred: #5c1714;
+  --redshadow: rgba(102, 26, 26, 0.2);
   --whitegray: #efefef;
   --shadow: rgba(0, 0, 0, 0.25);
   --blackgray: #333333;
   --green: #28a745;
   --darkgreen: #10471d;
-  --greenshadow: rgba(40, 167, 69,0.2);
-  --white80: rgba(255,255,255,0.5);
+  --greenshadow: rgba(40, 167, 69, 0.2);
+  --white80: rgba(255, 255, 255, 0.5);
+  --gray: #6c757d;
 }
 
 .filter {

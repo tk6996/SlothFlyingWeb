@@ -5,7 +5,7 @@
 }
 
 @section Styles{
-    <link rel="stylesheet" href="~/css/booking.css">
+<link rel="stylesheet" href="~/css/booking.css">
 }
 
 <div class="container">
@@ -36,23 +36,32 @@
                 @for (int c = 0; c < 14; c++)
                 {
                     DateTime date = startDate.AddDays(c);
-                    if(date.ToString("ddd") == "Sat" || date.ToString("ddd") == "Sun")
+                    if (date.ToString("ddd") == "Sat" || date.ToString("ddd") == "Sun")
                     {
-                        <td class="not-enable"></td>    
+                        <td class="not-enable" id='@($"slot{r}_{c}")'></td>
                     }
-                    else
+                    else if (ViewBag.userBooked[r,c] == 1)
                     {
-                        <td class='@(Model.BookSlotTable[r,c] == 0 ? "full" : "")'>@Model.BookSlotTable[r,c]</td>
+                        <td class="booked" id='@($"slot{r}_{c}")' >@Model.BookSlotTable[r,c]</td>
+                    }
+                    else if (c == 0 && date.Hour < DateTime.Now.Hour)
+                    {
+                        <td class="late" id='@($"slot{r}_{c}")' >@Model.BookSlotTable[r,c]</td>
+                    }
+                    else 
+                    {
+                        <td class='@(Model.BookSlotTable[r,c] <= 0 ? "full" : "")' id='@($"slot{r}_{c}")' >@Model.BookSlotTable[r,c]</td>
                     }
                 }
             </tr>
         }
     </table>
-    <div class="book" id="book">
+    <form method="POST" class="book" id="book">
         <div class="book-inline" id="book-inline">
             <div>
                 <label for="date">Date</label>
-                <input type="date" id="date" name="date" min='@(startDate.ToString("yyyy-MM-dd"))' max='@(startDate.AddDays(13).ToString("yyyy-MM-dd"))'>
+                <input type="date" id="date" name="date" min='@(startDate.ToString("yyyy-MM-dd"))'
+                    max='@(startDate.AddDays(13).ToString("yyyy-MM-dd"))'>
             </div>
             <div class="select-time">
                 <label for="from">From</label>
@@ -77,15 +86,13 @@
             <div>
                 <i class="fas fa-plus add" onclick="duplicateBookInline();"></i>
             </div>
-            <div>
-                <i class="fas fa-minus remove invisible" onclick="removeBookInline(this);"></i>
-            </div>
         </div>
-    </div>
+    </form>
     <input type="text" id="startDateString" name="startDateString" value="@startDate" hidden />
+    <input type="number" id="LabId" name="LabId" value="@Model.Id" hidden />
     <button onclick="validation();">Book</button>
 </div>
 
 @section Scripts {
-    <script src="~/js/booking.js"></script>
+<script src="~/js/booking.js"></script>
 }

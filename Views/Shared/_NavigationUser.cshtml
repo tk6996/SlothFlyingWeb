@@ -1,0 +1,19 @@
+@{
+    string controller = ViewContext.RouteData.Values["Controller"].ToString();
+    string action = ViewContext.RouteData.Values["Action"].ToString();
+}
+
+<nav class="navbar">
+    <div class="brand">
+        <img src="~/assets/images/brand.jpg" alt="logo" class="brand-img" />
+        <div class="brand-text">Sloth Flying Lab</div>
+    </div>
+    <div class="menu">
+        <a id="lab" asp-controller="Lab" asp-action="Index" class='@("Lab" == controller ? "active" : "")'>Lab</a>
+        <a id="booklist" asp-controller="User" asp-action="Booklist"
+            class='@("Booklist" == action ? "active" : "")'>Booklist</a>
+        <a id="profile" asp-controller="User" asp-action="Profile" class='@("Profile" == action ||
+                        "EditProfile" == action ? "active" : "")'>Profile</a>
+        <a id="logout" asp-controller="User" asp-action="Logout" class="logout">Logout</a>
+    </div>
+</nav>
