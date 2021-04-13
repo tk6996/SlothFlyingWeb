@@ -28,3 +28,5 @@ $ dotnet watch run
 ```
 
 กรณีที่ทำการสร้าง Model แล้ว Migration เรียบร้อยแล้วแต่ Update แล้วมีปัญหาสามารถลบ Database ลบ Migration และสร้างใหม่ได้
+
+ps กรณีที่ pull มาใหม่ควรลบ database ที่มีอยู่เดิมไปก่อนเพราะ schema อาจจะเปลี่ยน
