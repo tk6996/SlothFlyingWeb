@@ -19,7 +19,7 @@ jobs:
     - name: Set up .NET Core
       uses: actions/setup-dotnet@v1
       with:
-        dotnet-version: '3.1.407'
+        dotnet-version: '3.1.301'
 
     - name: Build with dotnet
       run: dotnet build --configuration Release
@@ -54,3 +54,11 @@ jobs:
         slot-name: 'production'
         publish-profile: ${{ secrets.AzureAppService_PublishProfile_00e80c13acdc418b93ab9f00dcd935e5 }}
         package: .
+
+    - name: Set Timezome
+      id: set-timezone
+      uses: actions/set-timezone-action@v1.1
+      with:
+        timezoneLinux: "Asia/Bangkok"
+        timezoneMacos: "Asia/Bangkok"
+        timezoneWindows: "Bangkok Standard Time"
