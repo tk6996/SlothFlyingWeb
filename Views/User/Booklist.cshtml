@@ -8,59 +8,68 @@
   ViewData["Title"] = "Booklist";
 }
 
-<table>
-  <thead>
-    <tr>
-      <th>Lab</th>
-      <th>Date</th>
-      <th>From</th>
-      <th>To</th>
-      <th>Status</th>
-      <th></th>
-    </tr>
-  </thead>
-  <tbody>
-    @foreach (BookList bookList in Model)
-    {
+@if (Model.Count() == 0)
+{
+  <div class='header-empty'>
+    <h1>You have the empty booklist.</h1>
+  </div>
+}
+else
+{
+  <table>
+    <thead>
       <tr>
-        <td>Lab @bookList.LabId @bookList.ItemName</td>
-        <td>@bookList.Date.ToString("ddd dd MMM yyyy")</td>
-        <td>@(bookList.From.ToString("D2")).00</td>
-        <td>@(bookList.To.ToString("D2")).00</td>
-        <td class="status">
-          @switch (bookList.Status)
-          {
-            case BookList.StatusType.USING:
-              <span class="using">Using</span>
-              break;
-            case BookList.StatusType.COMING:
-              <span class="coming">Coming</span>
-              break;
-            case BookList.StatusType.FINISHED:
-              <span>Finished</span>
-              break;
-            case BookList.StatusType.CANCLE:
-              <span>Cancel</span>
-              break;
-            case BookList.StatusType.EJECT:
-              <span>Eject</span>
-              break;
-            default: break;
-          }
-        </td>
-        @if (bookList.Status == BookList.StatusType.USING || bookList.Status == BookList.StatusType.COMING)
-        {
-          <td class="icon"><i class="fas fa-times-circle" onclick="confirmPopUpOn();"></i></td>
-        }
-        else
-        {
-          <td></td>
-        }
+        <th>Lab</th>
+        <th>Date</th>
+        <th>From</th>
+        <th>To</th>
+        <th>Status</th>
+        <th></th>
       </tr>
-    }
-  </tbody>
-</table>
+    </thead>
+    <tbody>
+      @foreach (BookList bookList in Model)
+      {
+        <tr>
+          <td>Lab @bookList.LabId @bookList.ItemName</td>
+          <td>@bookList.Date.ToString("ddd dd MMM yyyy")</td>
+          <td>@(bookList.From.ToString("D2")).00</td>
+          <td>@(bookList.To.ToString("D2")).00</td>
+          <td class="status">
+            @switch (bookList.Status)
+            {
+              case BookList.StatusType.USING:
+                <span class="using">Using</span>
+                break;
+              case BookList.StatusType.COMING:
+                <span class="coming">Coming</span>
+                break;
+              case BookList.StatusType.FINISHED:
+                <span>Finished</span>
+                break;
+              case BookList.StatusType.CANCEL:
+                <span>Cancel</span>
+                break;
+              case BookList.StatusType.EJECT:
+                <span>Eject</span>
+                break;
+              default: break;
+            }
+          </td>
+          @if (bookList.Status == BookList.StatusType.USING || bookList.Status == BookList.StatusType.COMING)
+          {
+            <td class="icon"><i class="fas fa-times-circle" onclick="confirmPopUpOnForm({id : '@bookList.Id'});"></i></td>
+          }
+          else
+          {
+            <td></td>
+          }
+        </tr>
+      }
+    </tbody>
+  </table>
+}
 
-@section Scripts {
-<script src="~/js/booklist.js"></script>
+@section Modals {
+  <p style="font-size: 24px;">Would you like to cancel this booklist ?</p>
 }

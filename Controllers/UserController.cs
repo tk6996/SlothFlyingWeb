@@ -213,5 +213,44 @@ namespace SlothFlyingWeb.Controllers
             await _db.SaveChangesAsync();
             return View(bookLists.OrderBy(bl => bl.Status).ThenByDescending(bl => bl.Date).ThenBy(bl => bl.From).ThenBy(bl => bl.To).ThenBy(bl => bl.LabId));
         }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Booklist([FromForm] int id)
+        {
+            if (SessionExtensions.GetInt32(HttpContext.Session, "Id") == null)
+            {
+                return RedirectToAction("Login");
+            }
+            int userId = (int)SessionExtensions.GetInt32(HttpContext.Session, "Id");
+            BookList bookList = await _db.BookList.FindAsync(id);
+
+            if (bookList == null)
+            {
+                return BadRequest("The Booklist not found.");
+            }
+
+            if (bookList.UserId != userId)
+            {
+                return BadRequest("You not permission to cancel this booklist.");
+            }
+
+            if (bookList.Status == BookList.StatusType.FINISHED ||
+                bookList.Status == BookList.StatusType.CANCEL ||
+                bookList.Status == BookList.StatusType.EJECT)
+            {
+                return BadRequest("This booklist be canceled.");
+            }
+
+            bookList.Status = BookList.StatusType.CANCEL;
+            _db.BookList.Update(bookList);
+            IEnumerable<BookSlot> bookSlots = _db.BookSlot.Where(bookSlot => bookSlot.BookListId == bookList.Id);
+            foreach (BookSlot bookSlot in bookSlots)
+            {
+                _db.BookSlot.Remove(bookSlot);
+            }
+            await _db.SaveChangesAsync();
+            return Redirect("Booklist");
+        }
     }
 }

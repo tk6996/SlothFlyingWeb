@@ -8,7 +8,7 @@ namespace SlothFlyingWeb.Models
     {
         public enum StatusType
         {
-            USING,COMING,FINISHED,CANCLE,EJECT
+            USING,COMING,FINISHED,CANCEL,EJECT
         }
 
         [Key]

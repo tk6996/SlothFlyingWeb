@@ -43,7 +43,7 @@ td {
 }
 
 .booked {
-  background-color: #d8ce41; 
+  background-color: #d8ce41;
 }
 
 .full,
@@ -62,7 +62,7 @@ td {
   padding-bottom: 10px;
 }
 
-input[type="date"],
+.container input[type="date"],
 select {
   padding: 5px;
   border-radius: 10px;
@@ -70,7 +70,7 @@ select {
   font-size: 20px;
 }
 
-button {
+.container button {
   padding: 10px 40px;
   background: var(--blue);
   border-radius: 10px;
@@ -127,11 +127,56 @@ select:focus {
   color: var(--red);
   background-color: #f7d7da;
   border: 1px solid var(--red);
-  border-radius:  5px;
+  border-radius: 5px;
   padding: 1% 2%;
   font-size: 14px;
   margin: 5px 0;
   position: absolute;
   top: 110%;
   left: 0;
+}
+
+#book-list-range {
+  width: 100%;
+  padding: 30px;
+  display: flex;
+  flex-direction: column;
+  row-gap: 50px;
+}
+
+#book-list-range > h2 {
+  text-align: center;
+}
+
+#book-list-range > div {
+  max-height: 250px;
+  overflow-y: auto;
+}
+
+#header-list th {
+  background-color: var(--blackgray);
+  color: #ffffff;
+  font-size: 24px;
+  padding: 15px;
+  border: none;
+  position: sticky;
+  top: 0;
+}
+
+#header-list th:first-child {
+  width: 300px;
+}
+
+#header-list th:not(:first-child) {
+  width: 200px;
+}
+
+#body-list td {
+  background-color: #ffffff;
+  border: none;
+  padding: 20px;
+}
+
+#body-list tr {
+  border-bottom: 1px solid var(--blackgray);
 }

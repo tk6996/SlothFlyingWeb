@@ -140,7 +140,7 @@ async function validation() {
       valid = false;
       //console.log("message error 'from' to 'to' incorrect range " + index);
       messageError.children[0].children[1].innerHTML =
-        "The date is out of the boundary that you can book.";
+        "You entered the wrong period.";
       bookInline.appendChild(messageError);
       continue;
     }
@@ -246,21 +246,56 @@ async function validation() {
       });
     }
   }
-  let token = document.querySelector('input[name="__RequestVerificationToken"]')
-    .value;
-  let response = await makeRequest(
-    "POST",
-    window.location.pathname,
-    JSON.stringify(bookRanges),
-    {
-      RequestVerificationToken: token,
-      "Content-Type": "application/json;charset=utf-8",
-    }
-  );
+  updateBodyBookList(bookRanges);
+  let response = await confirmPopUpOnJson(bookRanges);
   response = JSON.parse(response);
   if (response.success) window.location.href = "/User/Booklist";
+  else if (response.error) console.error(response.error);
 }
 
-window.onload = alert(
-  "select pop up list"
-);
+function updateBodyBookList(bookRanges) {
+  const body = document.querySelector("#body-list");
+  body.innerHTML = "";
+  for (const bookRange of bookRanges) {
+    const row = document.createElement("tr");
+    const createTr = (value) => {
+      const column = document.createElement("td");
+      column.innerHTML = value;
+      return column;
+    };
+    const dateTransform = (date_ms) => {
+      const date = new Date(date_ms);
+      const DAYS = Object.freeze([
+        "Sunday",
+        "Monday",
+        "Tuesday",
+        "Wednesday",
+        "Thursday",
+        "Friday",
+        "Saturday",
+      ]);
+      const MONTHS = Object.freeze([
+        "January",
+        "February",
+        "March",
+        "April",
+        "May",
+        "June",
+        "July",
+        "August",
+        "September",
+        "October",
+        "November",
+        "December",
+      ]);
+      return `${DAYS[date.getDay()].slice(0, 3)} ${date.getDate()} ${MONTHS[
+        date.getMonth()
+      ].slice(0, 3)} ${date.getFullYear()}`;
+    };
+    const timeTransform = (time) => (time < 10 ? `0${time}.00` : `${time}.00`);
+    row.appendChild(createTr(dateTransform(bookRange.date)));
+    row.appendChild(createTr(timeTransform(bookRange.from)));
+    row.appendChild(createTr(timeTransform(bookRange.to)));
+    body.appendChild(row);
+  }
+}

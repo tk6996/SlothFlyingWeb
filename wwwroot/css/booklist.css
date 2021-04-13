@@ -1,3 +1,11 @@
+.header-empty {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 30vh;
+  width: 100%;
+}
+
 table {
   display: grid;
   margin: 50px 7.5%;
@@ -30,6 +38,10 @@ th {
 td {
   border-bottom: 1px solid var(--blackgray);
   padding: 20px 20px;
+}
+
+td:not(:nth-child(6n+6)){
+  line-height: 28px;
 }
 
 .status {

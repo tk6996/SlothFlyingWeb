@@ -1,4 +1,5 @@
 using System;
+using System.Globalization;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -15,7 +16,7 @@ namespace SlothFlyingWeb
     {
         public static void Main(string[] args)
         {
-            System.Globalization.CultureInfo.DefaultThreadCurrentCulture = new System.Globalization.CultureInfo("en-US");
+            CultureInfo.DefaultThreadCurrentCulture = new CultureInfo("en-US");
             IHost host = CreateHostBuilder(args).Build();
             CreateDbIfNotExists(host);
             host.Run();

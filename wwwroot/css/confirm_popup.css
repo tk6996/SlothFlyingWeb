@@ -1,13 +1,8 @@
-.plane {
-  font-size: 20px;
-  font-family: Roboto, sans-serif;
-}
-
-.plane-off {
+.modal-off {
   display: none;
 }
 
-.plane {
+.modal {
   background-color: var(--shadow);
   position: fixed;
   width: 100%;
@@ -18,32 +13,29 @@
   justify-content: center;
   align-items: center;
 }
+
 .card {
   background-color: #ffffff;
-  width: 33%;
-  min-height: 120px;
-  height: 33%;
+  width: auto;
+  height: auto;
   display: flex;
-  justify-content: space-evenly;
+  justify-content: center;
+  row-gap: 40px;
   align-items: center;
   flex-direction: column;
-  padding: 10px 50px;
-}
-
-.text {
-  text-align: center;
-  font-size: 24px;
+  padding: 50px;
 }
 
 .button-field {
   display: flex;
-  justify-content: space-evenly;
+  justify-content: center;
+  column-gap: 45px;
   width: 100%;
 }
 
 .button-field button {
-  width: 125px;
-  height: 45px;
+  width: 130px;
+  height: 40px;
   border: none;
   border-radius: 0.8em;
   color: #ffffff;

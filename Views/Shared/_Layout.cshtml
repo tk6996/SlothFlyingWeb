@@ -15,6 +15,7 @@
     </environment>
     <link rel="stylesheet" href="~/css/site.css" />
     <link rel="stylesheet" href="~/css/navigation.css" />
+    <link rel="stylesheet" href="~/css/confirm_popup.css" />
     @RenderSection("Styles", required: false)
 </head>
 
@@ -22,6 +23,7 @@
     <div class="filter"></div>
     @{
         string controller = ViewContext.RouteData.Values["Controller"].ToString();
+        string action = ViewContext.RouteData.Values["Action"].ToString();
         // user navigation bar
         if (("User" == controller || "Lab" == controller) && SessionExtensions.GetInt32(Context.Session, "Id") != null)
         {
@@ -33,6 +35,25 @@
     <main role="main">
         @RenderBody()
     </main>
+    @switch ($"{controller}/{action}")
+    {
+        // if will use Modal Confirm put pathname in case
+        case "User/Booklist":
+        case "Lab/Booking": 
+            <div class="modal-off" id="modal">
+                <form method="POST" class="card">
+                    @RenderSection("Modals", required : false)
+                    <div class="button-field">
+                        <button type="submit" class="submit" id="submit">OK</button>
+                        <button type="button" class="cancel" onclick="confirmPopUpOff();" id="cancel">
+                            Cancel
+                        </button>
+                    </div>
+                    <div id="input-section" style="display: none;"></div>
+                </form>
+            </div> break;
+        default: break;
+    }
     <script src="~/js/site.js"></script>
     @RenderSection("Scripts", required: false)
 </body>

@@ -73,7 +73,7 @@ namespace SlothFlyingWeb.Controllers
             IEnumerable<BookList> bookLists = _db.BookList.Where(bl => bl.UserId == userId &&
                                                                        bl.LabId == lab.Id &&
                                                                        startDate <= bl.Date && bl.Date < endDate &&
-                                                                       bl.Status != BookList.StatusType.CANCLE && bl.Status != BookList.StatusType.EJECT);
+                                                                       bl.Status != BookList.StatusType.CANCEL && bl.Status != BookList.StatusType.EJECT);
 
             int[,] userBooked = new int[9, 14];
             foreach (BookList bl in bookLists)
@@ -106,7 +106,7 @@ namespace SlothFlyingWeb.Controllers
             IEnumerable<BookList> bookLists = _db.BookList.Where(bl => bl.UserId == userId &&
                                                                        bl.LabId == id &&
                                                                        startDate.Date <= bl.Date && bl.Date < startDate.AddDays(14).Date &&
-                                                                       bl.Status != BookList.StatusType.CANCLE && bl.Status != BookList.StatusType.EJECT);
+                                                                       bl.Status != BookList.StatusType.CANCEL && bl.Status != BookList.StatusType.EJECT);
 
             int[,] userBooked = new int[14, 9];
             foreach (BookList bl in bookLists)
@@ -140,7 +140,7 @@ namespace SlothFlyingWeb.Controllers
 
                 if (fromValue >= toValue)
                 {
-                    return BadRequest("The date is out of the boundary that you can book.");
+                    return BadRequest("You entered the wrong period.");
                 }
 
                 if (dateValue == startDate && DateTime.Now.Hour > fromValue)

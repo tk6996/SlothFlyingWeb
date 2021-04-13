@@ -14,36 +14,79 @@
       } else {
         reject({
           status: this.status,
-          error: xhr.response
+          error: xhr.response,
         });
       }
     };
     xhr.onerror = function () {
       reject({
         status: this.status,
-        error: xhr.response
+        error: xhr.response,
       });
     };
     xhr.send(body);
   });
 }
-
+// off modal
 function confirmPopUpOff() {
   const body = document.querySelector("body");
-  body.style.overflowY = "scroll";
-  const confirm_popup = document.querySelector("#plane");
-  confirm_popup.className = "plane-off";
+  body.style.overflowY = "auto";
+  const confirm_popup = document.querySelector("#modal");
+  confirm_popup.className = "modal-off";
+}
+// open modal
+function confirmPopUpOn() {
+  const body = document.querySelector("body");
+  body.style.overflowY = "hidden";
+  const confirm_popup = document.querySelector("#modal");
+  confirm_popup.className = "modal";
 }
 
-function confirmPopUpOn(obj) {
-  const body = document.querySelector("main");
-  body.style.overflowY = "hidden";
-  const confirm_popup = document.querySelector("#plane");
-  confirm_popup.className = "plane";
-  const data_input = document.querySelector("#data");
-  if (typeof obj === "object" && Object.entries(obj).length > 0) {
-      const [key, value] = Object.entries(obj)[0];
-      data_input.setAttribute("name", key);
-      data_input.setAttribute("value", value);
+// send object to server by form
+function confirmPopUpOnForm(object) {
+  confirmPopUpOn();
+  const inputSection = document.querySelector("#input-section");
+  inputSection.innerHTML = "";
+  for (const key in object) {
+    if (Object.hasOwnProperty.call(object, key)) {
+      const input = document.createElement("input");
+      input.setAttribute("type", "hidden");
+      input.name = key;
+      input.value = object[key];
+      inputSection.appendChild(input);
+    }
   }
+}
+
+// send object to server by json
+function confirmPopUpOnJson(object) {
+  return new Promise((resolve, reject) => {
+    confirmPopUpOn();
+    const submit = document.querySelector("#submit");
+    const cancel = document.querySelector("#cancel");
+    submit.addEventListener("click", (event) => {
+      event.preventDefault();
+      submit.disabled = true;
+      cancel.disabled = true;
+
+      let token = document.querySelector(
+        'input[name="__RequestVerificationToken"]'
+      ).value;
+
+      makeRequest("POST", window.location.pathname, JSON.stringify(object), {
+        RequestVerificationToken: token,
+        "Content-Type": "application/json;charset=utf-8",
+      })
+        .then((response) => {
+          submit.disabled = false;
+          cancel.disabled = false;
+          resolve(response);
+        })
+        .catch((error) => {
+          submit.disabled = false;
+          cancel.disabled = false;
+          reject(error);
+        });
+    });
+  });
 }
