@@ -54,10 +54,3 @@ jobs:
         slot-name: 'production'
         publish-profile: ${{ secrets.AzureAppService_PublishProfile_00e80c13acdc418b93ab9f00dcd935e5 }}
         package: .
-    - name: Set Timezome
-      id: set-timezone
-      uses: actions/set-timezone-action@v1.1
-      with:
-        timezoneLinux: "Asia/Bangkok"
-        timezoneMacos: "Asia/Bangkok"
-        timezoneWindows: "Bangkok Standard Time"
