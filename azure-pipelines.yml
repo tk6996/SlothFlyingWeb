@@ -1,61 +1,18 @@
-# Docs for the Azure Web Apps Deploy action: https://github.com/Azure/webapps-deploy
-# More GitHub Actions for Azure: https://github.com/Azure/actions
-
-name: Build and deploy ASP.Net Core app to Azure Web App - SlothFlyingWeb
-
-on:
-push:
-branches:
-- main
-workflow_dispatch:
-
-jobs:
-build:
-runs-on: ubuntu-latest
-
-steps:
-- uses: actions/checkout@v2
-
-- name: Set up .NET Core
-uses: actions/setup-dotnet@v1
-with:
-dotnet-version: '3.1.301'
-
-- name: Build with dotnet
-run: dotnet build --configuration Release
-
-- name: dotnet publish
-run: dotnet publish -c Release -o ${{env.DOTNET_ROOT}}/myapp
-
-- name: Upload artifact for deployment job
-uses: actions/upload-artifact@v2
-with:
-name: .net-app
-path: ${{env.DOTNET_ROOT}}/myapp
-
-deploy:
-runs-on: ubuntu-latest
-needs: build
-environment:
-name: 'production'
-url: ${{ steps.deploy-to-webapp.outputs.webapp-url }}
-
-steps:
-- name: Download artifact from build job
-uses: actions/download-artifact@v2
-with:
-name: .net-app
-
-- name: Deploy to Azure Web App
-id: deploy-to-webapp
-uses: azure/webapps-deploy@v2
-with:
-app-name: 'SlothFlyingWeb'
-slot-name: 'production'
-publish-profile: ${{ secrets.AzureAppService_PublishProfile_ec86ed7116854f74877bfc4c1daba70f }}
-
-package: .
-- task: Bash@3
+- task: DotNetCoreCLI@2
   inputs:
-    targetType: 'inline'
-    script: 'rm /etc/localtime && ln -s /usr/share/zoneinfo/Asia/Bangkok /etc/localtime'
+    command: 'restore'
+    feedsToUse: 'select'
+- task: DotNetCoreCLI@2
+  inputs:
+    command: 'build'
+- task: AzureRmWebAppDeployment@4
+  inputs:
+    ConnectionType: 'AzureRM'
+    azureSubscription: 'Azure for Students(2a1212b0-6d53-4799-a2be-a004611dd427)'
+    appType: 'webAppLinux'
+    WebAppName: 'SlothFlyingWeb'
+    deployToSlotOrASE: true
+    ResourceGroupName: 'SlothFlyingWebResourceGroup'
+    SlotName: 'production'
+    packageForLinux: '$(System.DefaultWorkingDirectory)/**/*.zip'
+    RuntimeStack: 'DOTNETCORE|3.1'
