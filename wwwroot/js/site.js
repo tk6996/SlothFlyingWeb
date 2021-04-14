@@ -89,8 +89,8 @@ function confirmPopUpOnJson(object) {
         });
     };
     submit.addEventListener("click", clickedSubmitEventHandler);
-    // cancel.addEventListener("click", () => {
-    //   submit.removeEventListener("click", clickedSubmitEventHandler);
-    // });
+    cancel.addEventListener("click", () => {
+      submit.removeEventListener("click", clickedSubmitEventHandler);
+    });
   });
 }
