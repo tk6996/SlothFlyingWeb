@@ -11,7 +11,7 @@ namespace SlothFlyingWeb.Utils
         }
 
         public static DateTime millisecondToDateTime(long mills){
-            return (new DateTime(1970, 1, 1, 7, 0 ,0)).AddMilliseconds(mills);
+            return (new DateTime(1970, 1, 1)).AddHours(GMT).AddMilliseconds(mills);
         }
     }
 }
