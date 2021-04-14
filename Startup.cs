@@ -47,6 +47,11 @@ namespace SlothFlyingWeb
             {
                 app.UseExceptionHandler("/Home/Error");
             }
+            else if (env.IsProduction())
+            {
+                app.UseExceptionHandler("Home/Error");
+
+            }
             else
             {
                 app.UseExceptionHandler("/Home/Error");
