@@ -44,7 +44,7 @@
                     {
                         <td class="booked" id='@($"slot{r}_{c}")' >@Model.BookSlotTable[r,c]</td>
                     }
-                    else if (c == 0 && date.Hour < BangkokDateTime.now().Hour)
+                    else if (c == 0 && r+8 < BangkokDateTime.now().Hour)
                     {
                         <td class="late" id='@($"slot{r}_{c}")' >@Model.BookSlotTable[r,c]</td>
                     }

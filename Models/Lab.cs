@@ -1,6 +1,5 @@
 using System.ComponentModel.DataAnnotations.Schema;
 using System.ComponentModel.DataAnnotations;
-using System.Collections.Generic;
 
 namespace SlothFlyingWeb.Models
 {
