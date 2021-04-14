@@ -1,3 +1,5 @@
 {
-    "discord.enabled": true
+    "discord.enabled": true,
+    "appService.defaultWebAppToDeploy": "/subscriptions/2a1212b0-6d53-4799-a2be-a004611dd427/resourceGroups/SlothFlyingWeb/providers/Microsoft.Web/sites/SlothFlying",
+    "appService.deploySubpath": "publish"
 }
