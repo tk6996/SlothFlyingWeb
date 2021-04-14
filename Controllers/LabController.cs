@@ -92,7 +92,7 @@ namespace SlothFlyingWeb.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Booking(int id, [FromBody] IEnumerable<BookRange> bookRanges)
+        public IActionResult Booking(int id, [FromBody] IEnumerable<BookRange> bookRanges)
         {
             if (SessionExtensions.GetInt32(HttpContext.Session, "Id") == null)
             {
@@ -103,85 +103,113 @@ namespace SlothFlyingWeb.Controllers
             int labId = id;
             DateTime startDate = BangkokDateTime.now().Date;
             int[,] BookSlotTable = new int[14, 9];
-
-            IEnumerable<BookList> bookLists = _db.BookList.Where(bl => bl.UserId == userId &&
-                                                                       bl.LabId == id &&
-                                                                       startDate.Date <= bl.Date && bl.Date < startDate.AddDays(14).Date &&
-                                                                       bl.Status != BookList.StatusType.CANCEL && bl.Status != BookList.StatusType.EJECT);
-
-            int[,] userBooked = new int[14, 9];
-            foreach (BookList bl in bookLists)
+            lock (BookingLock._lock)
             {
-                for (int ts = bl.From; ts < bl.To; ts++)
-                {
-                    userBooked[(bl.Date.Date - startDate.Date).Days, ts - 8] = 1;
-                }
-            }
+                IEnumerable<BookList> bookLists = _db.BookList.Where(bl => bl.UserId == userId &&
+                                                                           bl.LabId == id &&
+                                                                           startDate.Date <= bl.Date && bl.Date < startDate.AddDays(14).Date &&
+                                                                           bl.Status != BookList.StatusType.CANCEL && bl.Status != BookList.StatusType.EJECT);
 
-            foreach (BookRange bookRange in bookRanges)
-            {
-                if (bookRange.Date == 0 || bookRange.From == 0 || bookRange.To == 0)
+                int[,] userBooked = new int[14, 9];
+                foreach (BookList bl in bookLists)
                 {
-                    return BadRequest("Please complete all field.");
-                }
-
-                DateTime dateValue = BangkokDateTime.millisecondToDateTime(bookRange.Date);
-                int fromValue = bookRange.From;
-                int toValue = bookRange.To;
-
-                if (dateValue < startDate || dateValue >= startDate.AddDays(14))
-                {
-                    return BadRequest("The date is out of the boundary that you can book.");
-                }
-
-                if (dateValue.DayOfWeek == DayOfWeek.Saturday || dateValue.DayOfWeek == DayOfWeek.Sunday)
-                {
-                    return BadRequest("You cannot book an item on Weekend.");
-                }
-
-                if (fromValue >= toValue)
-                {
-                    return BadRequest("You entered the wrong period.");
-                }
-
-                if (dateValue == startDate && BangkokDateTime.now().Hour > fromValue)
-                {
-                    return BadRequest("The time is out of the boundary that you can book.");
-                }
-
-                for (int slot = fromValue; slot < toValue; slot++)
-                {
-                    if (BookSlotTable[(dateValue - startDate).Days, slot - 8] == 1)
+                    for (int ts = bl.From; ts < bl.To; ts++)
                     {
-                        return BadRequest("You cannot enter the period that overlaps.");
+                        userBooked[(bl.Date.Date - startDate.Date).Days, ts - 8] = 1;
                     }
-                    if (userBooked[(dateValue - startDate).Days, slot - 8] == 1)
-                    {
-                        return BadRequest("You have already booked this period.");
-                    }
-                    if (_db.BookSlot.Where(bs => bs.LabId == labId).Where(bs => bs.Date == dateValue).Count(bs => bs.TimeSlot == slot - 7) >= _db.Lab.Find(labId).Amount)
-                    {
-                        return BadRequest("You cannot enter the period that items full.");
-                    }
-                    BookSlotTable[(dateValue - startDate).Days, slot - 8] = 1;
                 }
-            }
 
-            for (int date = 0; date < 14; date++)
-            {
-                int start = 0;
-                int end = 0;
-                for (int timeslot = 0; timeslot < 9; timeslot++)
+                foreach (BookRange bookRange in bookRanges)
                 {
-                    if (BookSlotTable[date, timeslot] == 1 && start == 0)
+                    if (bookRange.Date == 0 || bookRange.From == 0 || bookRange.To == 0)
                     {
-                        start = timeslot + 8;
+                        return BadRequest("Please complete all field.");
                     }
-                    if (BookSlotTable[date, timeslot] == 1 && start > 0)
+
+                    DateTime dateValue = BangkokDateTime.millisecondToDateTime(bookRange.Date);
+                    int fromValue = bookRange.From;
+                    int toValue = bookRange.To;
+
+                    if (dateValue < startDate || dateValue >= startDate.AddDays(14))
                     {
-                        end = timeslot + 9;
+                        return BadRequest("The date is out of the boundary that you can book.");
                     }
-                    if (BookSlotTable[date, timeslot] == 0 && start > 0)
+
+                    if (dateValue.DayOfWeek == DayOfWeek.Saturday || dateValue.DayOfWeek == DayOfWeek.Sunday)
+                    {
+                        return BadRequest("You cannot book an item on Weekend.");
+                    }
+
+                    if (fromValue >= toValue)
+                    {
+                        return BadRequest("You entered the wrong period.");
+                    }
+
+                    if (dateValue == startDate && BangkokDateTime.now().Hour > fromValue)
+                    {
+                        return BadRequest("The time is out of the boundary that you can book.");
+                    }
+
+                    for (int slot = fromValue; slot < toValue; slot++)
+                    {
+                        if (BookSlotTable[(dateValue - startDate).Days, slot - 8] == 1)
+                        {
+                            return BadRequest("You cannot enter the period that overlaps.");
+                        }
+                        if (userBooked[(dateValue - startDate).Days, slot - 8] == 1)
+                        {
+                            return BadRequest("You have already booked this period.");
+                        }
+                        if (_db.BookSlot.Where(bs => bs.LabId == labId).Where(bs => bs.Date == dateValue).Count(bs => bs.TimeSlot == slot - 7) >= _db.Lab.Find(labId).Amount)
+                        {
+                            return BadRequest("You cannot enter the period that items full.");
+                        }
+                        BookSlotTable[(dateValue - startDate).Days, slot - 8] = 1;
+                    }
+                }
+
+                for (int date = 0; date < 14; date++)
+                {
+                    int start = 0;
+                    int end = 0;
+                    for (int timeslot = 0; timeslot < 9; timeslot++)
+                    {
+                        if (BookSlotTable[date, timeslot] == 1 && start == 0)
+                        {
+                            start = timeslot + 8;
+                        }
+                        if (BookSlotTable[date, timeslot] == 1 && start > 0)
+                        {
+                            end = timeslot + 9;
+                        }
+                        if (BookSlotTable[date, timeslot] == 0 && start > 0)
+                        {
+                            BookList bl = new BookList()
+                            {
+                                UserId = userId,
+                                LabId = labId,
+                                Date = startDate.AddDays(date),
+                                From = start,
+                                To = end,
+                                Status = BookList.StatusType.COMING
+                            };
+                            _db.BookList.Add(bl);
+                            _db.SaveChanges();
+                            for (int slot = start; slot < end; slot++)
+                            {
+                                _db.BookSlot.Add(new BookSlot()
+                                {
+                                    BookListId = bl.Id,
+                                    LabId = labId,
+                                    Date = startDate.AddDays(date),
+                                    TimeSlot = slot - 7
+                                });
+                            }
+                            _db.SaveChanges();
+                            start = end = 0;
+                        }
+                    }
+                    if (start > 0)
                     {
                         BookList bl = new BookList()
                         {
@@ -193,7 +221,7 @@ namespace SlothFlyingWeb.Controllers
                             Status = BookList.StatusType.COMING
                         };
                         _db.BookList.Add(bl);
-                        await _db.SaveChangesAsync();
+                        _db.SaveChanges();
                         for (int slot = start; slot < end; slot++)
                         {
                             _db.BookSlot.Add(new BookSlot()
@@ -204,37 +232,10 @@ namespace SlothFlyingWeb.Controllers
                                 TimeSlot = slot - 7
                             });
                         }
-                        await _db.SaveChangesAsync();
-                        start = end = 0;
+                        _db.SaveChanges();
                     }
-                }
-                if (start > 0)
-                {
-                    BookList bl = new BookList()
-                    {
-                        UserId = userId,
-                        LabId = labId,
-                        Date = startDate.AddDays(date),
-                        From = start,
-                        To = end,
-                        Status = BookList.StatusType.COMING
-                    };
-                    _db.BookList.Add(bl);
-                    await _db.SaveChangesAsync();
-                    for (int slot = start; slot < end; slot++)
-                    {
-                        _db.BookSlot.Add(new BookSlot()
-                        {
-                            BookListId = bl.Id,
-                            LabId = labId,
-                            Date = startDate.AddDays(date),
-                            TimeSlot = slot - 7
-                        });
-                    }
-                    await _db.SaveChangesAsync();
                 }
             }
-
             return Content("{\"success\":\"true\"}", "application/json", Encoding.UTF8);
         }
     }
