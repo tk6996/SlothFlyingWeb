@@ -42,15 +42,6 @@ namespace SlothFlyingWeb
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
-            } 
-            else if (env.IsProduction())
-            {
-                app.UseExceptionHandler("/Home/Error");
-            }
-            else if (env.IsProduction())
-            {
-                app.UseExceptionHandler("Home/Error");
-
             }
             else
             {

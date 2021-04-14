@@ -64,7 +64,7 @@ function confirmPopUpOnJson(object) {
     confirmPopUpOn();
     const submit = document.querySelector("#submit");
     const cancel = document.querySelector("#cancel");
-    submit.addEventListener("click", (event) => {
+    const clickedSubmitEventHandler = (event) => {
       event.preventDefault();
       submit.disabled = true;
       cancel.disabled = true;
@@ -87,6 +87,10 @@ function confirmPopUpOnJson(object) {
           cancel.disabled = false;
           reject(error);
         });
+    };
+    submit.addEventListener("click", clickedSubmitEventHandler);
+    cancel.addEventListener("click", () => {
+      submit.removeEventListener("click", clickedSubmitEventHandler);
     });
   });
 }

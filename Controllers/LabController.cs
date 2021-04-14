@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using SlothFlyingWeb.Data;
 using SlothFlyingWeb.Models;
+using SlothFlyingWeb.Utils;
 
 namespace SlothFlyingWeb.Controllers
 {
@@ -51,7 +52,7 @@ namespace SlothFlyingWeb.Controllers
 
             int userId = (int)SessionExtensions.GetInt32(HttpContext.Session, "Id");
 
-            DateTime startDate = DateTime.Now.Date;
+            DateTime startDate = BangkokDateTime.now().Date;
             DateTime endDate = startDate.AddDays(14).Date;
 
             IEnumerable<BookSlot> bookSlots = _db.BookSlot.Where(bookSlot => bookSlot.LabId == lab.Id &&
@@ -85,7 +86,7 @@ namespace SlothFlyingWeb.Controllers
             }
 
             ViewBag.userBooked = userBooked;
-            ViewBag.startDate = startDate.Date.AddHours(7);
+            ViewBag.startDate = startDate.Date;
             return View(lab);
         }
 
@@ -100,7 +101,7 @@ namespace SlothFlyingWeb.Controllers
 
             int userId = (int)SessionExtensions.GetInt32(HttpContext.Session, "Id");
             int labId = id;
-            DateTime startDate = DateTime.Now.Date;
+            DateTime startDate = BangkokDateTime.now().Date;
             int[,] BookSlotTable = new int[14, 9];
 
             IEnumerable<BookList> bookLists = _db.BookList.Where(bl => bl.UserId == userId &&
@@ -124,7 +125,7 @@ namespace SlothFlyingWeb.Controllers
                     return BadRequest("Please complete all field.");
                 }
 
-                DateTime dateValue = (new DateTime(1970, 1, 1)).AddMilliseconds(bookRange.Date);
+                DateTime dateValue = BangkokDateTime.millisecondToDateTime(bookRange.Date);
                 int fromValue = bookRange.From;
                 int toValue = bookRange.To;
 
@@ -143,7 +144,7 @@ namespace SlothFlyingWeb.Controllers
                     return BadRequest("You entered the wrong period.");
                 }
 
-                if (dateValue == startDate && DateTime.Now.Hour > fromValue)
+                if (dateValue == startDate && BangkokDateTime.now().Hour > fromValue)
                 {
                     return BadRequest("The time is out of the boundary that you can book.");
                 }

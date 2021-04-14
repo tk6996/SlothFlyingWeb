@@ -47,7 +47,7 @@ namespace SlothFlyingWeb.Controllers
             }
             // _logger.LogInformation("User {user}", user);
             user.Password = Md5.GetMd5Hash(user.Password);
-            user.CreateAt = DateTime.Now;
+            user.CreateAt = BangkokDateTime.now();
             user.Phone = String.Join("", user.Phone.Split("-"));
 
             User registeredUser = await _db.User.Where(u => u.Email == user.Email).FirstOrDefaultAsync();
@@ -150,7 +150,7 @@ namespace SlothFlyingWeb.Controllers
             if (user.ImageFile != null)
             {
                 string wwwRootPath = _hostEnvironment.WebRootPath;
-                string fileName = $"{DateTime.Now.ToString("yyyyMMMddhhmmssffff")}_{user.ImageFile.FileName}";
+                string fileName = $"{BangkokDateTime.now().ToString("yyyyMMMddhhmmssffff")}_{user.ImageFile.FileName}";
                 string path = $"{wwwRootPath}/images/users/{fileName}";
                 // _logger.LogInformation(path);
                 using (FileStream fs = new FileStream(path, FileMode.Create))
@@ -171,7 +171,7 @@ namespace SlothFlyingWeb.Controllers
             {
                 return RedirectToAction("Login");
             }
-            DateTime dateNow = DateTime.Now;
+            DateTime dateNow = BangkokDateTime.now();
             int userId = (int)SessionExtensions.GetInt32(HttpContext.Session, "Id");
 
             Func<BookList, Lab, BookList> joinItemName = (bookList, lab) =>
