@@ -31,6 +31,14 @@
                 <partial name="~/Views/Shared/_NavigationUser.cshtml" />
             </header>
         }
+
+        if (("Search" == controller || "LabAdmin" == controller) && SessionExtensions.GetInt32(Context.Session, "AdminId") !=
+        null)
+        {
+            <header>
+                <partial name="~/Views/Shared/_NavigationAdmin.cshtml" />
+            </header>
+        }
     }
     <main role="main">
         @RenderBody()
@@ -39,7 +47,8 @@
     {
         // if will use Modal Confirm put pathname in case
         case "User/Booklist":
-        case "Lab/Booking": 
+        case "Lab/Booking":
+        case "Search/UserBooklist":
             <div class="modal-off" id="modal">
                 <form method="POST" class="card">
                     @RenderSection("Modals", required : false)
@@ -51,7 +60,8 @@
                     </div>
                     <div id="input-section" style="display: none;"></div>
                 </form>
-            </div> break;
+            </div>
+            break;
         default: break;
     }
     <script src="~/js/site.js"></script>

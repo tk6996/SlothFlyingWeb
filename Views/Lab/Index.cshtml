@@ -5,21 +5,21 @@
 }
 
 @section Styles{
-    <link rel="stylesheet" href="~/css/lab.css">
+<link rel="stylesheet" href="~/css/lab.css">
 }
 
 <div class="container">
     @foreach (Lab lab in Model)
     {
-    <div class="lab">
-        <div>
-            <img src="@Url.Content(lab.ImageUrl)" alt="logo" class="lab-img">
+        <div class="lab">
+            <div>
+                <img src="@Url.Content(lab.ImageUrl)" alt="logo" class="lab-img">
+            </div>
+            <div>
+                <div>Laboratory @lab.Id</div>
+                <div>@lab.ItemName</div>
+                <a class="view-button" asp-controller="Lab" asp-action="Booking" asp-route-Id="@lab.Id">View</a>
+            </div>
         </div>
-        <div>
-            <div>Laboratory @lab.Id</div>
-            <div>@lab.ItemName</div>
-            <a asp-controller="Lab" asp-action="Booking" asp-route-Id="@lab.Id">View</a>
-        </div>
-    </div>
     }
 </div>
