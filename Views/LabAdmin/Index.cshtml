@@ -1,0 +1,28 @@
+@model IEnumerable<Lab>;
+
+@{
+    ViewData["Title"] = "Lab";
+}
+
+@section Styles{
+<link rel="stylesheet" href="~/css/lab.css">
+}
+
+<div class="container">
+    @foreach (Lab lab in Model)
+    {
+        <div class="lab">
+            <div>
+                <img src="@Url.Content(lab.ImageUrl)" alt="logo" class="lab-img">
+            </div>
+            <div>
+                <div>Laboratory @lab.Id</div>
+                <div>@lab.ItemName</div>
+                <div class="button">
+                    <a class="view-button" asp-controller="#" asp-action="#" asp-route-Id="@lab.Id">View</a>
+                    <a class="edit-button" asp-controller="#" asp-action="#" asp-route-Id="@lab.Id">Edit</a>
+                </div>
+            </div>
+        </div>
+    }
+</div>

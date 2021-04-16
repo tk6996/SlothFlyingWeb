@@ -1,0 +1,32 @@
+@model SlothFlyingWeb.Models.User
+
+@{
+    ViewData["Title"] = "User Profile";
+}
+
+@section Styles {
+<link rel="stylesheet" href="~/css/user_profile.css" />
+}
+
+<div class="head">
+    <a class="active" id="profile_nav" asp-controller="Search" asp-action="UserProfile"><i
+            class="fas fa-id-card"></i><span>Profile</span></a>
+    <a class="click" id="booklist_nav" asp-controller="Search" asp-action="UserBooklist"><i
+            class="fas fa-list-alt"></i><span>Booklist</span></a>
+</div>
+<div class="container">
+    <div class="image">
+        <img src="~/assets/images/brand.jpg" alt="user_image" />
+    </div>
+    <div class="information">
+        <div>Name</div>
+        <div id="fullname">@($"{Model.FirstName} {Model.LastName}")</div>
+        <div>Email</div>
+        <div id="email">@Model.Email</div>
+        <div>Phone</div>
+        <div id="phone">@($"{Convert.ToInt64(Model.Phone):000-000-0000}")</div>
+        <div>User ID</div>
+        <div id="id">@Model.Id.ToString("D8")</div>
+    </div>
+    <button type="button" id="blacklist" onclick="">Blacklist</button>
+</div>

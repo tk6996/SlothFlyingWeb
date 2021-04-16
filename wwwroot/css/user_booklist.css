@@ -1,0 +1,132 @@
+.head {
+    display: flex;
+    justify-content: flex-start;
+    margin: 50px 7.5% 0;
+    height: 60px;
+  }
+  
+.head > * {
+    width: 12.5%;
+    color: #333333;
+    display: flex;
+    background-color: #ffffff;
+    justify-content: center;
+    align-items: center;
+    font-weight: bold;
+    padding: 0 10px;
+}
+  
+.head a {
+    text-decoration: none;
+}
+
+.head > * > * {
+    margin: 0 4px;
+}
+
+.head > .active {
+    text-decoration: underline;
+}
+
+.head > .click{
+    background-color: #e5e5e5;
+    cursor: pointer;
+}
+
+.head > .click:hover {
+    text-decoration: underline;
+}
+  
+.container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    margin: 0 7.5% 60px 7.5%;
+    background-color: #ffffff;
+    min-height: calc(100vh - 230px)
+}
+  
+.container * {
+    margin: 0 0;
+}
+
+.header-empty {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 30vh;
+    width: 100%;
+}
+  
+table {
+    display: grid;
+    margin: 50px 7.5%;
+    border-collapse: collapse;
+    grid-template-columns: 1.25fr 1.25fr 0.5fr 0.5fr 1fr 0.5fr;
+    background-color: #ffffff;
+    width: 100%;
+}
+  
+thead,
+tbody,
+tr {
+    display: contents;
+}
+  
+th,
+td {
+    text-align: center;
+}
+  
+th {
+    background-color: var(--blackgray);
+    color: #ffffff;
+    height: 60px;
+    line-height: 60px;
+    font-size: 24px;
+    padding: 0px 20px;
+    margin-bottom: 20px;
+}
+  
+td {
+    border-bottom: 1px solid var(--blackgray);
+    padding: 20px 20px;
+}
+  
+td:not(:nth-child(6n+6)){
+    line-height: 28px;
+}
+  
+.status {
+    padding: 0 20px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+  
+.status > span {
+    padding: 5px;
+    width: 120px;
+    color: #ffffff;
+    border-radius: 15px;
+    background-color: var(--gray);
+}
+  
+.status > .using {
+    background-color: var(--green);
+}
+  
+.status > .coming {
+    background-color: var(--blue);
+}
+  
+.icon i {
+    font-size: 28px;
+    color: var(--red);
+    cursor: pointer;
+}
+  
+.icon i:active {
+    color: var(--darkred);
+}

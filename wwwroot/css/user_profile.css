@@ -1,0 +1,97 @@
+.head {
+    display: flex;
+    justify-content: flex-start;
+    margin: 50px 7.5% 0;
+    height: 60px;
+}
+  
+.head > * {
+    width: 12.5%;
+    color: #333333;
+    display: flex;
+    background-color: #ffffff;
+    justify-content: center;
+    align-items: center;
+    font-weight: bold;
+    padding: 0 10px;
+}
+
+.head a {
+  text-decoration: none;
+}
+  
+.head > * > * {
+    margin: 0 4px;
+}
+
+.head > .active {
+  text-decoration: underline;
+}
+  
+.head > .click{
+    background-color: #e5e5e5;
+    cursor: pointer;
+}
+
+.head > .click:hover {
+  text-decoration: underline;
+}
+
+.container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    margin: 0 7.5%;
+    background-color: #ffffff;
+    height: calc(100vh - 230px);
+}
+  
+.container * {
+    margin: 20px 0;
+}
+  
+.information {
+    display: grid;
+    grid-template-columns: auto auto;
+    grid-template-rows: auto auto auto auto;
+    column-gap: 30px;
+    row-gap: 20px;
+}
+  
+.information > * {
+    margin: 0 0;
+}
+  
+.container .image > * {
+    margin: 0;
+  }
+  
+.container .image > img{
+    height: 180px;
+    width: 180px;
+    border-radius: 50%;
+}
+  
+.container button {
+    width: 350px;
+    height: 60px;
+    background-color: #DD3631;
+    border-radius: 15px;
+    color: white;
+    font-size: 24px;
+    border: none;
+    box-shadow: 0 4px 4px 0 rgba(102, 26, 26, 0.2);
+  }
+  
+.container button:hover {
+      cursor: pointer;
+}
+  
+.container button:active {
+      background: #5c1714;
+}
+  
+input:focus,button:focus {
+    outline: none;
+}
