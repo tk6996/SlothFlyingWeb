@@ -236,7 +236,7 @@ namespace SlothFlyingWeb.Controllers
                     }
                 }
             }
-            return Content("{\"success\":\"true\"}", "application/json", Encoding.UTF8);
+            return Ok("{\"success\":\"true\"}");
         }
     }
 }

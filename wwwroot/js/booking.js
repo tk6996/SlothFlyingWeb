@@ -248,7 +248,6 @@ async function validation() {
   }
   updateBodyBookList(bookRanges);
   let response = await confirmPopUpOnJson(bookRanges);
-  response = JSON.parse(response);
   if (response.success) window.location.href = "/User/Booklist";
   else if (response.error) console.error(response.error);
 }
