@@ -1,10 +1,3 @@
-// Trigger button click on enter key
-function enterTrigger(event) {
-  if (event.keyCode === 13) {
-    document.getElementById("search-button").click();
-  }
-}
-
 // Create search results
 function createResultElement(user) {
   let result = document.createElement("div");
@@ -28,14 +21,14 @@ function createResultElement(user) {
 // Search results
 async function SearchResult() {
   let input_value = document.getElementById("input").value;
-  let searchResult = document.getElementById("search-result");
-  // hide old result
-  searchResult.style.display = "none";
-  // clear result
-  searchResult.innerHTML = "";
-  // show loader
-  document.getElementById("loader").className = "loader";
 
+  if (input_value === "") {
+    input_value.className = "empty";
+  } else {
+    input_value.className = "";
+  }
+
+  let searchResult = document.getElementById("search-result");
   try {
     // get users
     let result = await makeRequest(
@@ -43,19 +36,18 @@ async function SearchResult() {
       `/Search/UserList?search=${encodeURI(input_value)}`
     );
     result = JSON.parse(result);
+    // clear result
+    searchResult.innerHTML = "";
     // if no result
     if (result.length === 0) {
       searchResult.appendChild(document.createElement("h1")).innerHTML =
         "No Results";
-    }
-
-    for (const user of result) {
-      searchResult.appendChild(createResultElement(user));
+    } else {
+      for (const user of result) {
+        searchResult.appendChild(createResultElement(user));
+      }
     }
   } catch (error) {
     console.error(error);
   }
-
-  searchResult.style.display = "block";
-  document.getElementById("loader").className = "loader-disable";
 }
