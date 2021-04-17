@@ -12,16 +12,13 @@
     <div class="search-container">
         <img src="~/assets/images/brand.jpg" alt="logo" class="search-img" />
         <div class="search">
-            <input type="text" placeholder="Search Users" name="search" id="input" required>
-            <button type="button" onclick="SearchResult(model); showLoader();" id="search-button"><i
-                    class="fa fa-search"></i></button>
+            <input type="text" placeholder="Search Users" name="search" id="input" onkeyup="enterTrigger(event);"
+                required>
+            <button type="button" onclick="SearchResult();" id="search-button"><i class="fa fa-search"></i></button>
         </div>
         <div id="search-result"></div>
-        <div id="loader"></div>
+        <div id="loader" class="loader-disable"></div>
     </div>
-    <script>
-        var model = @Html.Raw(Json.Serialize(Model));
-    </script>
 </div>
 
 @section Scripts {

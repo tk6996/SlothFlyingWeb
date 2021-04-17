@@ -12,16 +12,6 @@ function readUrl(input) {
   }
 }
 
-function numberZeroPadding(number, padding) {
-  let numstr = String(number);
-  console.log(typeof numstr);
-  for (let i = numstr.length; i < padding; i++) {
-    numstr = "0".concat(numstr);
-  }
-  return numstr;
-}
-
-document.getElementById("Id").value = numberZeroPadding(
-  document.getElementById("Id").value,
-  8
-);
+document.getElementById("Id").value = String(
+  document.getElementById("Id").value
+).padStart(8, "0");

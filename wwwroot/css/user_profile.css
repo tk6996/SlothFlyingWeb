@@ -76,12 +76,12 @@
 .container button {
     width: 350px;
     height: 60px;
-    background-color: #DD3631;
+    background-color: var(--red);
     border-radius: 15px;
     color: white;
     font-size: 24px;
     border: none;
-    box-shadow: 0 4px 4px 0 rgba(102, 26, 26, 0.2);
+    box-shadow: 0 4px 4px 0 var(--shadowred);
   }
   
 .container button:hover {
@@ -89,7 +89,7 @@
 }
   
 .container button:active {
-      background: #5c1714;
+      background-color: var(--darkred);
 }
   
 input:focus,button:focus {

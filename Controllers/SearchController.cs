@@ -2,6 +2,8 @@ using System.Threading.Tasks;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
+using System.Net;
 using System;
 using Microsoft.Extensions.Logging;
 using Microsoft.AspNetCore.Http;
@@ -28,41 +30,109 @@ namespace SlothFlyingWeb.Controllers
             {
                 return RedirectToAction("Login", "Admin");
             }
-            IEnumerable<User> users = _db.User;
-            return View(users);
+            return View();
         }
 
-        [HttpPost]
-        public IActionResult Index([FromForm] int id)
+
+        public async Task<IActionResult> UserList([FromQuery(Name = "search")] string search)
         {
             if (SessionExtensions.GetInt32(HttpContext.Session, "AdminId") == null)
             {
                 return RedirectToAction("Login", "Admin");
             }
-            TempData["userId"] = id;
-            return RedirectToAction("UserProfile");
+            if (search == null)
+                return Json(new object[] { });
+
+            search = WebUtility.UrlDecode(search);
+            search = search.Trim();
+
+            string[] words = search.Split();
+            if (words.Length == 1)
+            {
+                int id;
+                if (Int32.TryParse(words[0], out id))
+                {
+                    User user = await _db.User.FindAsync(id);
+                    if (user == null)
+                    {
+                        return Json(new object[] { });
+                    }
+                    return Json(new object[]{
+                        new {
+                            Id = user.Id,
+                            FirstName = user.FirstName,
+                            LastName = user.LastName,
+                            ImageUrl = Url.Content(user.ImageUrl != "" ? user.ImageUrl : "~/assets/images/brand.jpg")
+                        }
+                    });
+                }
+
+                IEnumerable<User> users = _db.User.Where(user => (user.FirstName.Length >= words[0].Length &&
+                                                                  user.FirstName.Substring(0, words[0].Length).ToLower().Equals(words[0].ToLower())) ||
+                                                                 (user.LastName.Length >= words[0].Length &&
+                                                                  user.LastName.Substring(0, words[0].Length).ToLower().Equals(words[0].ToLower())));
+                return Json(users.Select(user => new
+                {
+                    Id = user.Id,
+                    FirstName = user.FirstName,
+                    LastName = user.LastName,
+                    ImageUrl = Url.Content(user.ImageUrl != "" ? user.ImageUrl : "~/assets/images/brand.jpg")
+                }));
+            }
+
+            if (words.Length == 2)
+            {
+                IEnumerable<User> users = _db.User.Where(user => ((user.FirstName.Length >= words[0].Length &&
+                                                                   user.FirstName.Substring(0, words[0].Length).ToLower().Equals(words[0].ToLower())) &&
+                                                                  (user.LastName.Length >= words[1].Length &&
+                                                                   user.LastName.Substring(0, words[1].Length).ToLower().Equals(words[1].ToLower()))) ||
+                                                                 ((user.FirstName.Length >= words[1].Length &&
+                                                                   user.FirstName.Substring(0, words[1].Length).ToLower().Equals(words[1].ToLower())) &&
+                                                                  (user.LastName.Length >= words[0].Length &&
+                                                                  user.LastName.Substring(0, words[0].Length).ToLower().Equals(words[0].ToLower()))));
+                return Json(users.Select(user => new
+                {
+                    Id = user.Id,
+                    FirstName = user.FirstName,
+                    LastName = user.LastName,
+                    ImageUrl = Url.Content(user.ImageUrl != "" ? user.ImageUrl : "~/assets/images/brand.jpg")
+                }));
+            }
+
+            return Json(new object[] { });
         }
 
-        public async Task<IActionResult> UserProfile()
+        public async Task<IActionResult> UserProfile(int? id)
         {
             if (SessionExtensions.GetInt32(HttpContext.Session, "AdminId") == null)
             {
                 return RedirectToAction("Login", "Admin");
             }
-            int userId = (int)TempData["userId"];
-            TempData.Keep("userId");
-            User user = await _db.User.FindAsync(userId);
+
+            User user = await _db.User.FindAsync(id);
+
+            if (user == null)
+            {
+                return NotFound();
+            }
+
+            ViewBag.UserId = user.Id;
             return View(user);
         }
 
-        public async Task<IActionResult> UserBooklist()
+        public async Task<IActionResult> UserBooklist(int? id)
         {
             if (SessionExtensions.GetInt32(HttpContext.Session, "AdminId") == null)
             {
                 return RedirectToAction("Login", "Admin");
             }
-            int userId = (int)TempData["userId"];
-            TempData.Keep("userId");
+
+            User user = await _db.User.FindAsync(id);
+
+            if (user == null)
+            {
+                return NotFound();
+            }
 
             DateTime dateNow = BangkokDateTime.now();
 
@@ -72,7 +142,7 @@ namespace SlothFlyingWeb.Controllers
                   return bookList;
               };
 
-            IEnumerable<BookList> bookLists = _db.BookList.Where(bookList => bookList.UserId == userId)
+            IEnumerable<BookList> bookLists = _db.BookList.Where(bookList => bookList.UserId == user.Id)
                                                           .Join(_db.Lab,
                                                                 bookList => bookList.LabId,
                                                                 lab => lab.Id,
@@ -103,6 +173,7 @@ namespace SlothFlyingWeb.Controllers
                 }
             }
             await _db.SaveChangesAsync();
+            ViewBag.UserId = user.Id;
             return View(bookLists.OrderBy(bl => bl.Status).ThenByDescending(bl => bl.Date).ThenBy(bl => bl.From).ThenBy(bl => bl.To).ThenBy(bl => bl.LabId));
         }
 
@@ -114,18 +185,13 @@ namespace SlothFlyingWeb.Controllers
             {
                 return RedirectToAction("Login", "Admin");
             }
-            int userId = (int)TempData["userId"];
-            TempData.Keep("userId");
+
+
             BookList bookList = await _db.BookList.FindAsync(id);
 
             if (bookList == null)
             {
                 return BadRequest("The Booklist not found.");
-            }
-
-            if (bookList.UserId != userId)
-            {
-                return BadRequest("You not permission to cancel this booklist.");
             }
 
             if (bookList.Status == BookList.StatusType.FINISHED ||
@@ -143,7 +209,7 @@ namespace SlothFlyingWeb.Controllers
                 _db.BookSlot.Remove(bookSlot);
             }
             await _db.SaveChangesAsync();
-            return Redirect("UserBooklist");
+            return RedirectToAction("UserBooklist", "Search", $"{bookList.UserId}");
         }
     }
 }

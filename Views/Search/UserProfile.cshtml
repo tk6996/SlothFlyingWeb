@@ -9,14 +9,14 @@
 }
 
 <div class="head">
-    <a class="active" id="profile_nav" asp-controller="Search" asp-action="UserProfile"><i
-            class="fas fa-id-card"></i><span>Profile</span></a>
-    <a class="click" id="booklist_nav" asp-controller="Search" asp-action="UserBooklist"><i
-            class="fas fa-list-alt"></i><span>Booklist</span></a>
+    <a class="active" id="profile_nav" asp-controller="Search" asp-action="UserProfile"
+        asp-route-Id="@ViewBag.UserId"><i class="fas fa-id-card"></i><span>Profile</span></a>
+    <a class="click" id="booklist_nav" asp-controller="Search" asp-action="UserBooklist"
+        asp-route-Id="@ViewBag.UserId"><i class="fas fa-list-alt"></i><span>Booklist</span></a>
 </div>
 <div class="container">
     <div class="image">
-        <img src="~/assets/images/brand.jpg" alt="user_image" />
+        <img src='@Url.Content(Model.ImageUrl != "" ? Model.ImageUrl : "~/assets/images/brand.jpg")' alt="user_image" />
     </div>
     <div class="information">
         <div>Name</div>
