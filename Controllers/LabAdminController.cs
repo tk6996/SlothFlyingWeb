@@ -31,5 +31,60 @@ namespace SlothFlyingWeb.Controllers
             IEnumerable<Lab> labs = _db.Lab;
             return View(labs);
         }
+
+        public async Task<IActionResult> ViewItem(int? id)
+        {
+            if (SessionExtensions.GetInt32(HttpContext.Session, "AdminId") == null)
+            {
+                return RedirectToAction("Login", "Admin");
+            }
+
+            if (id == null)
+            {
+                return RedirectToAction("Index");
+            }
+
+            Lab lab = await _db.Lab.FindAsync(id);
+            if (lab == null)
+            {
+                return NotFound();
+            }
+
+            DateTime startDate = BangkokDateTime.now().Date;
+            DateTime endDate = startDate.AddDays(14).Date;
+
+            IEnumerable<BookSlot> bookSlots = _db.BookSlot.Where(bookSlot => bookSlot.LabId == lab.Id &&
+                                                                             startDate <= bookSlot.Date && bookSlot.Date < endDate);
+
+            //Console.WriteLine(bookSlots.Count());
+
+            lab.BookSlotTable = new int[9, 14];
+
+            for (int r = 0; r < 9; r++)
+            {
+                for (int c = 0; c < 14; c++)
+                {
+                    lab.BookSlotTable[r, c] = lab.Amount - bookSlots.Where(bookSlot => bookSlot.Date == startDate.AddDays(c).Date)
+                                                                    .Count(bookSlot => bookSlot.TimeSlot == r + 1);
+                }
+            }
+            ViewBag.startDate = startDate.Date;
+            return View(lab);
+        }
+
+        public IActionResult EditItem(int? id)
+        {
+            if (SessionExtensions.GetInt32(HttpContext.Session, "AdminId") == null)
+            {
+                return RedirectToAction("Login", "Admin");
+            }
+
+            if (id == null)
+            {
+                return RedirectToAction("Index");
+            }
+
+            return View();
+        }
     }
 }

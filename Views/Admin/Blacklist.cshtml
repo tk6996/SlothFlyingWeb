@@ -1,0 +1,54 @@
+@model IEnumerable<User>
+
+@{
+    ViewData["Title"] = "Blacklist";
+}
+
+@section Styles {
+<link rel="stylesheet" href="~/css/blacklist.css" />
+}
+
+@if (Model.Count() == 0)
+{
+    <div class='header-empty'>
+        <h1>No blacklist.</h1>
+    </div>
+}
+else
+{
+    <h1 class="title">User Blacklist Details</h1>
+    <table>
+        <thead>
+            <tr>
+                <th>#</th>
+                <th>User ID</th>
+                <th>Name</th>
+                <th>Email</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            @{
+                int index = 0;
+
+                @foreach (User user in Model)
+                {
+                    index++;
+                    <tr>
+                        <td>@index</td>
+                        <td>@user.Id.ToString("D8")</td>
+                        <td><img src='@Url.Content(user.ImageUrl != "" ? user.ImageUrl : "~/assets/images/brand.jpg")'
+                        alt="user_image" /> @($"{user.FirstName} {user.LastName}")</td>
+                        <td>@user.Email</td>
+                        <td class="icon"><i class="fas fa-times-circle" onclick="confirmPopUpOnForm({id : '@user.Id'});"></i>
+                        </td>
+                    </tr>
+                }
+            }
+        </tbody>
+    </table>
+}
+
+@section Modals {
+<p style="font-size: 24px;">Would you like to unblacklist this user ?</p>
+}

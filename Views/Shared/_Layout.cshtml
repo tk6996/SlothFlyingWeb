@@ -31,7 +31,8 @@
             </header>
         }
 
-        if (("Search" == controller || "LabAdmin" == controller) && SessionExtensions.GetInt32(Context.Session, "AdminId") !=
+        if (("Search" == controller || "LabAdmin" == controller || "Blacklist" == action) &&
+        SessionExtensions.GetInt32(Context.Session, "AdminId") !=
         null)
         {
             <header>
@@ -48,6 +49,8 @@
         case "User/Booklist":
         case "Lab/Booking":
         case "Search/UserBooklist":
+        case "Search/UserProfile":
+        case "Admin/Blacklist":
             <div class="modal-off" id="modal">
                 <form method="POST" class="card">
                     @RenderSection("Modals", required : false)

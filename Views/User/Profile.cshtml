@@ -1,11 +1,11 @@
 @model SlothFlyingWeb.Models.User
 
 @section Styles {
-    <link rel="stylesheet" href="~/css/profile.css" />
+<link rel="stylesheet" href="~/css/profile.css" />
 }
 
 @{
-    ViewData["Title"] = "Profile";
+  ViewData["Title"] = "Profile";
 }
 
 <div class="container">
@@ -21,6 +21,9 @@
     <div id="Phone">@($"{Convert.ToInt64(Model.Phone):000-000-0000}")</div>
     <div>User ID</div>
     <div id="Id">@Model.Id.ToString("D8")</div>
+    <div>Status</div>
+    <div id="Status" class=@(Model.BlackList ? "blacklisted" : "normal")>@(Model.BlackList ? "BLACKLISTED" : "NORMAL")
+    </div>
   </div>
   <a asp-asp-controller="User" asp-action="EditProfile" id="edit">Edit Profile</a>
 </div>

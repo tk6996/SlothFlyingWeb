@@ -28,5 +28,19 @@
         <div>User ID</div>
         <div id="id">@Model.Id.ToString("D8")</div>
     </div>
-    <button type="button" id="blacklist" onclick="">Blacklist</button>
+    @if (Model.BlackList)
+    {
+        <button type="button" id="unblacklist"
+        onclick="confirmPopUpOnForm({id : '@Model.Id', blacklist : 'false'});">UnBlacklist</button>
+    }
+    else
+    {
+        <button type="button" id="blacklist"
+        onclick="confirmPopUpOnForm({id : '@Model.Id', blacklist : 'true'});">Blacklist</button>
+    }
 </div>
+
+@section Modals {
+<p style="font-size: 24px;">Would you like to @(Model.BlackList ? "unblacklist" : "blacklist") <span
+        style="color: var(--blue);">@($"{Model.FirstName} {Model.LastName}")</span> ?</p>
+}

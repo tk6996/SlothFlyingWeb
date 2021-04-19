@@ -59,3 +59,11 @@
 input:focus {
   outline: none;
 }
+
+.blacklisted {
+  color: var(--red);
+}
+
+.normal {
+  color: var(--blue);
+}

@@ -1,0 +1,66 @@
+.container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 2% 7.5% 2% 7.5%;
+}
+table,
+th,
+td {
+    border: 1px solid #ffffff;
+    border-collapse: collapse;
+    text-align: center;
+}
+  
+th,
+td {
+    padding: 1% 0;
+}
+  
+tr:first-child > th:first-child {
+    width: 10%;
+}
+  
+tr:first-child > th {
+    width: 4%;
+}
+  
+th {
+    background-color: var(--blackgray);
+    color: white;
+}
+  
+td {
+    background-color: #5cb85c;
+}
+  
+.not-enable {
+    background-color: var(--whitegray);
+}
+  
+.late {
+    background-color: var(--gray);
+}
+  
+.full,
+.lab-close {
+    background-color: #b85c5c;
+}
+  
+.title {
+    text-align: center;
+    width: 100%;
+    padding-bottom: 1%;
+    font-weight: bold;
+}
+  
+.title > * {
+    padding-bottom: 10px;
+}
+
+td:not(.not-enable):hover {
+    cursor: pointer;
+    color: #ffffff;   
+    opacity: 0.5;
+}
+  

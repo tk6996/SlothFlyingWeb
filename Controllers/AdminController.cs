@@ -57,6 +57,38 @@ namespace SlothFlyingWeb.Controllers
             return RedirectToAction("Login", "Admin");
         }
 
+        public IActionResult Blacklist()
+        {
+            if (SessionExtensions.GetInt32(HttpContext.Session, "AdminId") == null)
+            {
+                return RedirectToAction("Login", "Admin");
+            }
+            IEnumerable<User> users = _db.User.Where(user => user.BlackList == true);
+            return View(users);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Blacklist([FromForm] int id)
+        {
+            if (SessionExtensions.GetInt32(HttpContext.Session, "AdminId") == null)
+            {
+                return RedirectToAction("Login", "Admin");
+            }
+
+            User user = await _db.User.FindAsync(id);
+
+            if (user == null)
+            {
+                return BadRequest("The User not found.");
+            }
+
+            user.BlackList = false;
+            _db.User.Update(user);
+            await _db.SaveChangesAsync();
+
+            return RedirectToAction("Blacklist");
+        }
 
     }
 }

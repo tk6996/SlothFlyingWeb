@@ -85,6 +85,9 @@ namespace SlothFlyingWeb.Controllers
                 }
             }
 
+            User user = await _db.User.FindAsync(userId);
+
+            ViewBag.userBlacklist = user.BlackList;
             ViewBag.userBooked = userBooked;
             ViewBag.startDate = startDate.Date;
             return View(lab);

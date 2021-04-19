@@ -13,7 +13,8 @@
             class='@("LabAdmin" == controller ? "active" : "")'>Lab</a>
         <a id="search" asp-controller="Search" asp-action="Index"
             class='@("Search" == controller ? "active" : "")'>Search</a>
-        <a id="blacklist" asp-controller="#" asp-action="#">Blacklist</a>
+        <a id="blacklist" asp-controller="Admin" asp-action="Blacklist"
+            class='@("Blacklist" == action ? "active" : "")'>Blacklist</a>
         <a id="logout" asp-controller="Admin" asp-action="Logout" class="logout">Logout</a>
     </div>
 </nav>
