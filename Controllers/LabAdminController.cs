@@ -175,7 +175,7 @@ namespace SlothFlyingWeb.Controllers
             }));
         }
 
-        public IActionResult EditItem(int? id)
+        public async Task<IActionResult> EditItem(int? id)
         {
             if (SessionExtensions.GetInt32(HttpContext.Session, "AdminId") == null)
             {
@@ -187,7 +187,44 @@ namespace SlothFlyingWeb.Controllers
                 return RedirectToAction("Index");
             }
 
-            return View();
+            Lab lab = await _db.Lab.FindAsync(id);
+            if (lab == null)
+            {
+                return NotFound();
+            }
+
+            return View(lab);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> EditItem(int? id, [FromForm] int? amount)
+        {
+            if (SessionExtensions.GetInt32(HttpContext.Session, "AdminId") == null)
+            {
+                return RedirectToAction("Login", "Admin");
+            }
+
+            if (id == null)
+            {
+                return BadRequest("This link must have id.");
+            }
+
+            if (amount == null || amount < 0)
+            {
+                return BadRequest("Amount have to zero or more");
+            }
+
+            Lab lab = await _db.Lab.FindAsync(id);
+            if (lab == null)
+            {
+                return BadRequest("The id not found.");
+            }
+
+            lab.Amount = (int)amount;
+
+            _db.Lab.Update(lab);
+            await _db.SaveChangesAsync();
+            return RedirectToAction("EditItem", "LabAdmin", id);
         }
     }
 }

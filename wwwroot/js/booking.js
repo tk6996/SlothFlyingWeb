@@ -248,12 +248,26 @@ async function validation() {
   }
   updateBodyBookList(bookRanges);
   let response = await confirmPopUpOnJson(bookRanges);
-  response = JSON.parse(response);
-  if (response.success) window.location.href = "/User/Booklist";
-  else if (response.error) console.error(response.error);
+  if (response == "Ok") window.location.href = "/User/Booklist";
+  else appendError(response);
+}
+
+function appendError(error_string) {
+  // remove error text
+  const error = document.querySelector(".message_error");
+  error?.remove();
+  // <div class="message_error"></div>
+  const messageError = document.createElement("div");
+  messageError.innerHTML = error_string;
+  messageError.className = "message_error";
+  document.querySelector("#book-list-range").appendChild(messageError);
 }
 
 function updateBodyBookList(bookRanges) {
+  // remove error text
+  const error = document.querySelector(".message_error");
+  error?.remove();
+  //  append table
   const body = document.querySelector("#body-list");
   body.innerHTML = "";
   let index = 0;

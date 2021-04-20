@@ -1,7 +1,6 @@
 using System.Threading.Tasks;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System;
 using Microsoft.Extensions.Logging;
 using Microsoft.AspNetCore.Http;
@@ -239,7 +238,7 @@ namespace SlothFlyingWeb.Controllers
                     }
                 }
             }
-            return Content("{\"success\":\"true\"}", "application/json", Encoding.UTF8);
+            return Ok("Ok");
         }
     }
 }

@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
-using System.Net;
 using System;
 using Microsoft.Extensions.Logging;
 using Microsoft.AspNetCore.Http;
@@ -43,7 +42,6 @@ namespace SlothFlyingWeb.Controllers
             if (search == null)
                 return Json(new object[] { });
 
-            search = WebUtility.UrlDecode(search);
             search = search.Trim();
 
             string[] words = search.Split();
