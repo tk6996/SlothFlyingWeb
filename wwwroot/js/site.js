@@ -14,14 +14,14 @@
       } else {
         reject({
           status: this.status,
-          error: xhr.response,
+          response: xhr.response,
         });
       }
     };
     xhr.onerror = function () {
       reject({
         status: this.status,
-        error: xhr.response,
+        response: xhr.response,
       });
     };
     xhr.send(body);
@@ -60,11 +60,11 @@ function confirmPopUpOnForm(object) {
 
 // send object to server by json
 function confirmPopUpOnJson(object) {
-  return new Promise((resolve, reject) => {
+  return new Promise((resolve) => {
     confirmPopUpOn();
     const submit = document.querySelector("#submit");
     const cancel = document.querySelector("#cancel");
-    const clickedSubmitEventHandler = (event) => {
+    const clickedSubmitEventHandler = async (event) => {
       event.preventDefault();
       submit.disabled = true;
       cancel.disabled = true;
@@ -73,21 +73,26 @@ function confirmPopUpOnJson(object) {
         'input[name="__RequestVerificationToken"]'
       ).value;
 
-      makeRequest("POST", window.location.pathname, JSON.stringify(object), {
-        RequestVerificationToken: token,
-        "Content-Type": "application/json;charset=utf-8",
-      })
-        .then((response) => {
-          submit.disabled = false;
-          cancel.disabled = false;
-          resolve(response);
-        })
-        .catch((error) => {
-          submit.disabled = false;
-          cancel.disabled = false;
-          reject(error);
-        });
+      let response;
+      try {
+        response = await makeRequest(
+          "POST",
+          window.location.pathname,
+          JSON.stringify(object),
+          {
+            RequestVerificationToken: token,
+            "Content-Type": "application/json;charset=utf-8",
+          }
+        );
+      } catch (error) {
+        console.error(error);
+        response = error.response;
+      }
+      submit.disabled = false;
+      cancel.disabled = false;
+      resolve(response);
     };
+
     submit.addEventListener("click", clickedSubmitEventHandler);
     cancel.addEventListener("click", () => {
       submit.removeEventListener("click", clickedSubmitEventHandler);

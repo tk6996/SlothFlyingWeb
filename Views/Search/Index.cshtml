@@ -12,8 +12,8 @@
     <div class="search-container">
         <img src="~/assets/images/brand.jpg" alt="logo" class="search-img" />
         <div class="search">
-            <input type="text" placeholder="&#xF002; Search Users" name="search" id="input" onkeyup="SearchResult()"
-                class="empty" required>
+            <input type="text" placeholder="&#xF002; Search Users" name="search" id="input"
+                oninput="SearchResult(event);" class="empty" required>
         </div>
         <div id="search-result"></div>
     </div>

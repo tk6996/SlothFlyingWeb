@@ -7,3 +7,8 @@
 @section Styles{
 <link rel="stylesheet" href="#">
 }
+
+<form method="POST" asp-controller="LabAdmin" asp-action="EditItem">
+    <input type="number" asp-for="Amount">
+    <input type="submit">
+</form>

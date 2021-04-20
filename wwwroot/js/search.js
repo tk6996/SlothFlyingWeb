@@ -19,8 +19,8 @@ function createResultElement(user) {
 }
 
 // Search results
-async function SearchResult() {
-  let input_value = document.getElementById("input").value;
+async function SearchResult(event) {
+  let input_value = event.target.value;
 
   if (input_value === "") {
     input_value.className = "empty";
