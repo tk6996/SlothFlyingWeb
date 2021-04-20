@@ -138,7 +138,7 @@ namespace SlothFlyingWeb.Controllers
             _db.User.Update(user);
             await _db.SaveChangesAsync();
 
-            return RedirectToAction("Blacklist", "Admin");
+            return RedirectToAction("UserProfile");
         }
 
         public async Task<IActionResult> UserBooklist(int? id)

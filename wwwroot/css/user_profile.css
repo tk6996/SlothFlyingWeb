@@ -95,3 +95,19 @@
 input:focus,button:focus {
     outline: none;
 }
+
+.blacklisted {
+    color: var(--red);
+}
+  
+.normal {
+    color: var(--blue);
+}
+
+#unblacklist {
+    background-color: var(--blue);
+}
+
+#unblacklist:active {
+    background-color: var(--darkblue);
+}

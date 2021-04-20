@@ -24,13 +24,13 @@ else
                 <th>User ID</th>
                 <th>Name</th>
                 <th>Email</th>
+                <th>Phone</th>
                 <th></th>
             </tr>
         </thead>
         <tbody>
             @{
                 int index = 0;
-
                 @foreach (User user in Model)
                 {
                     index++;
@@ -40,6 +40,7 @@ else
                         <td><img src='@Url.Content(user.ImageUrl != "" ? user.ImageUrl : "~/assets/images/brand.jpg")'
                         alt="user_image" /> @($"{user.FirstName} {user.LastName}")</td>
                         <td>@user.Email</td>
+                        <td>@($"{Convert.ToInt64(user.Phone):000-000-0000}")</td>
                         <td class="icon"><i class="fas fa-times-circle" onclick="confirmPopUpOnForm({id : '@user.Id'});"></i>
                         </td>
                     </tr>

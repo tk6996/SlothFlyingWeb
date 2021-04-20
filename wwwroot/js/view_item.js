@@ -13,6 +13,7 @@ async function showResult(e, labId, date, timeslot) {
         let bl_table = document.querySelector(".booklist-table");
         bl_table.innerHTML = "";
         bl_table.appendChild(createBooklistTable(result, new Date(date), timeslot));
+        bl_table.scrollIntoView(true);
 
     } catch (error) {
         console.error(error);
@@ -24,7 +25,7 @@ function createBooklistTable(booklist, date, timeslot) {
     const day = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
     const month = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
     const status = ["Using", "Coming", "Finished", "Cancel", "Eject"]
-    const table_colname = ["#", "User Id", "Name", "From", "To", "status", ""];
+    const table_colname = ["#", "User Id", "Name", "From", "To", "Status", ""];
 
     let result = document.createElement("div");
     result.className = "book-list-range";

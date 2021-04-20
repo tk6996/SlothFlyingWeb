@@ -27,6 +27,9 @@
         <div id="phone">@($"{Convert.ToInt64(Model.Phone):000-000-0000}")</div>
         <div>User ID</div>
         <div id="id">@Model.Id.ToString("D8")</div>
+        <div>Status</div>
+        <div id="Status" class=@(Model.BlackList ? "blacklisted" : "normal")>@(Model.BlackList ? "BLACKLISTED" :
+            "NORMAL")</div>
     </div>
     @if (Model.BlackList)
     {

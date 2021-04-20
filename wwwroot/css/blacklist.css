@@ -16,7 +16,7 @@ table {
     display: grid;
     margin: 20px 7.5%;
     border-collapse: collapse;
-    grid-template-columns: 0.5fr 0.75fr 1fr 1fr 0.5fr;
+    grid-template-columns: 0.5fr 0.75fr 1fr 1fr 0.5fr 0.5fr;
     background-color: #ffffff;
 }
   
@@ -44,7 +44,7 @@ th {
   
 td {
     border-bottom: 1px solid var(--blackgray);
-    padding: 20px 20px;
+    padding: 15px 20px;
 }
   
 /*td:not(:nth-child(6n+6)){
@@ -52,7 +52,7 @@ td {
 }*/
   
 .icon i {
-    font-size: 36px;
+    font-size: 32px;
     color: var(--red);
     cursor: pointer;
 }
