@@ -14,14 +14,14 @@
       } else {
         reject({
           status: this.status,
-          response: xhr.response,
+          statusText: this.statusText,
         });
       }
     };
     xhr.onerror = function () {
       reject({
         status: this.status,
-        response: xhr.response,
+        statusText: this.statusText,
       });
     };
     xhr.send(body);
@@ -61,6 +61,7 @@ function confirmPopUpOnForm(object) {
 // send object to server by json
 function confirmPopUpOnJson(object) {
   return new Promise((resolve) => {
+    document.querySelector(".validation-error").innerHTML = "";
     confirmPopUpOn();
     const submit = document.querySelector("#submit");
     const cancel = document.querySelector("#cancel");
@@ -86,7 +87,8 @@ function confirmPopUpOnJson(object) {
         );
       } catch (error) {
         console.error(error);
-        response = error.response;
+        document.querySelector(".validation-error").innerHTML =
+          "Request error , You should to refresh pages.";
       }
       submit.disabled = false;
       cancel.disabled = false;

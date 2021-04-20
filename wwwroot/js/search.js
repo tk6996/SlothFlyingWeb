@@ -49,5 +49,10 @@ async function SearchResult(event) {
     }
   } catch (error) {
     console.error(error);
+    const newElement = document.createElement("p");
+    newElement.style.color = "var(--red)";
+    searchResult.innerHTML = "";
+    searchResult.appendChild(newElement).innerHTML =
+      "Your session is expired. You should re-login.";
   }
 }

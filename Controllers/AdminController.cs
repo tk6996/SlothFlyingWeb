@@ -30,7 +30,7 @@ namespace SlothFlyingWeb.Controllers
 
         public IActionResult Login()
         {
-            if (SessionExtensions.GetInt32(HttpContext.Session, "AdminId") != null)
+            if (HttpContext.Session.GetInt32("AdminId") != null)
             {
                 return RedirectToAction("Index", "LabAdmin");
             }
@@ -47,19 +47,28 @@ namespace SlothFlyingWeb.Controllers
                 ViewBag.MessageError = "The Username or Password is Incorrect.";
                 return View(admin);
             }
-            SessionExtensions.SetInt32(HttpContext.Session, "AdminId", loggedInAdmin.Id);
+            HttpContext.Session.SetInt32("AdminId", loggedInAdmin.Id);
             return RedirectToAction("Index", "LabAdmin");
         }
 
         public IActionResult Logout()
         {
-            HttpContext.Session.Clear();
+            if (HttpContext.Session.GetInt32("Id") != null)
+            {
+                int id = (int)HttpContext.Session.GetInt32("Id");
+                HttpContext.Session.Clear();
+                HttpContext.Session.SetInt32("Id", id);
+            }
+            else
+            {
+                HttpContext.Session.Clear();
+            }
             return RedirectToAction("Login", "Admin");
         }
 
         public IActionResult Blacklist()
         {
-            if (SessionExtensions.GetInt32(HttpContext.Session, "AdminId") == null)
+            if (HttpContext.Session.GetInt32("AdminId") == null)
             {
                 return RedirectToAction("Login", "Admin");
             }
@@ -71,7 +80,7 @@ namespace SlothFlyingWeb.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Blacklist([FromForm] int id)
         {
-            if (SessionExtensions.GetInt32(HttpContext.Session, "AdminId") == null)
+            if (HttpContext.Session.GetInt32("AdminId") == null)
             {
                 return RedirectToAction("Login", "Admin");
             }

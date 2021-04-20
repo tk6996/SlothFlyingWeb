@@ -190,13 +190,3 @@ select:focus {
   padding: 20px;
   border-bottom: 1px solid var(--blackgray);
 }
-
-.message_error {
-  color: var(--red);
-  font-size: 14px;
-  position: absolute;
-  bottom: 0;
-  left: 50%;
-  transform: translateX(-50%);
-  margin: 0;
-}

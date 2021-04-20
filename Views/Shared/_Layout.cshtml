@@ -24,7 +24,7 @@
         string controller = ViewContext.RouteData.Values["Controller"].ToString();
         string action = ViewContext.RouteData.Values["Action"].ToString();
         // user navigation bar
-        if (("User" == controller || "Lab" == controller) && SessionExtensions.GetInt32(Context.Session, "Id") != null)
+        if (("User" == controller || "Lab" == controller) && Context.Session.GetInt32("Id") != null)
         {
             <header>
                 <partial name="~/Views/Shared/_NavigationUser.cshtml" />
@@ -32,7 +32,7 @@
         }
 
         if (("Search" == controller || "LabAdmin" == controller || "Blacklist" == action) &&
-        SessionExtensions.GetInt32(Context.Session, "AdminId") !=
+        Context.Session.GetInt32("AdminId") !=
         null)
         {
             <header>
@@ -56,6 +56,7 @@
                 <form method="POST" class="card">
                     @RenderSection("Modals", required : false)
                     <div class="button-field">
+                        <div class="validation-error"></div>
                         <button type="submit" class="submit" id="submit">OK</button>
                         <button type="button" class="cancel" onclick="confirmPopUpOff();" id="cancel">
                             Cancel

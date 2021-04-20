@@ -25,19 +25,20 @@ namespace SlothFlyingWeb.Controllers
 
         public IActionResult Index()
         {
-            if (SessionExtensions.GetInt32(HttpContext.Session, "AdminId") == null)
+            if (HttpContext.Session.GetInt32("AdminId") == null)
             {
                 return RedirectToAction("Login", "Admin");
             }
             return View();
         }
 
-
+        // API
         public async Task<IActionResult> UserList([FromQuery(Name = "search")] string search)
         {
-            if (SessionExtensions.GetInt32(HttpContext.Session, "AdminId") == null)
+            if (HttpContext.Session.GetInt32("AdminId") == null)
             {
-                return RedirectToAction("Login", "Admin");
+                // "Your Session has Expired"
+                return Unauthorized();
             }
             if (search == null)
                 return Json(new object[] { });
@@ -102,7 +103,7 @@ namespace SlothFlyingWeb.Controllers
 
         public async Task<IActionResult> UserProfile(int? id)
         {
-            if (SessionExtensions.GetInt32(HttpContext.Session, "AdminId") == null)
+            if (HttpContext.Session.GetInt32("AdminId") == null)
             {
                 return RedirectToAction("Login", "Admin");
             }
@@ -122,7 +123,7 @@ namespace SlothFlyingWeb.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> UserProfile([FromForm] int id, bool blacklist)
         {
-            if (SessionExtensions.GetInt32(HttpContext.Session, "AdminId") == null)
+            if (HttpContext.Session.GetInt32("AdminId") == null)
             {
                 return RedirectToAction("Login", "Admin");
             }
@@ -143,7 +144,7 @@ namespace SlothFlyingWeb.Controllers
 
         public async Task<IActionResult> UserBooklist(int? id)
         {
-            if (SessionExtensions.GetInt32(HttpContext.Session, "AdminId") == null)
+            if (HttpContext.Session.GetInt32("AdminId") == null)
             {
                 return RedirectToAction("Login", "Admin");
             }
@@ -202,7 +203,7 @@ namespace SlothFlyingWeb.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> UserBooklist([FromForm] int id)
         {
-            if (SessionExtensions.GetInt32(HttpContext.Session, "AdminId") == null)
+            if (HttpContext.Session.GetInt32("AdminId") == null)
             {
                 return RedirectToAction("Login", "Admin");
             }

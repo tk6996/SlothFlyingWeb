@@ -24,7 +24,7 @@ namespace SlothFlyingWeb.Controllers
 
         public IActionResult Index()
         {
-            if (SessionExtensions.GetInt32(HttpContext.Session, "AdminId") == null)
+            if (HttpContext.Session.GetInt32("AdminId") == null)
             {
                 return RedirectToAction("Login", "Admin");
             }
@@ -34,7 +34,7 @@ namespace SlothFlyingWeb.Controllers
 
         public async Task<IActionResult> ViewItem(int? id)
         {
-            if (SessionExtensions.GetInt32(HttpContext.Session, "AdminId") == null)
+            if (HttpContext.Session.GetInt32("AdminId") == null)
             {
                 return RedirectToAction("Login", "Admin");
             }
@@ -76,7 +76,7 @@ namespace SlothFlyingWeb.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> ViewItem([FromForm] int id)
         {
-            if (SessionExtensions.GetInt32(HttpContext.Session, "AdminId") == null)
+            if (HttpContext.Session.GetInt32("AdminId") == null)
             {
                 return RedirectToAction("Login", "Admin");
             }
@@ -106,19 +106,19 @@ namespace SlothFlyingWeb.Controllers
             return RedirectToAction("ViewItem", "LabAdmin");
         }
 
-        public IActionResult UserBookList([FromQuery(Name = "labId")] int? labId, [FromQuery(Name = "date")] long date, [FromQuery(Name = "timeslot")] int? timeslot)
+        public IActionResult UserBookList([FromQuery(Name = "labId")] int? labId, [FromQuery(Name = "date")] long? date, [FromQuery(Name = "timeslot")] int? timeslot)
         {
-            if (SessionExtensions.GetInt32(HttpContext.Session, "AdminId") == null)
+            if (HttpContext.Session.GetInt32("AdminId") == null)
             {
                 return RedirectToAction("Login", "Admin");
             }
 
-            if (labId == null || date == 0 || timeslot == null)
+            if (labId == null || date == null || timeslot == null)
             {
                 return RedirectToAction("Index");
             }
 
-            DateTime dateValue = BangkokDateTime.millisecondToDateTime(date);
+            DateTime dateValue = BangkokDateTime.millisecondToDateTime((long)date).Date;
 
             Func<BookList, User, BookList> joinUser = (bookList, user) =>
               {
@@ -165,7 +165,7 @@ namespace SlothFlyingWeb.Controllers
 
             return Json(bookLists.Select(bl => new
             {
-                booklistId = bl.Id,
+                BooklistId = bl.Id,
                 UserId = bl.UserId,
                 UserImageUrl = Url.Content(bl.UserImageUrl != "" ? bl.UserImageUrl : "~/assets/images/brand.jpg"),
                 Fullname = bl.FullName,
@@ -177,7 +177,7 @@ namespace SlothFlyingWeb.Controllers
 
         public async Task<IActionResult> EditItem(int? id)
         {
-            if (SessionExtensions.GetInt32(HttpContext.Session, "AdminId") == null)
+            if (HttpContext.Session.GetInt32("AdminId") == null)
             {
                 return RedirectToAction("Login", "Admin");
             }
@@ -199,7 +199,7 @@ namespace SlothFlyingWeb.Controllers
         [HttpPost]
         public async Task<IActionResult> EditItem(int? id, [FromForm] int? amount)
         {
-            if (SessionExtensions.GetInt32(HttpContext.Session, "AdminId") == null)
+            if (HttpContext.Session.GetInt32("AdminId") == null)
             {
                 return RedirectToAction("Login", "Admin");
             }

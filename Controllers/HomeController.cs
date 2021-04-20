@@ -21,9 +21,9 @@ namespace SlothFlyingWeb.Controllers
 
         public IActionResult Index()
         {
-            if (SessionExtensions.GetInt32(HttpContext.Session, "Id") != null)
+            if (HttpContext.Session.GetInt32("Id") != null)
             {
-                return RedirectToAction("Lab","User");
+                return RedirectToAction("Lab", "User");
             }
             return View("Index");
         }

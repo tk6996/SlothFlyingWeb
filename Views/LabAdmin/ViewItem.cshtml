@@ -44,13 +44,14 @@
                         }
                         else if (c == 0 && r + 8 < BangkokDateTime.now().Hour)
                         {
-                            <td class="late" id='@($"slot{r}_{c}")' onclick="showResult(event, @(Model.Id), '@date', @(r+1));">
+                            <td class="late" id='@($"slot{r}_{c}")' onclick="showResult(event);">
                                 @Model.BookSlotTable[r,c]</td>
                         }
                         else
                         {
                             <td class='@(Model.BookSlotTable[r,c] <= 0 ? "full" : "")' id='@($"slot{r}_{c}")'
-                    onclick="showResult(event, @(Model.Id), '@date', @(r+1));">@Model.BookSlotTable[r,c]</td>
+                    onclick="showResult(event);">
+                                @Model.BookSlotTable[r,c]</td>
                         }
                     }
                 </tr>
@@ -58,6 +59,9 @@
         </table>
     </div>
     <div class="booklist-table"></div>
+    <input type="text" id="startDateString" name="startDateString"
+        value="@(new DateTimeOffset(startDate).ToUnixTimeMilliseconds())" hidden />
+    <input type="number" id="LabId" name="LabId" value="@Model.Id" hidden />
 </div>
 
 @section Modals {

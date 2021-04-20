@@ -23,7 +23,7 @@ namespace SlothFlyingWeb.Controllers
 
         public IActionResult Index()
         {
-            if (SessionExtensions.GetInt32(HttpContext.Session, "Id") == null)
+            if (HttpContext.Session.GetInt32("Id") == null)
             {
                 return RedirectToAction("Login", "User");
             }
@@ -33,7 +33,7 @@ namespace SlothFlyingWeb.Controllers
 
         public async Task<IActionResult> Booking(int? id)
         {
-            if (SessionExtensions.GetInt32(HttpContext.Session, "Id") == null)
+            if (HttpContext.Session.GetInt32("Id") == null)
             {
                 return RedirectToAction("Login", "User");
             }
@@ -49,7 +49,7 @@ namespace SlothFlyingWeb.Controllers
                 return NotFound();
             }
 
-            int userId = (int)SessionExtensions.GetInt32(HttpContext.Session, "Id");
+            int userId = (int)HttpContext.Session.GetInt32("Id");
 
             DateTime startDate = BangkokDateTime.now().Date;
             DateTime endDate = startDate.AddDays(14).Date;
@@ -92,16 +92,18 @@ namespace SlothFlyingWeb.Controllers
             return View(lab);
         }
 
+        // API
         [HttpPost]
         [ValidateAntiForgeryToken]
         public IActionResult Booking(int id, [FromBody] IEnumerable<BookRange> bookRanges)
         {
-            if (SessionExtensions.GetInt32(HttpContext.Session, "Id") == null)
+            if (HttpContext.Session.GetInt32("Id") == null)
             {
-                return BadRequest("Your Session has Expired");
+                // "Your Session has Expired"
+                return Unauthorized();
             }
 
-            int userId = (int)SessionExtensions.GetInt32(HttpContext.Session, "Id");
+            int userId = (int)HttpContext.Session.GetInt32("Id");
             int labId = id;
             DateTime startDate = BangkokDateTime.now().Date;
             int[,] BookSlotTable = new int[14, 9];
@@ -125,7 +127,8 @@ namespace SlothFlyingWeb.Controllers
                 {
                     if (bookRange.Date == 0 || bookRange.From == 0 || bookRange.To == 0)
                     {
-                        return BadRequest("Please complete all field.");
+                        // Please complete all field.
+                        return BadRequest();
                     }
 
                     DateTime dateValue = BangkokDateTime.millisecondToDateTime(bookRange.Date);
@@ -134,37 +137,44 @@ namespace SlothFlyingWeb.Controllers
 
                     if (dateValue < startDate || dateValue >= startDate.AddDays(14))
                     {
-                        return BadRequest("The date is out of the boundary that you can book.");
+                        // The date is out of the boundary that you can book.
+                        return BadRequest();
                     }
 
                     if (dateValue.DayOfWeek == DayOfWeek.Saturday || dateValue.DayOfWeek == DayOfWeek.Sunday)
                     {
-                        return BadRequest("You cannot book an item on Weekend.");
+                        // You cannot book an item on Weekend.
+                        return BadRequest();
                     }
 
                     if (fromValue >= toValue)
                     {
-                        return BadRequest("You entered the wrong period.");
+                        // You entered the wrong period.
+                        return BadRequest();
                     }
 
                     if (dateValue == startDate && BangkokDateTime.now().Hour > fromValue)
                     {
-                        return BadRequest("The time is out of the boundary that you can book.");
+                        // The time is out of the boundary that you can book.
+                        return BadRequest();
                     }
 
                     for (int slot = fromValue; slot < toValue; slot++)
                     {
                         if (BookSlotTable[(dateValue - startDate).Days, slot - 8] == 1)
                         {
-                            return BadRequest("You cannot enter the period that overlaps.");
+                            // You cannot enter the period that overlaps.
+                            return BadRequest();
                         }
                         if (userBooked[(dateValue - startDate).Days, slot - 8] == 1)
                         {
-                            return BadRequest("You have already booked this period.");
+                            // You have already booked this period.
+                            return BadRequest();
                         }
                         if (_db.BookSlot.Where(bs => bs.LabId == labId).Where(bs => bs.Date == dateValue).Count(bs => bs.TimeSlot == slot - 7) >= _db.Lab.Find(labId).Amount)
                         {
-                            return BadRequest("You cannot enter the period that items full.");
+                            // You cannot enter the period that items full.
+                            return BadRequest();
                         }
                         BookSlotTable[(dateValue - startDate).Days, slot - 8] = 1;
                     }

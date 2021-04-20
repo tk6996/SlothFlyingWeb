@@ -30,7 +30,7 @@ namespace SlothFlyingWeb.Controllers
         }
         public IActionResult Register()
         {
-            if (SessionExtensions.GetInt32(HttpContext.Session, "Id") != null)
+            if (HttpContext.Session.GetInt32("Id") != null)
             {
                 return RedirectToAction("Index", "Lab");
             }
@@ -63,7 +63,7 @@ namespace SlothFlyingWeb.Controllers
 
         public IActionResult Login()
         {
-            if (SessionExtensions.GetInt32(HttpContext.Session, "Id") != null)
+            if (HttpContext.Session.GetInt32("Id") != null)
             {
                 return RedirectToAction("Index", "Lab");
             }
@@ -80,24 +80,33 @@ namespace SlothFlyingWeb.Controllers
                 ViewBag.MessageError = "The Email or Password is Incorrect.";
                 return View(user);
             }
-            SessionExtensions.SetInt32(HttpContext.Session, "Id", loggedInUser.Id);
+            HttpContext.Session.SetInt32("Id", loggedInUser.Id);
             return RedirectToAction("Index", "Lab");
         }
 
         public IActionResult Logout()
         {
-            HttpContext.Session.Clear();
+            if (HttpContext.Session.GetInt32("AdminId") != null)
+            {
+                int adminId = (int)HttpContext.Session.GetInt32("AdminId");
+                HttpContext.Session.Clear();
+                HttpContext.Session.SetInt32("AdminId", adminId);
+            }
+            else
+            {
+                HttpContext.Session.Clear();
+            }
             return RedirectToAction("Index", "Home");
         }
 
         public async Task<IActionResult> Profile()
         {
-            if (SessionExtensions.GetInt32(HttpContext.Session, "Id") == null)
+            if (HttpContext.Session.GetInt32("Id") == null)
             {
                 return RedirectToAction("Login");
             }
 
-            User loggedInUser = await _db.User.FindAsync(SessionExtensions.GetInt32(HttpContext.Session, "Id"));
+            User loggedInUser = await _db.User.FindAsync(HttpContext.Session.GetInt32("Id"));
             if (loggedInUser == null)
             {
                 throw new Exception("User not found");
@@ -107,12 +116,12 @@ namespace SlothFlyingWeb.Controllers
 
         public async Task<IActionResult> EditProfile()
         {
-            if (SessionExtensions.GetInt32(HttpContext.Session, "Id") == null)
+            if (HttpContext.Session.GetInt32("Id") == null)
             {
                 return RedirectToAction("Login");
             }
 
-            User loggedInUser = await _db.User.FindAsync(SessionExtensions.GetInt32(HttpContext.Session, "Id"));
+            User loggedInUser = await _db.User.FindAsync(HttpContext.Session.GetInt32("Id"));
             if (loggedInUser == null)
             {
                 throw new Exception("User not found");
@@ -124,7 +133,7 @@ namespace SlothFlyingWeb.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> EditProfile(User user)
         {
-            if (SessionExtensions.GetInt32(HttpContext.Session, "Id") == null)
+            if (HttpContext.Session.GetInt32("Id") == null)
             {
                 return RedirectToAction("Login");
             }
@@ -138,7 +147,7 @@ namespace SlothFlyingWeb.Controllers
                 return View(user);
             }
 
-            User loggedInUser = await _db.User.FindAsync(SessionExtensions.GetInt32(HttpContext.Session, "Id"));
+            User loggedInUser = await _db.User.FindAsync(HttpContext.Session.GetInt32("Id"));
             if (loggedInUser == null)
             {
                 throw new Exception("User not found");
@@ -150,7 +159,7 @@ namespace SlothFlyingWeb.Controllers
             if (user.ImageFile != null)
             {
                 string wwwRootPath = _hostEnvironment.WebRootPath;
-                string fileName = $"{BangkokDateTime.now().ToString("yyyyMMMddhhmmssffff")}_{user.ImageFile.FileName}";
+                string fileName = $"{BangkokDateTime.now().ToString("yyyyMMddhhmmssffff")}_{user.ImageFile.FileName}";
                 string path = $"{wwwRootPath}/images/users/{fileName}";
                 // _logger.LogInformation(path);
                 using (FileStream fs = new FileStream(path, FileMode.Create))
@@ -167,12 +176,12 @@ namespace SlothFlyingWeb.Controllers
 
         public async Task<IActionResult> Booklist()
         {
-            if (SessionExtensions.GetInt32(HttpContext.Session, "Id") == null)
+            if (HttpContext.Session.GetInt32("Id") == null)
             {
                 return RedirectToAction("Login");
             }
             DateTime dateNow = BangkokDateTime.now();
-            int userId = (int)SessionExtensions.GetInt32(HttpContext.Session, "Id");
+            int userId = (int)HttpContext.Session.GetInt32("Id");
 
             Func<BookList, Lab, BookList> joinItemName = (bookList, lab) =>
               {
@@ -218,11 +227,11 @@ namespace SlothFlyingWeb.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Booklist([FromForm] int id)
         {
-            if (SessionExtensions.GetInt32(HttpContext.Session, "Id") == null)
+            if (HttpContext.Session.GetInt32("Id") == null)
             {
                 return RedirectToAction("Login");
             }
-            int userId = (int)SessionExtensions.GetInt32(HttpContext.Session, "Id");
+            int userId = (int)HttpContext.Session.GetInt32("Id");
             BookList bookList = await _db.BookList.FindAsync(id);
 
             if (bookList == null)
