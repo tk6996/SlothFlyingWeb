@@ -8,7 +8,7 @@ namespace SlothFlyingWeb.Models
     {
         public enum StatusType
         {
-            USING,COMING,FINISHED,CANCEL,EJECT
+            USING, COMING, FINISHED, CANCEL, EJECT
         }
 
         [Key]
@@ -19,6 +19,13 @@ namespace SlothFlyingWeb.Models
 
         [ForeignKey("Lab")]
         public int LabId { get; set; }
+
+        [NotMapped]
+        public String FullName { get; set; }
+
+        [NotMapped]
+        [DataType(DataType.ImageUrl)]
+        public string UserImageUrl { get; set; } = "";
 
         [NotMapped]
         public string ItemName { get; set; }

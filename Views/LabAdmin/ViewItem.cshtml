@@ -13,48 +13,56 @@
         <h1>Laboratory @(Model.Id)</h1>
         <h2>แสดงจำนวนอุปกรณ์ที่ว่างในแต่ละวัน</h2>
     </div>
-    <table>
-        <tr>
-            <th>Time \ Date</th>
-            @{
-                DateTime startDate = ViewBag.startDate;
-                for (int c = 0; c < 14; c++)
-                {
-                    DateTime date = startDate.AddDays(c);
-                    <th
-                    class='@(date.DayOfWeek == DayOfWeek.Saturday || date.DayOfWeek == DayOfWeek.Sunday ? "lab-close" : "")'>
-                        @date.ToString("ddd")<br>
-                        @date.ToString("dd")<br>
-                        @date.ToString("MMM")
-                    </th>
-                }
-            }
-        </tr>
-        @for (int r = 0; r < 9; r++)
-        {
+    <div class="book-table">
+        <table>
             <tr>
-                <th>@($"{(r+8).ToString("D2")}.00 - {(r+9).ToString("D2")}.00")</th>
-                @for (int c = 0; c < 14; c++)
-                {
-                    DateTime date = startDate.AddDays(c);
-                    if (date.DayOfWeek == DayOfWeek.Saturday || date.DayOfWeek == DayOfWeek.Sunday)
+                <th>Time \ Date</th>
+                @{
+                    DateTime startDate = ViewBag.startDate;
+                    for (int c = 0; c < 14; c++)
                     {
-                        <td class="not-enable" id='@($"slot{r}_{c}")'></td>
-                    }
-                    else if (c == 0 && r + 8 < BangkokDateTime.now().Hour)
-                    {
-                        <td class="late" id='@($"slot{r}_{c}")' onclick="showResult(event);">@Model.BookSlotTable[r,c]</td>
-                    }
-                    else
-                    {
-                        <td class='@(Model.BookSlotTable[r,c] <= 0 ? "full" : "")' id='@($"slot{r}_{c}")'
-                onclick="showResult(event);">@Model.BookSlotTable[r,c]</td>
+                        DateTime date = startDate.AddDays(c);
+                        <th
+                        class='@(date.DayOfWeek == DayOfWeek.Saturday || date.DayOfWeek == DayOfWeek.Sunday ? "lab-close" : "")'>
+                            @date.ToString("ddd")<br>
+                            @date.ToString("dd")<br>
+                            @date.ToString("MMM")
+                        </th>
                     }
                 }
             </tr>
-        }
-    </table>
+            @for (int r = 0; r < 9; r++)
+            {
+                <tr>
+                    <th>@($"{(r+8).ToString("D2")}.00 - {(r+9).ToString("D2")}.00")</th>
+                    @for (int c = 0; c < 14; c++)
+                    {
+                        DateTime date = startDate.AddDays(c);
+                        if (date.DayOfWeek == DayOfWeek.Saturday || date.DayOfWeek == DayOfWeek.Sunday)
+                        {
+                            <td class="not-enable" id='@($"slot{r}_{c}")'></td>
+                        }
+                        else if (c == 0 && r + 8 < BangkokDateTime.now().Hour)
+                        {
+                            <td class="late" id='@($"slot{r}_{c}")' onclick="showResult(event, @(Model.Id), '@date', @(r+1));">
+                                @Model.BookSlotTable[r,c]</td>
+                        }
+                        else
+                        {
+                            <td class='@(Model.BookSlotTable[r,c] <= 0 ? "full" : "")' id='@($"slot{r}_{c}")'
+                    onclick="showResult(event, @(Model.Id), '@date', @(r+1));">@Model.BookSlotTable[r,c]</td>
+                        }
+                    }
+                </tr>
+            }
+        </table>
+    </div>
+    <div class="booklist-table"></div>
 </div>
+
+@section Modals {
+<p style="font-size: 24px;">Would you like to eject this booklist ?</p>
+}
 
 @section Scripts {
 <script src="~/js/view_item.js"></script>
