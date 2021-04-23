@@ -1,0 +1,10 @@
+@model SlothFlyingWeb.Models.Lab
+
+@{
+    string action = ViewContext.RouteData.Values["Action"].ToString();
+}
+
+<div class="swap-page">
+    <a asp-asp-controller="LabAdmin" asp-action="ViewItem" asp-route-Id="@Model.Id" class='@(action == "ViewItem" ? "active" : "non-active" )'>View</a>
+    <a asp-asp-controller="LabAdmin" asp-action="EditItem" asp-route-Id="@Model.Id" class='@(action == "EditItem" ? "active" : "non-active" )'>Edit</a>
+</div>

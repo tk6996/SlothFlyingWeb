@@ -45,24 +45,44 @@
 }
 
 .lab a {
-    background-color: var(--green);
     text-decoration: none;
     text-align: center;
     color: white;
     display: block;
-    padding: 3.5% 12%;
+    padding: 3.5% 0;
     border-radius: 10px;
-    box-shadow: 0 4px 4px 0 var(--greenshadow);
     width: fit-content;
     line-height: calc(7% + 18px); /*padding-top + padding-bottom + font-size*/
     margin-top: 6%;
     font-size: large;
+    width: 45%;
 }
 
 .lab a:hover {
     cursor: pointer;
 }
 
-.lab a:active {
+.lab .view-button {
+    background-color: var(--green);
+    box-shadow: 0 4px 4px 0 var(--greenshadow);
+}
+
+.lab .view-button:active {
     background-color: var(--darkgreen);
+}
+
+.lab .edit-button {
+    background-color: var(--blue);
+    box-shadow: 0 4px 4px 0 var(--blueshadow);
+}
+
+.lab .edit-button:active {
+    background-color: var(--darkblue);
+}
+
+.lab .button {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+    width: 90%;
 }

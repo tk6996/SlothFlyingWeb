@@ -16,9 +16,11 @@
 }
 else
 {
+  <h1 class="title">Booklist Details</h1>
   <table>
     <thead>
       <tr>
+        <th>#</th>
         <th>Lab</th>
         <th>Date</th>
         <th>From</th>
@@ -28,48 +30,53 @@ else
       </tr>
     </thead>
     <tbody>
-      @foreach (BookList bookList in Model)
-      {
-        <tr>
-          <td>Lab @bookList.LabId @bookList.ItemName</td>
-          <td>@bookList.Date.ToString("ddd dd MMM yyyy")</td>
-          <td>@(bookList.From.ToString("D2")).00</td>
-          <td>@(bookList.To.ToString("D2")).00</td>
-          <td class="status">
-            @switch (bookList.Status)
+      @{
+        int index = 0;
+        @foreach (BookList bookList in Model)
+        {
+          index++;
+          <tr>
+            <td>@index</td>
+            <td>Lab @bookList.LabId @bookList.ItemName</td>
+            <td>@bookList.Date.ToString("ddd dd MMM yyyy")</td>
+            <td>@(bookList.From.ToString("D2")).00</td>
+            <td>@(bookList.To.ToString("D2")).00</td>
+            <td class="status">
+              @switch (bookList.Status)
+              {
+                case BookList.StatusType.USING:
+                  <span class="using">Using</span>
+                  break;
+                case BookList.StatusType.COMING:
+                  <span class="coming">Coming</span>
+                  break;
+                case BookList.StatusType.FINISHED:
+                  <span>Finished</span>
+                  break;
+                case BookList.StatusType.CANCEL:
+                  <span>Cancel</span>
+                  break;
+                case BookList.StatusType.EJECT:
+                  <span>Eject</span>
+                  break;
+                default: break;
+              }
+            </td>
+            @if (bookList.Status == BookList.StatusType.USING || bookList.Status == BookList.StatusType.COMING)
             {
-              case BookList.StatusType.USING:
-                <span class="using">Using</span>
-                break;
-              case BookList.StatusType.COMING:
-                <span class="coming">Coming</span>
-                break;
-              case BookList.StatusType.FINISHED:
-                <span>Finished</span>
-                break;
-              case BookList.StatusType.CANCEL:
-                <span>Cancel</span>
-                break;
-              case BookList.StatusType.EJECT:
-                <span>Eject</span>
-                break;
-              default: break;
+              <td class="icon"><i class="fas fa-times-circle" onclick="confirmPopUpOnForm({id : '@bookList.Id'});"></i></td>
             }
-          </td>
-          @if (bookList.Status == BookList.StatusType.USING || bookList.Status == BookList.StatusType.COMING)
-          {
-            <td class="icon"><i class="fas fa-times-circle" onclick="confirmPopUpOnForm({id : '@bookList.Id'});"></i></td>
-          }
-          else
-          {
-            <td></td>
-          }
-        </tr>
+            else
+            {
+              <td></td>
+            }
+          </tr>
+        }
       }
     </tbody>
   </table>
 }
 
 @section Modals {
-  <p style="font-size: 24px;">Would you like to cancel this booklist ?</p>
+<p style="font-size: 24px;">Would you like to cancel this booklist ?</p>
 }

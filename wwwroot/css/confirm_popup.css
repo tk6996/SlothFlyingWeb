@@ -27,6 +27,7 @@
 }
 
 .button-field {
+  position: relative;
   display: flex;
   justify-content: center;
   column-gap: 45px;
@@ -63,4 +64,13 @@
 
 .button-field button.cancel:active {
   background-color: var(--darkred);
+}
+
+.validation-error {
+  color: var(--red);
+  font-size: 14px;
+  position: absolute;
+  top: -30px;
+  left: 50%;
+  transform: translateX(-50%);
 }

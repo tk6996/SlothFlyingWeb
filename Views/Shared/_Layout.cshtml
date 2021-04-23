@@ -20,15 +20,23 @@
 </head>
 
 <body>
-    <div class="filter"></div>
     @{
         string controller = ViewContext.RouteData.Values["Controller"].ToString();
         string action = ViewContext.RouteData.Values["Action"].ToString();
         // user navigation bar
-        if (("User" == controller || "Lab" == controller) && SessionExtensions.GetInt32(Context.Session, "Id") != null)
+        if (("User" == controller || "Lab" == controller) && Context.Session.GetInt32("Id") != null)
         {
             <header>
                 <partial name="~/Views/Shared/_NavigationUser.cshtml" />
+            </header>
+        }
+
+        if (("Search" == controller || "LabAdmin" == controller || "Blacklist" == action) &&
+        Context.Session.GetInt32("AdminId") !=
+        null)
+        {
+            <header>
+                <partial name="~/Views/Shared/_NavigationAdmin.cshtml" />
             </header>
         }
     }
@@ -39,11 +47,16 @@
     {
         // if will use Modal Confirm put pathname in case
         case "User/Booklist":
-        case "Lab/Booking": 
+        case "Lab/Booking":
+        case "Search/UserBooklist":
+        case "Search/UserProfile":
+        case "Admin/Blacklist":
+        case "LabAdmin/ViewItem":
             <div class="modal-off" id="modal">
                 <form method="POST" class="card">
                     @RenderSection("Modals", required : false)
                     <div class="button-field">
+                        <div class="validation-error"></div>
                         <button type="submit" class="submit" id="submit">OK</button>
                         <button type="button" class="cancel" onclick="confirmPopUpOff();" id="cancel">
                             Cancel
@@ -51,7 +64,8 @@
                     </div>
                     <div id="input-section" style="display: none;"></div>
                 </form>
-            </div> break;
+            </div>
+            break;
         default: break;
     }
     <script src="~/js/site.js"></script>

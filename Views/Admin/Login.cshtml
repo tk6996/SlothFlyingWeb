@@ -1,0 +1,32 @@
+@model SlothFlyingWeb.Models.Admin
+
+@section Styles {
+<link rel="stylesheet" href="~/css/login.css" />
+}
+
+@{
+    ViewData["Title"] = "Admin-Login";
+}
+
+
+<div class="body">
+    <form method="POST" asp-controller="Admin" asp-action="Login" class="container">
+        <div class="title">Administator Login</div>
+        <img src="~/assets/images/brand.jpg" alt="logo" class="logo" />
+        <div class="login-form">
+            <div class="input-field">
+                <label class="icon-input" asp-for="UserName"><i class="fas fa-user"></i></label>
+                <input type="text" placeholder="Username" id="Username" asp-for="UserName" />
+            </div>
+            <div class="input-field">
+                <label class="icon-input" asp-for="Password"><i class="fas fa-lock"></i></label>
+                <input type="password" placeholder="Password" id="Password" asp-for="Password" />
+            </div>
+        </div>
+        @if (ViewBag.MessageError != null)
+        {
+            <div class="message_error">@ViewBag.MessageError</div>
+        }
+        <input type="submit" value="Login" id="submit" />
+    </form>
+</div>

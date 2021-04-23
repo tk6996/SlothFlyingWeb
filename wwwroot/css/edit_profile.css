@@ -34,11 +34,10 @@
 .container .upload {
   background-color: var(--blue);
   margin: 20px 0 0;
-  color: white;
   width: 140px;
   height: 40px;
   border-radius: 15px;
-  color: white;
+  color: #ffffff;
   font-size: 16px;
   border: none;
   box-shadow: 0 4px 4px 0 var(--blueshadow);
@@ -119,4 +118,8 @@
 input:focus,
 button:focus {
   outline: none;
+}
+
+.information label {
+  font-weight: bold;
 }

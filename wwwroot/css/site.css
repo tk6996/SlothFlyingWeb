@@ -14,6 +14,12 @@
   src: url("../assets/fonts/Roboto/Roboto-Regular.ttf") format("truetype");
 }
 
+@font-face {
+  font-family: FontAwesome;
+  src: url("../assets/fonts/fontawesome/webfonts/fa-solid-900.ttf")
+    format("truetype");
+}
+
 * {
   box-sizing: border-box;
   margin: 0;
@@ -23,6 +29,7 @@
 html {
   font-family: "Roboto", sans-serif;
   font-size: 18px;
+  scroll-behavior: smooth;
 }
 
 body {
@@ -32,38 +39,36 @@ body {
   background-size: cover;
 }
 
+button {
+  font-family: inherit;
+}
+
 header {
   position: sticky;
+  z-index: 3;
   top: 0;
 }
 
 main {
   width: 100%;
   height: 100%;
+  position: relative;
 }
 
 :root {
-  --blue: #0275d8;
+  --blue: #236EEF;
   --blue80: rgba(2, 117, 217, 0.5);
   --blueshadow: rgba(0, 47, 80, 0.2);
   --darkblue: #002f50;
-  --red: #dd3631;
+  --red: #D12334;
   --darkred: #5c1714;
   --redshadow: rgba(102, 26, 26, 0.2);
   --whitegray: #efefef;
   --shadow: rgba(0, 0, 0, 0.25);
-  --blackgray: #333333;
-  --green: #28a745;
+  --blackgray:#282a35;
+  --green: #04AA6D;
   --darkgreen: #10471d;
   --greenshadow: rgba(40, 167, 69, 0.2);
   --white80: rgba(255, 255, 255, 0.5);
   --gray: #6c757d;
-}
-
-.filter {
-  background-color: var(--white80);
-  height: 100%;
-  width: 100%;
-  position: fixed;
-  z-index: -1;
 }

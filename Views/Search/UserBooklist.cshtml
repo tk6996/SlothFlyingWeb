@@ -1,0 +1,90 @@
+@model IEnumerable<BookList>
+
+@{
+    ViewData["Title"] = "User Booklist";
+}
+
+@section Styles {
+<link rel="stylesheet" href="~/css/user_booklist.css" />
+}
+
+<div class="head">
+    <a class="click" id="profile_nav" asp-controller="Search" asp-action="UserProfile" asp-route-Id="@ViewBag.UserId"><i
+            class="fas fa-id-card"></i><span>Profile</span></a>
+    <a class="active" id="booklist_nav" asp-controller="Search" asp-action="UserBooklist"
+        asp-route-Id="@ViewBag.UserId"><i class="fas fa-list-alt"></i><span>Booklist</span></a>
+</div>
+<div class="container">
+    @if (Model.Count() == 0)
+    {
+        <div class='header-empty'>
+            <h1>This user have the empty booklist.</h1>
+        </div>
+    }
+    else
+    {
+        <table>
+            <thead>
+                <tr>
+                    <th>#</th>
+                    <th>Lab</th>
+                    <th>Date</th>
+                    <th>From</th>
+                    <th>To</th>
+                    <th>Status</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                @{
+                    int index = 0;
+                    @foreach (BookList bookList in Model)
+                    {
+                        index++;
+                        <tr>
+                            <td>@index</td>
+                            <td>Lab @bookList.LabId @bookList.ItemName</td>
+                            <td>@bookList.Date.ToString("ddd dd MMM yyyy")</td>
+                            <td>@(bookList.From.ToString("D2")).00</td>
+                            <td>@(bookList.To.ToString("D2")).00</td>
+                            <td class="status">
+                                @switch (bookList.Status)
+                                {
+                                    case BookList.StatusType.USING:
+                                        <span class="using">Using</span>
+                                        break;
+                                    case BookList.StatusType.COMING:
+                                        <span class="coming">Coming</span>
+                                        break;
+                                    case BookList.StatusType.FINISHED:
+                                        <span>Finished</span>
+                                        break;
+                                    case BookList.StatusType.CANCEL:
+                                        <span>Cancel</span>
+                                        break;
+                                    case BookList.StatusType.EJECT:
+                                        <span>Eject</span>
+                                        break;
+                                    default: break;
+                                }
+                            </td>
+                            @if (bookList.Status == BookList.StatusType.USING || bookList.Status == BookList.StatusType.COMING)
+                            {
+                                <td class="icon"><i class="fas fa-times-circle"
+                            onclick="confirmPopUpOnForm({id : '@bookList.Id'});"></i></td>
+                            }
+                            else
+                            {
+                                <td></td>
+                            }
+                        </tr>
+                    }
+                }
+            </tbody>
+        </table>
+    }
+</div>
+
+@section Modals {
+<p style="font-size: 24px;">Would you like to eject this booklist ?</p>
+}

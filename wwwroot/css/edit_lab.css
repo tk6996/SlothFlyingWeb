@@ -1,0 +1,156 @@
+.form-container {
+  display: flex;
+  flex-direction: column;
+  row-gap: 20px;
+  align-items: center;
+}
+
+.container {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-template-rows: 3fr 1fr;
+  margin-top: 100px;
+  row-gap: 20px;
+  column-gap: 40px;
+}
+
+.container > * {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.container .lab_image {
+  height: 180px;
+  width: 270px;
+  background-color: #ffffff;
+  border: 2px solid var(--blackgray);
+  border-radius: 10px;
+  margin: 20px 50px;
+  object-fit: cover;
+}
+
+.container .information {
+  display: flex;
+  justify-content: flex-start;
+  flex-direction: column;
+  align-items: flex-start;
+  margin: 20px 50px;
+  row-gap: 15px;
+  font-size: 20px;
+  font-weight: bold;
+}
+
+.container .information .control-amount {
+  display: flex;
+  justify-content: center;
+  width: 100%;
+  margin-top: 20px;
+  column-gap: 15px;
+}
+
+.container .information .control-amount > * {
+  font-size: 32px;
+}
+
+.container .information .control-amount button {
+  border-radius: 50%;
+  width: 40px;
+  height: 40px;
+  outline: none;
+  border: 2px solid var(--blackgray);
+  color: var(--blackgray);
+  box-shadow: 0 2px 2px 0 var(--shadow);
+  background-color: var(--whitegray);
+}
+
+.container .information .control-amount button:active {
+  background-color: var(--gray);
+}
+
+.container .information .control-amount button:hover {
+  cursor: pointer;
+}
+
+.container .information .control-amount input {
+  width: 80px;
+  border: 2px solid var(--blackgray);
+  border-radius: 10px;
+  text-align: center;
+}
+
+.container .information .control-amount input:focus {
+  outline: none;
+}
+
+.container .information .control-amount input::-webkit-outer-spin-button,
+.container .information .control-amount input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+.container .upload {
+  background-color: var(--blue);
+  text-align: center;
+  color: #ffffff;
+  outline: none;
+  width: 180px;
+  height: 40px;
+  border-radius: 15px;
+  border: none;
+  box-shadow: 0 4px 4px 0 var(--blueshadow);
+  text-align: center;
+  line-height: 40px;
+  font-size: 18px;
+  display: block;
+  cursor: pointer;
+  user-select: none;
+}
+
+.container .upload:active {
+  background: var(--darkblue);
+}
+
+.container .reset {
+  width: 120px;
+  height: 40px;
+  background-color: #e57364;
+  border-radius: 15px;
+  font-size: 18px;
+  color: white;
+  border: none;
+  box-shadow: 0 4px 4px 0 var(--redshadow);
+}
+
+.container .reset:active {
+  background-color: var(--darkred);
+}
+
+.container .reset:hover {
+  cursor: pointer;
+}
+
+.form-container .warning {
+  color: var(--red);
+  font-size: 14px;
+  margin: 5px 0 0;
+}
+
+button[type="submit"] {
+  width: 250px;
+  height: 50px;
+  background-color: var(--green);
+  border-radius: 15px;
+  color: #ffffff;
+  font-size: 20px;
+  border: none;
+  box-shadow: 0 4px 4px 0 var(--greenshadow);
+}
+
+button[type="submit"]:active {
+  background-color: var(--darkgreen);
+}
+
+button[type="submit"]:hover {
+  cursor: pointer;
+}

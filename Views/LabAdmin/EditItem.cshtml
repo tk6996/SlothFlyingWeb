@@ -1,0 +1,46 @@
+@model SlothFlyingWeb.Models.Lab
+
+@{
+    ViewData["Title"] = "Edit Items";
+}
+
+@section Styles{
+<link rel="stylesheet" href="~/css/edit_lab.css">
+<link rel="stylesheet" href="~/css/swapbar.css">
+}
+
+<partial name="Swapbar.cshtml" model="Model" />
+<form method="POST" asp-controller="LabAdmin" asp-action="EditItem" enctype="multipart/form-data"
+    class="form-container">
+    <div class="container">
+        <div>
+            <img src="@Url.Content(Model.ImageUrl)" alt="lab_image" class="lab_image" id="lab_image">
+            <input type="hidden" asp-for="ImageUrl">
+        </div>
+        <div class="information">
+            <p>Laboratory @Model.Id : @Model.ItemName</p>
+            <input asp-for="Id" type="hidden">
+            <input asp-for="ItemName" type="hidden">
+            <p>จำนวนอุปกรณ์ปัจจุบัน : @Model.Amount</p>
+            <div class="control-amount">
+                <button type="button" onclick="decreseAmount();"><i class="fa fa-minus"></i></button>
+                <input type="number" asp-for="Amount" onchange="changeAmount();">
+                <button type="button"><i class="fa fa-plus" onclick="increseAmount();"></i></button>
+            </div>
+        </div>
+        <div>
+            <input asp-for="ImageFile" type="file" name="ImageFile" id="ImageFile" accept="image/*"
+                onchange="readUrl(this);" hidden />
+            <label asp-for="ImageFile" class="upload">Upload a Photo</label>
+        </div>
+        <div>
+            <button type="button" class="reset" onclick="resetAmount();">Reset</button>
+        </div>
+    </div>
+    <div asp-validation-summary="All" class="warning"></div>
+    <button type="submit">Save</button>
+</form>
+
+@section Scripts{
+<script src="~/js/edit_lab.js"></script>
+}
