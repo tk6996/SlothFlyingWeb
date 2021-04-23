@@ -6,9 +6,15 @@
   width: 100%;
 }
 
+.title {
+  text-align: center;
+  margin-top: 30px;
+  color: var(--blackgray);
+}
+
 table {
   display: grid;
-  margin: 50px 7.5%;
+  margin: 20px 7.5%;
   border-collapse: collapse;
   grid-template-columns: 0.5fr 1fr 1fr 0.5fr 0.5fr 0.5fr 0.5fr;
   background-color: #ffffff;
