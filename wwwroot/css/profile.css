@@ -67,3 +67,7 @@ input:focus {
 .normal {
   color: var(--blue);
 }
+
+.title {
+  font-weight: bold;
+}
