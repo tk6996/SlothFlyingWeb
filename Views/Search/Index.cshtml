@@ -1,0 +1,24 @@
+@model IEnumerable<User>;
+
+@{
+    ViewData["Title"] = "Search";
+}
+
+@section Styles {
+<link rel="stylesheet" href="~/css/search.css" />
+}
+
+<div class="container">
+    <div class="search-container">
+        <img src="~/assets/images/brand.jpg" alt="logo" class="search-img" />
+        <div class="search">
+            <input type="text" placeholder="&#xF002; Search Users" name="search" id="input"
+                oninput="SearchResult(event);" class="empty" required>
+        </div>
+        <div id="search-result"></div>
+    </div>
+</div>
+
+@section Scripts {
+<script src="~/js/search.js"></script>
+}

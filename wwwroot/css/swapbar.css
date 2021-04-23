@@ -1,0 +1,44 @@
+.swap-page {
+  position: absolute;
+  display: flex;
+  border-radius: 5px;
+  font-size: 18px;
+  top: 2%;
+  right: 7.5%;
+}
+
+.swap-page a {
+  color: var(--blackgray);
+  height: 40px;
+  width: 120px;
+  text-align: center;
+  line-height: 40px;
+  cursor: pointer;
+  user-select: none;
+  text-decoration: none;
+}
+
+.swap-page a:first-child {
+  border-style: solid;
+  border-color: var(--blackgray);
+  border-width: 2px;
+  border-radius: 5px 0 0 5px;
+}
+
+.swap-page a:last-child {
+  border-style: solid;
+  border-color: var(--blackgray);
+  border-width: 2px;
+  border-radius: 0 5px 5px 0;
+}
+
+.swap-page a.active,
+.swap-page a.non-active:active {
+  color: var(--green);
+  background-color: var(--blackgray);
+}
+
+.swap-page a.non-active:hover {
+  background-color: #33333380;
+  color: var(--green);
+}

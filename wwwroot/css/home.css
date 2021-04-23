@@ -65,7 +65,7 @@ a:active.start {
 
 .btn-member {
   color: var(--blackgray);
-  background-color: var(--white80);
+  background-color: #efefefef;
   position: absolute;
   font-size: 28px;
   text-align: center;
@@ -88,7 +88,7 @@ a:active.start {
 
 .btn-member:active {
   outline: none;
-  background-color: #99999920;
+  background-color: #99999999;
 }
 
 .modal {
@@ -121,7 +121,7 @@ a:active.start {
   border-radius: 30px;
   box-shadow: 0 4px 4px 0 rgba(0, 0, 0, 0.2);
   position: relative;
-  animation: movemodal .25s;
+  animation: movemodal 0.25s;
 }
 
 .modal-content > * {
@@ -163,8 +163,9 @@ table.member-table {
 
 @keyframes movemodal {
   from {
-    opacity: 0 ;
-  } to {
+    opacity: 0;
+  }
+  to {
     opacity: 1;
   }
 }

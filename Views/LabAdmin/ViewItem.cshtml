@@ -1,0 +1,73 @@
+@model SlothFlyingWeb.Models.Lab
+
+@{
+    ViewData["Title"] = "View Items";
+}
+
+@section Styles{
+<link rel="stylesheet" href="~/css/view_item.css">
+<link rel="stylesheet" href="~/css/swapbar.css">
+}
+
+<partial name="Swapbar.cshtml" model="Model" />
+<div class="container">
+    <div class="title">
+        <h1>Laboratory @Model.Id</h1>
+        <div class="detail-header">
+            <p>แสดงจำนวนอุปกรณ์ที่ถูกจอง</p>
+            <p>จำนวนอุปกรณ์ : @Model.Amount</p>
+        </div>
+    </div>
+    <div class="book-table">
+        <table>
+            <tr>
+                <th>Time \ Date</th>
+                @{
+                    DateTime startDate = ViewBag.startDate;
+                    for (int c = 0; c < 14; c++)
+                    {
+                        DateTime date = startDate.AddDays(c);
+                        <th
+                        class='@(date.DayOfWeek == DayOfWeek.Saturday || date.DayOfWeek == DayOfWeek.Sunday ? "lab-close" : "")'>
+                            @date.ToString("ddd")<br>
+                            @date.ToString("dd")<br>
+                            @date.ToString("MMM")
+                        </th>
+                    }
+                }
+            </tr>
+            @for (int r = 0; r < 9; r++)
+            {
+                <tr>
+                    <th>@($"{(r+8).ToString("D2")}.00 - {(r+9).ToString("D2")}.00")</th>
+                    @for (int c = 0; c < 14; c++)
+                    {
+                        DateTime date = startDate.AddDays(c);
+                        if (date.DayOfWeek == DayOfWeek.Saturday || date.DayOfWeek == DayOfWeek.Sunday)
+                        {
+                            <td class="not-enable" id='@($"slot{r}_{c}")'></td>
+                        }
+                        else
+                        {
+                            <td class='@(Model.BookSlotTable[r,c] >= @Model.Amount ? "full" : "")' id='@($"slot{r}_{c}")'
+                    onclick="showResult(event);">
+                                @Model.BookSlotTable[r,c]</td>
+                        }
+                    }
+                </tr>
+            }
+        </table>
+    </div>
+    <div class="booklist-table"></div>
+    <input type="text" id="startDateString" name="startDateString"
+        value="@(new DateTimeOffset(startDate).ToUnixTimeMilliseconds())" hidden />
+    <input type="number" id="LabId" name="LabId" value="@Model.Id" hidden />
+</div>
+
+@section Modals {
+<p style="font-size: 24px;">Would you like to eject this booklist ?</p>
+}
+
+@section Scripts {
+<script src="~/js/view_item.js"></script>
+}

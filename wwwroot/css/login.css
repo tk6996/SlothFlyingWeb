@@ -64,7 +64,8 @@
 }
 
 .container input[type="email"],
-.container input[type="password"] {
+.container input[type="password"],
+.container input[type="text"] {
   height: 45px;
   width: 250px;
   font-size: 18px;

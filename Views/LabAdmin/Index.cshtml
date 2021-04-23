@@ -18,7 +18,10 @@
             <div>
                 <div>Laboratory @lab.Id</div>
                 <div>@lab.ItemName</div>
-                <a class="view-button" asp-controller="Lab" asp-action="Booking" asp-route-Id="@lab.Id">View</a>
+                <div class="button">
+                    <a class="view-button" asp-controller="LabAdmin" asp-action="ViewItem" asp-route-Id="@lab.Id">View</a>
+                    <a class="edit-button" asp-controller="LabAdmin" asp-action="EditItem" asp-route-Id="@lab.Id">Edit</a>
+                </div>
             </div>
         </div>
     }

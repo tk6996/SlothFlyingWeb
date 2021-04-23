@@ -248,13 +248,13 @@ async function validation() {
   }
   updateBodyBookList(bookRanges);
   let response = await confirmPopUpOnJson(bookRanges);
-  if (response.success) window.location.href = "/User/Booklist";
-  else if (response.error) console.error(response.error);
+  if (response == "Ok") window.location.href = "/User/Booklist";
 }
 
 function updateBodyBookList(bookRanges) {
   const body = document.querySelector("#body-list");
   body.innerHTML = "";
+  let index = 0;
   for (const bookRange of bookRanges) {
     const row = document.createElement("tr");
     const createTr = (value) => {
@@ -292,6 +292,7 @@ function updateBodyBookList(bookRanges) {
       ].slice(0, 3)} ${date.getFullYear()}`;
     };
     const timeTransform = (time) => (time < 10 ? `0${time}.00` : `${time}.00`);
+    row.appendChild(createTr(++index));
     row.appendChild(createTr(dateTransform(bookRange.date)));
     row.appendChild(createTr(timeTransform(bookRange.from)));
     row.appendChild(createTr(timeTransform(bookRange.to)));

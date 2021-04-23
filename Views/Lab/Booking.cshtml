@@ -56,58 +56,61 @@
             </tr>
         }
     </table>
-    <div class="book" id="book">
-        <div class="book-inline" id="book-inline">
-            <div>
-                <label for="date">Date</label>
-                <input type="date" id="date" name="date" min='@(startDate.ToString("yyyy-MM-dd"))'
+    @if (!ViewBag.userBlacklist) 
+    {
+        <div class="book" id="book">
+            <div class="book-inline" id="book-inline">
+                <div>
+                    <label for="date">Date</label>
+                    <input type="date" id="date" name="date" min='@(startDate.ToString("yyyy-MM-dd"))'
                     max='@(startDate.AddDays(13).ToString("yyyy-MM-dd"))'>
-            </div>
-            <div class="select-time">
-                <label for="from">From</label>
-                <select name="from" id="from">
-                    <option value="0"></option>
-                    @for (int i = 1; i < 10; i++)
-                    {
-                        <option value="@i">@((i+7).ToString("D2")+".00")</option>
-                    }
-                </select>
-            </div>
-            <div class="select-time">
-                <label for="to">To</label>
-                <select name="to" id="to">
-                    <option value="0"></option>
-                    @for (int i = 1; i < 10; i++)
-                    {
-                        <option value="@i">@((i+8).ToString("D2")+".00")</option>
-                    }
-                </select>
-            </div>
-            <div>
-                <i class="fas fa-plus add" onclick="duplicateBookInline();"></i>
+                </div>
+                <div class="select-time">
+                    <label for="from">From</label>
+                    <select name="from" id="from">
+                        <option value="0"></option>
+                        @for (int i = 1; i < 10; i++)
+                        {
+                            <option value="@i">@((i+7).ToString("D2")+".00")</option>
+                        }
+                    </select>
+                </div>
+                <div class="select-time">
+                    <label for="to">To</label>
+                    <select name="to" id="to">
+                        <option value="0"></option>
+                        @for (int i = 1; i < 10; i++)
+                        {
+                            <option value="@i">@((i+8).ToString("D2")+".00")</option>
+                        }
+                    </select>
+                </div>
+                <div>
+                    <i class="fas fa-plus add" onclick="duplicateBookInline();"></i>
+                </div>
             </div>
         </div>
-    </div>
-    <input type="text" id="startDateString" name="startDateString" value="@(new DateTimeOffset(startDate).ToUnixTimeMilliseconds())" hidden />
-    <input type="number" id="LabId" name="LabId" value="@Model.Id" hidden />
-    <button onclick="validation();">Book</button>
+        <input type="text" id="startDateString" name="startDateString"
+        value="@(new DateTimeOffset(startDate).ToUnixTimeMilliseconds())" hidden />
+        <input type="number" id="LabId" name="LabId" value="@Model.Id" hidden />
+        <button onclick="validation();">Book</button>
+    }
 </div>
 
 @section Modals {
     <div id="book-list-range">
         <h2>Lab @Model.Id @Model.ItemName Detail</h2>
-        <div>
-            <table>
-                <thead id="header-list">
-                    <tr>
-                        <th>Date</th>
-                        <th>From</th>
-                        <th>To</th>
-                    </tr>
-                </thead>
-                <tbody id="body-list"></tbody>
-            </table>
-        </div>
+        <table>
+            <thead id="header-list">
+                <tr>
+                    <th>#</th>
+                    <th>Date</th>
+                    <th>From</th>
+                    <th>To</th>
+                </tr>
+            </thead>
+            <tbody id="body-list"></tbody>
+        </table>
     </div>
 }
 
