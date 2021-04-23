@@ -119,3 +119,7 @@ input:focus,
 button:focus {
   outline: none;
 }
+
+.information label {
+  font-weight: bold;
+}

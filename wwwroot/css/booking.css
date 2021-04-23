@@ -31,24 +31,24 @@ th {
 }
 
 td {
-  background-color: #5cb85c;
+  background-color: #49B84E;
 }
 
 .not-enable {
-  background-color: var(--whitegray);
+  background-color: #E8EBF4;
 }
 
 .late {
-  background-color: var(--gray);
+  background-color: #6D7185;
 }
 
 .booked {
-  background-color: #d8ce41;
+  background-color: #D2D03A;
 }
 
 .full,
 .lab-close {
-  background-color: #b85c5c;
+  background-color: #BA4157;
 }
 
 .title {

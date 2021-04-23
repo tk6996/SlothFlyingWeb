@@ -48,11 +48,11 @@
 }
   
 .book-table td {
-    background-color: #5cb85c;
+    background-color: #49B84E;
 }
   
 .book-table .not-enable {
-    background-color: var(--whitegray);
+    background-color: #E8EBF4;
 }
   
 .book-table .late {
@@ -61,7 +61,7 @@
   
 .book-table .full,
 .book-table .lab-close {
-    background-color: #b85c5c;
+    background-color: #BA4157;
 }
   
 .title {
