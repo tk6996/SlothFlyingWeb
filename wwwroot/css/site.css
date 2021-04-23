@@ -45,6 +45,7 @@ button {
 
 header {
   position: sticky;
+  z-index: 3;
   top: 0;
 }
 
@@ -55,17 +56,17 @@ main {
 }
 
 :root {
-  --blue: #0275d8;
+  --blue: #236EEF;
   --blue80: rgba(2, 117, 217, 0.5);
   --blueshadow: rgba(0, 47, 80, 0.2);
   --darkblue: #002f50;
-  --red: #dd3631;
+  --red: #D12334;
   --darkred: #5c1714;
   --redshadow: rgba(102, 26, 26, 0.2);
   --whitegray: #efefef;
   --shadow: rgba(0, 0, 0, 0.25);
-  --blackgray: #333333;
-  --green: #28a745;
+  --blackgray:#282a35;
+  --green: #04AA6D;
   --darkgreen: #10471d;
   --greenshadow: rgba(40, 167, 69, 0.2);
   --white80: rgba(255, 255, 255, 0.5);

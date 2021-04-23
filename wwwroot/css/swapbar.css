@@ -3,7 +3,7 @@
   display: flex;
   border-radius: 5px;
   font-size: 18px;
-  top: 2%;
+  top: 15px;
   right: 7.5%;
 }
 
@@ -40,5 +40,5 @@
 
 .swap-page a.non-active:hover {
   background-color: #33333380;
-  color: var(--green);
+  color: #ffffff;
 }

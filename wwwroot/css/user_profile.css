@@ -40,11 +40,12 @@
 .container {
     display: flex;
     flex-direction: column;
-    justify-content: center;
+    justify-content: flex-start;
     align-items: center;
-    margin: 0 7.5%;
+    margin: 0 7.5% 60px 7.5%;
+    padding: 20px 0;
     background-color: #ffffff;
-    height: calc(100vh - 230px);
+    min-height: calc(100vh - 230px);
 }
   
 .container * {
@@ -110,4 +111,8 @@ input:focus,button:focus {
 
 #unblacklist:active {
     background-color: var(--darkblue);
+}
+
+.title {
+    font-weight: bold;
 }
