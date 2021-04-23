@@ -23,7 +23,7 @@ namespace SlothFlyingWeb.Controllers
         {
             if (HttpContext.Session.GetInt32("Id") != null)
             {
-                return RedirectToAction("Lab");
+                return RedirectToAction("Lab","Index");
             }
             return View("Index");
         }
