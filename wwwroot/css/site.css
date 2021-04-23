@@ -16,7 +16,8 @@
 
 @font-face {
   font-family: FontAwesome;
-  src: url("../assets/fonts/fontawesome/webfonts/fa-solid-900.ttf") format("truetype");
+  src: url("../assets/fonts/fontawesome/webfonts/fa-solid-900.ttf")
+    format("truetype");
 }
 
 * {
@@ -38,6 +39,10 @@ body {
   background-size: cover;
 }
 
+button {
+  font-family: inherit;
+}
+
 header {
   position: sticky;
   top: 0;
@@ -46,6 +51,7 @@ header {
 main {
   width: 100%;
   height: 100%;
+  position: relative;
 }
 
 :root {

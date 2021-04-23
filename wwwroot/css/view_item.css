@@ -5,6 +5,15 @@
     padding: 2% 7.5% 2% 7.5%;
 }
 
+.detail-header {
+    font-weight: bold;
+    font-size: 20px;
+    display: flex;
+    justify-content: space-between;
+    max-width: 1114px;
+    margin: auto;
+}
+
 .book-table {
     width: 100%;
     display: flex;

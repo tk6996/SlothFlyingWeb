@@ -1,8 +1,9 @@
 using System.Threading.Tasks;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
+using System.IO;
 using System;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -16,10 +17,12 @@ namespace SlothFlyingWeb.Controllers
     {
         private readonly ILogger<LabAdminController> _logger;
         private readonly ApplicationDbContext _db;
-        public LabAdminController(ILogger<LabAdminController> logger, ApplicationDbContext db)
+        private readonly IWebHostEnvironment _hostEnvironment;
+        public LabAdminController(ILogger<LabAdminController> logger, ApplicationDbContext db, IWebHostEnvironment hostEnvironment)
         {
             _logger = logger;
             _db = db;
+            _hostEnvironment = hostEnvironment;
         }
 
         public IActionResult Index()
@@ -64,7 +67,7 @@ namespace SlothFlyingWeb.Controllers
             {
                 for (int c = 0; c < 14; c++)
                 {
-                    lab.BookSlotTable[r, c] = lab.Amount - bookSlots.Where(bookSlot => bookSlot.Date == startDate.AddDays(c).Date)
+                    lab.BookSlotTable[r, c] = bookSlots.Where(bookSlot => bookSlot.Date == startDate.AddDays(c).Date)
                                                                     .Count(bookSlot => bookSlot.TimeSlot == r + 1);
                 }
             }
@@ -197,34 +200,41 @@ namespace SlothFlyingWeb.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> EditItem(int? id, [FromForm] int? amount)
+        public async Task<IActionResult> EditItem(Lab lab)
         {
             if (HttpContext.Session.GetInt32("AdminId") == null)
             {
                 return RedirectToAction("Login", "Admin");
             }
 
-            if (id == null)
-            {
-                return BadRequest("This link must have id.");
-            }
-
-            if (amount == null || amount < 0)
-            {
-                return BadRequest("Amount have to zero or more");
-            }
-
-            Lab lab = await _db.Lab.FindAsync(id);
-            if (lab == null)
+            Lab latestlab = await _db.Lab.FindAsync(lab.Id);
+            if (latestlab == null)
             {
                 return BadRequest("The id not found.");
             }
 
-            lab.Amount = (int)amount;
+            if (!ModelState.IsValid)
+            {
+                return View(latestlab);
+            }
 
-            _db.Lab.Update(lab);
+            latestlab.Amount = lab.Amount;
+
+            if(lab.ImageFile != null)
+            {
+                string wwwRootPath = _hostEnvironment.WebRootPath;
+                string fileName = $"{BangkokDateTime.now().ToString("yyyyMMddhhmmssffff")}_{lab.ImageFile.FileName}";
+                string path = $"{wwwRootPath}/images/labs/{fileName}";
+                using (FileStream fs = new FileStream(path, FileMode.Create))
+                {
+                    await lab.ImageFile.CopyToAsync(fs);
+                }
+                latestlab.ImageUrl = $"~/images/labs/{fileName}";
+            }
+
+            _db.Lab.Update(latestlab);
             await _db.SaveChangesAsync();
-            return RedirectToAction("EditItem", "LabAdmin", id);
+            return RedirectToAction("EditItem", "LabAdmin", lab.Id);
         }
     }
 }
