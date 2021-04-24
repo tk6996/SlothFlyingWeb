@@ -52,11 +52,10 @@ function createBooklistTable(booklist, date, timeslot) {
   let result = document.createElement("div");
   result.className = "book-list-range";
   let title = document.createElement("h2");
-  title.innerHTML = `${day[date.getDay()]} ${date.getDate()} ${
-    month[date.getMonth()]
-  } @ ${String(timeslot + 7).padStart(2, "0")}.00 - ${String(
-    timeslot + 8
-  ).padStart(2, "0")}.00`;
+  title.innerHTML = `${day[date.getDay()]} ${date.getDate()} ${month[date.getMonth()]
+    } @ ${String(timeslot + 7).padStart(2, "0")}.00 - ${String(
+      timeslot + 8
+    ).padStart(2, "0")}.00`;
   result.appendChild(title);
 
   if (booklist.length) {
@@ -108,19 +107,27 @@ function createBooklistTable(booklist, date, timeslot) {
       } else if (status[booklist[i].status] == "Coming") {
         span.className = "coming";
       }
+      //icon
+      tdIcon = document.createElement("td");
+      //view user icon
+      v_icon = document.createElement("i");
+      v_icon.className = "fas fa-eye view-button";
+      v_icon.onclick = function () {
+        window.location.pathname = `Search/UserProfile/${booklist[i].userId}`;
+      };
+      trBody.appendChild(tdIcon).appendChild(v_icon);
       //cancel icon
-      icon = document.createElement("i");
+      c_icon = document.createElement("i");
       if (
         status[booklist[i].status] == "Using" ||
         status[booklist[i].status] == "Coming"
       ) {
-        icon.className = "fas fa-times-circle";
-        icon.onclick = function () {
+        c_icon.className = "fas fa-times-circle cancel-button";
+        c_icon.onclick = function () {
           confirmPopUpOnForm({ id: booklist[i].booklistId });
-          // console.log(booklist[i].booklistId);
         };
       }
-      trBody.appendChild(document.createElement("td")).appendChild(icon);
+      trBody.appendChild(tdIcon).appendChild(c_icon);
 
       tbody.appendChild(trBody);
     }

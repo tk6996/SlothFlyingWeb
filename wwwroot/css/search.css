@@ -15,10 +15,12 @@
   display: flex;
   flex-direction: row;
   margin: 50px 0;
+  border: solid 1px var(--green);
+  border-radius: 50px;
 }
 
 .search input[type="text"] {
-  padding: 10px;
+  padding: 10px 20px;
   font-size: 20px;
   border: none;
   width: 400px;
@@ -27,6 +29,7 @@
 
 .search input[type="text"].empty {
   font-family: FontAwesome, "Roboto", sans-serif;
+  border-radius: 50px;
 }
 
 .search-img {
@@ -36,7 +39,8 @@
 
 .user-container {
   display: grid;
-  grid-template-columns: 0.5fr 1fr 1fr 1fr;
+  grid-template-columns: auto auto auto auto;
+  justify-content: flex-start;
   grid-gap: 2vh;
   padding: 15px 30px;
   align-items: center;
