@@ -7,7 +7,7 @@
   
 .head > * {
     width: 12.5%;
-    color: #333333;
+    color: var(--blackgray);
     display: flex;
     background-color: #ffffff;
     justify-content: center;
@@ -29,7 +29,7 @@
 }
 
 .head > .click{
-    background-color: #e5e5e5;
+    background-color: var(--whitegray);
     cursor: pointer;
 }
 

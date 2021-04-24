@@ -36,7 +36,8 @@
 
 .user-container {
   display: grid;
-  grid-template-columns: 0.5fr 1fr 1fr 1fr;
+  grid-template-columns: auto auto auto auto;
+  justify-content: flex-start;
   grid-gap: 2vh;
   padding: 15px 30px;
   align-items: center;
