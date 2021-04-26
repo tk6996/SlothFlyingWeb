@@ -1,4 +1,10 @@
-﻿function makeRequest(method, url, body, header) {
+﻿/**
+@param {string} method
+@param {string} url
+@param {object} body
+@param {object} header
+ */
+function makeRequest(method, url, body, header) {
   return new Promise((resolve, reject) => {
     let xhr = new XMLHttpRequest();
     xhr.open(method, url);
@@ -67,6 +73,17 @@ function confirmPopUpOnJson(object) {
     const cancel = document.querySelector("#cancel");
     const clickedSubmitEventHandler = async (event) => {
       event.preventDefault();
+
+      const planeLoader = document.createElement("div");
+      const loader = document.createElement("div");
+      planeLoader.className = "loader-plane";
+      loader.className = "loader";
+
+      document
+        .querySelector("body")
+        .appendChild(planeLoader)
+        .appendChild(loader);
+
       submit.disabled = true;
       cancel.disabled = true;
 
@@ -92,6 +109,7 @@ function confirmPopUpOnJson(object) {
       }
       submit.disabled = false;
       cancel.disabled = false;
+      document.querySelector("body").removeChild(planeLoader);
       resolve(response);
     };
 

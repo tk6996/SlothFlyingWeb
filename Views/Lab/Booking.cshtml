@@ -21,7 +21,8 @@
                 for (int c = 0; c < 14; c++)
                 {
                     DateTime date = startDate.AddDays(c);
-                    <th class='@(date.DayOfWeek == DayOfWeek.Saturday || date.DayOfWeek == DayOfWeek.Sunday ? "lab-close" : "")'>
+                    <th
+                    class='@(date.DayOfWeek == DayOfWeek.Saturday || date.DayOfWeek == DayOfWeek.Sunday ? "lab-close" : "")'>
                         @date.ToString("ddd")<br>
                         @date.ToString("dd")<br>
                         @date.ToString("MMM")
@@ -40,23 +41,24 @@
                     {
                         <td class="not-enable" id='@($"slot{r}_{c}")'></td>
                     }
-                    else if (ViewBag.userBooked[r,c] == 1)
+                    else if (ViewBag.userBooked[r, c] == 1)
                     {
-                        <td class="booked" id='@($"slot{r}_{c}")' >@Model.BookSlotTable[r,c]</td>
+                        <td class="booked" id='@($"slot{r}_{c}")'>@(Model.Amount - Model.BookSlotTable[r,c])</td>
                     }
-                    else if (c == 0 && r+8 < BangkokDateTime.now().Hour)
+                    else if (c == 0 && r + 8 < BangkokDateTime.now().Hour)
                     {
-                        <td class="late" id='@($"slot{r}_{c}")' >@Model.BookSlotTable[r,c]</td>
+                        <td class="late" id='@($"slot{r}_{c}")'>@(Model.Amount - Model.BookSlotTable[r,c])</td>
                     }
-                    else 
+                    else
                     {
-                        <td class='@(Model.BookSlotTable[r,c] <= 0 ? "full" : "")' id='@($"slot{r}_{c}")' >@Model.BookSlotTable[r,c]</td>
+                        <td class='@(Model.BookSlotTable[r,c] >= Model.Amount ? "full" : "")' id='@($"slot{r}_{c}")'>@(Model.Amount
+                - Model.BookSlotTable[r,c])</td>
                     }
                 }
             </tr>
         }
     </table>
-    @if (!ViewBag.userBlacklist) 
+    @if (!ViewBag.userBlacklist)
     {
         <div class="book" id="book">
             <div class="book-inline" id="book-inline">
@@ -98,20 +100,20 @@
 </div>
 
 @section Modals {
-    <div id="book-list-range">
-        <h2>Lab @Model.Id @Model.ItemName Detail</h2>
-        <table>
-            <thead id="header-list">
-                <tr>
-                    <th>#</th>
-                    <th>Date</th>
-                    <th>From</th>
-                    <th>To</th>
-                </tr>
-            </thead>
-            <tbody id="body-list"></tbody>
-        </table>
-    </div>
+<div id="book-list-range">
+    <h2>Lab @Model.Id @Model.ItemName Detail</h2>
+    <table>
+        <thead id="header-list">
+            <tr>
+                <th>#</th>
+                <th>Date</th>
+                <th>From</th>
+                <th>To</th>
+            </tr>
+        </thead>
+        <tbody id="body-list"></tbody>
+    </table>
+</div>
 }
 
 @section Scripts {

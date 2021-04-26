@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using System.Text.RegularExpressions;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Caching.Memory;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
@@ -21,12 +22,14 @@ namespace SlothFlyingWeb.Controllers
         private readonly ILogger<UserController> _logger;
         private readonly ApplicationDbContext _db;
         private readonly IWebHostEnvironment _hostEnvironment;
+        private readonly IMemoryCache _cache;
 
-        public UserController(ILogger<UserController> logger, ApplicationDbContext db, IWebHostEnvironment hostEnvironment)
+        public UserController(ILogger<UserController> logger, ApplicationDbContext db, IWebHostEnvironment hostEnvironment, IMemoryCache cache)
         {
             _logger = logger;
             _db = db;
             _hostEnvironment = hostEnvironment;
+            _cache = cache;
         }
         public IActionResult Register()
         {
@@ -189,38 +192,66 @@ namespace SlothFlyingWeb.Controllers
                   return bookList;
               };
 
-            IEnumerable<BookList> bookLists = _db.BookList.Where(bookList => bookList.UserId == userId)
-                                                          .Join(_db.Lab,
-                                                                bookList => bookList.LabId,
-                                                                lab => lab.Id,
-                                                                joinItemName);
+            Func<int, object, bool> checkHourCurrent = (cacheHour, key) =>
+             {
+                 if (8 <= dateNow.Hour && dateNow.Hour <= 17 && cacheHour < dateNow.Hour)
+                 {
+                     _cache.Remove(key);
+                     return true;
+                 }
+                 return false;
+             };
 
-            foreach (BookList bookList in bookLists)
+            List<BookList> bookLists;
+            int cacheHour;
+
+            do
             {
-                if (bookList.Status == BookList.StatusType.COMING)
-                {
-                    if (bookList.Date.AddHours(bookList.From) <= dateNow && dateNow < bookList.Date.AddHours(bookList.To))
-                    {
-                        bookList.Status = BookList.StatusType.USING;
-                        _db.BookList.Update(bookList);
-                    }
-                    else if (dateNow >= bookList.Date.AddHours(bookList.To))
-                    {
-                        bookList.Status = BookList.StatusType.FINISHED;
-                        _db.BookList.Update(bookList);
-                    }
-                }
-                if (bookList.Status == BookList.StatusType.USING)
-                {
-                    if (dateNow >= bookList.Date.AddHours(bookList.To))
-                    {
-                        bookList.Status = BookList.StatusType.FINISHED;
-                        _db.BookList.Update(bookList);
-                    }
-                }
-            }
-            await _db.SaveChangesAsync();
-            return View(bookLists.OrderBy(bl => bl.Status).ThenByDescending(bl => bl.Date).ThenBy(bl => bl.From).ThenBy(bl => bl.To).ThenBy(bl => bl.LabId));
+                (bookLists, cacheHour) = await _cache.GetOrCreateAsync<(List<BookList>, int)>($"UserBooklist_{userId}", entry =>
+                  {
+                      IEnumerable<BookList> bookLists = _db.BookList.Where(bookList => bookList.UserId == userId)
+                                                                .Join(_db.Lab,
+                                                                      bookList => bookList.LabId,
+                                                                      lab => lab.Id,
+                                                                      joinItemName);
+
+                      foreach (BookList bookList in bookLists)
+                      {
+                          if (bookList.Status == BookList.StatusType.COMING)
+                          {
+                              if (bookList.Date.AddHours(bookList.From) <= dateNow && dateNow < bookList.Date.AddHours(bookList.To))
+                              {
+                                  bookList.Status = BookList.StatusType.USING;
+                                  _db.BookList.Update(bookList);
+                              }
+                              else if (dateNow >= bookList.Date.AddHours(bookList.To))
+                              {
+                                  bookList.Status = BookList.StatusType.FINISHED;
+                                  _db.BookList.Update(bookList);
+                              }
+                          }
+                          if (bookList.Status == BookList.StatusType.USING)
+                          {
+                              if (dateNow >= bookList.Date.AddHours(bookList.To))
+                              {
+                                  bookList.Status = BookList.StatusType.FINISHED;
+                                  _db.BookList.Update(bookList);
+                              }
+                          }
+                      }
+
+                      entry.SlidingExpiration = TimeSpan.FromMinutes(1);
+                      _db.SaveChanges();
+                      return Task.FromResult((bookLists.OrderBy(bl => bl.Status)
+                                                       .ThenByDescending(bl => bl.Date)
+                                                       .ThenBy(bl => bl.From)
+                                                       .ThenBy(bl => bl.To)
+                                                       .ThenBy(bl => bl.LabId)
+                                                       .ToList(), dateNow.Hour));
+                  });
+            } while (checkHourCurrent(cacheHour, $"UserBooklist_{userId}"));
+
+            return View(bookLists);
         }
 
         [HttpPost]
@@ -259,7 +290,11 @@ namespace SlothFlyingWeb.Controllers
                 _db.BookSlot.Remove(bookSlot);
             }
             await _db.SaveChangesAsync();
+
+            _cache.Remove($"BookSlotTable_{bookList.LabId}");
+            _cache.Remove($"UserBooked_{bookList.LabId}_{userId}");
             return Redirect("Booklist");
         }
+
     }
 }

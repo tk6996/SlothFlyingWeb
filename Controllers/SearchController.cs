@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
 using System;
+using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Extensions.Logging;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -17,10 +18,12 @@ namespace SlothFlyingWeb.Controllers
     {
         private readonly ILogger<SearchController> _logger;
         private readonly ApplicationDbContext _db;
-        public SearchController(ILogger<SearchController> logger, ApplicationDbContext db)
+        private readonly IMemoryCache _cache;
+        public SearchController(ILogger<SearchController> logger, ApplicationDbContext db, IMemoryCache cache)
         {
             _logger = logger;
             _db = db;
+            _cache = cache;
         }
 
         public IActionResult Index()
@@ -40,7 +43,7 @@ namespace SlothFlyingWeb.Controllers
                 // "Your Session has Expired"
                 return Unauthorized();
             }
-            if (search == null)
+            if (string.IsNullOrEmpty(search))
                 return Json(new object[] { });
 
             search = search.Trim();
@@ -231,6 +234,8 @@ namespace SlothFlyingWeb.Controllers
                 _db.BookSlot.Remove(bookSlot);
             }
             await _db.SaveChangesAsync();
+            _cache.Remove($"BookSlotTable_{bookList.LabId}");
+            _cache.Remove($"UserBooked_{bookList.LabId}_{bookList.UserId}");
             return RedirectToAction("UserBooklist", "Search", $"{bookList.UserId}");
         }
     }

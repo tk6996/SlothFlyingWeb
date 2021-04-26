@@ -3,8 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.IO;
 using System;
-using Microsoft.AspNetCore.Hosting;
+using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Extensions.Logging;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using SlothFlyingWeb.Data;
@@ -18,11 +19,13 @@ namespace SlothFlyingWeb.Controllers
         private readonly ILogger<LabAdminController> _logger;
         private readonly ApplicationDbContext _db;
         private readonly IWebHostEnvironment _hostEnvironment;
-        public LabAdminController(ILogger<LabAdminController> logger, ApplicationDbContext db, IWebHostEnvironment hostEnvironment)
+        private readonly IMemoryCache _cache;
+        public LabAdminController(ILogger<LabAdminController> logger, ApplicationDbContext db, IWebHostEnvironment hostEnvironment, IMemoryCache cache)
         {
             _logger = logger;
             _db = db;
             _hostEnvironment = hostEnvironment;
+            _cache = cache;
         }
 
         public IActionResult Index()
@@ -55,23 +58,44 @@ namespace SlothFlyingWeb.Controllers
 
             DateTime startDate = BangkokDateTime.now().Date;
             DateTime endDate = startDate.AddDays(14).Date;
+            DateTime cacheDate;
 
-            IEnumerable<BookSlot> bookSlots = _db.BookSlot.Where(bookSlot => bookSlot.LabId == lab.Id &&
+            Func<DateTime, object, bool> checkDateCurrent = (cacheDate, key) =>
+             {
+                 if (cacheDate < startDate)
+                 {
+                     _cache.Remove(key);
+                     return true;
+                 }
+                 return false;
+             };
+
+            do
+            {
+                (lab.BookSlotTable, cacheDate) = await _cache.GetOrCreateAsync<(int[,], DateTime)>($"BookSlotTable_{lab.Id}", entry =>
+                {
+                    IEnumerable<BookSlot> bookSlots = _db.BookSlot.Where(bookSlot => bookSlot.LabId == lab.Id &&
                                                                              startDate <= bookSlot.Date && bookSlot.Date < endDate);
 
-            //Console.WriteLine(bookSlots.Count());
+                    //Console.WriteLine(bookSlots.Count());
 
-            lab.BookSlotTable = new int[9, 14];
+                    int[,] bookSlotTable = new int[9, 14];
 
-            for (int r = 0; r < 9; r++)
-            {
-                for (int c = 0; c < 14; c++)
-                {
-                    lab.BookSlotTable[r, c] = bookSlots.Where(bookSlot => bookSlot.Date == startDate.AddDays(c).Date)
-                                                                    .Count(bookSlot => bookSlot.TimeSlot == r + 1);
-                }
-            }
-            ViewBag.startDate = startDate.Date;
+                    for (int r = 0; r < 9; r++)
+                    {
+                        for (int c = 0; c < 14; c++)
+                        {
+                            bookSlotTable[r, c] = bookSlots.Where(bookSlot => bookSlot.Date == startDate.AddDays(c).Date)
+                                                                            .Count(bookSlot => bookSlot.TimeSlot == r + 1);
+                        }
+                    }
+
+                    entry.SlidingExpiration = TimeSpan.FromMinutes(5);
+                    return Task.FromResult((bookSlotTable, startDate));
+                });
+            } while (checkDateCurrent(cacheDate, $"BookSlotTable_{id}"));
+
+            ViewBag.startDate = startDate;
             return View(lab);
         }
 
@@ -109,16 +133,17 @@ namespace SlothFlyingWeb.Controllers
             return RedirectToAction("ViewItem", "LabAdmin");
         }
 
+        // API
         public IActionResult UserBookList([FromQuery(Name = "labId")] int? labId, [FromQuery(Name = "date")] long? date, [FromQuery(Name = "timeslot")] int? timeslot)
         {
             if (HttpContext.Session.GetInt32("AdminId") == null)
             {
-                return RedirectToAction("Login", "Admin");
+                return Unauthorized();
             }
 
             if (labId == null || date == null || timeslot == null)
             {
-                return RedirectToAction("Index");
+                return BadRequest();
             }
 
             DateTime dateValue = BangkokDateTime.millisecondToDateTime((long)date).Date;
@@ -220,7 +245,7 @@ namespace SlothFlyingWeb.Controllers
 
             latestlab.Amount = lab.Amount;
 
-            if(lab.ImageFile != null)
+            if (lab.ImageFile != null)
             {
                 string wwwRootPath = _hostEnvironment.WebRootPath;
                 string fileName = $"{BangkokDateTime.now().ToString("yyyyMMddhhmmssffff")}_{lab.ImageFile.FileName}";
