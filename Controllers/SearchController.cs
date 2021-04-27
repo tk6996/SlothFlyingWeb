@@ -145,6 +145,7 @@ namespace SlothFlyingWeb.Controllers
             return RedirectToAction("UserProfile");
         }
 
+        [HttpGet("/Search/UserBooklist/{id}")]
         public async Task<IActionResult> UserBooklist(int? id)
         {
             if (HttpContext.Session.GetInt32("AdminId") == null)
@@ -198,8 +199,19 @@ namespace SlothFlyingWeb.Controllers
                 }
             }
             await _db.SaveChangesAsync();
+
+            int adminId = (int)HttpContext.Session.GetInt32("AdminId");
+            List<BookList> bl = _cache.Set<List<BookList>>($"SearchBooklist_{adminId}", bookLists.OrderBy(bl => bl.Status)
+                                                                                                 .ThenByDescending(bl => bl.Date)
+                                                                                                 .ThenBy(bl => bl.From)
+                                                                                                 .ThenBy(bl => bl.To)
+                                                                                                 .ThenBy(bl => bl.LabId)
+                                                                                                 .ToList(), new MemoryCacheEntryOptions()
+                                                                                                 {
+                                                                                                     SlidingExpiration = TimeSpan.FromMinutes(1)
+                                                                                                 });
             ViewBag.UserId = user.Id;
-            return View(bookLists.OrderBy(bl => bl.Status).ThenByDescending(bl => bl.Date).ThenBy(bl => bl.From).ThenBy(bl => bl.To).ThenBy(bl => bl.LabId));
+            return View(bl.GetRange(0, System.Math.Min(bl.Count, 10)));
         }
 
         [HttpPost]
@@ -237,6 +249,42 @@ namespace SlothFlyingWeb.Controllers
             _cache.Remove($"BookSlotTable_{bookList.LabId}");
             _cache.Remove($"UserBooked_{bookList.LabId}_{bookList.UserId}");
             return RedirectToAction("UserBooklist", "Search", $"{bookList.UserId}");
+        }
+
+        //API
+        [HttpGet("/Search/UserBooklist/{id}/{round:int}")]
+        public IActionResult BooklistLoader(int? id,[FromRoute] int round)
+        {
+            if (HttpContext.Session.GetInt32("AdminId") == null)
+            {
+                return Unauthorized();
+            }
+
+            if (id == null || id <= 0)
+            {
+                return BadRequest();
+            }
+
+            int userId = (int)id;
+            List<BookList> bookList = _cache.Get<List<BookList>>($"SearchBooklist_{userId}");
+
+            if (bookList == null || round < 0 || bookList.Count <= round * 10)
+            {
+                return Json(new object[] { });
+            }
+
+            return Json(bookList.GetRange(round * 10, System.Math.Min(bookList.Count - round * 10, 10)).Select(bl =>
+                new
+                {
+                    Id = bl.Id,
+                    LabId = bl.LabId,
+                    ItemName = bl.ItemName,
+                    Date = bl.Date.ToString("ddd dd MMM yyyy"),
+                    From = $"{bl.From.ToString("D2")}.00",
+                    To = $"{bl.To.ToString("D2")}.00",
+                    Status = bl.Status
+                }
+            ));
         }
     }
 }

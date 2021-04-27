@@ -89,6 +89,7 @@ namespace SlothFlyingWeb.Controllers
 
         public IActionResult Logout()
         {
+            int id = HttpContext.Session.GetInt32("Id") ?? 0;
             if (HttpContext.Session.GetInt32("AdminId") != null)
             {
                 int adminId = (int)HttpContext.Session.GetInt32("AdminId");
@@ -98,6 +99,14 @@ namespace SlothFlyingWeb.Controllers
             else
             {
                 HttpContext.Session.Clear();
+            }
+            if (id > 0)
+            {
+                foreach (int labId in _db.Lab.Select(lab => lab.Id))
+                {
+                    _cache.Remove($"UserBooked_{labId}_{id}");
+                }
+                _cache.Remove($"UserBooklist_{id}");
             }
             return RedirectToAction("Index", "Home");
         }
@@ -177,6 +186,7 @@ namespace SlothFlyingWeb.Controllers
             return RedirectToAction("Profile");
         }
 
+        [HttpGet("/User/Booklist")]
         public async Task<IActionResult> Booklist()
         {
             if (HttpContext.Session.GetInt32("Id") == null)
@@ -192,66 +202,49 @@ namespace SlothFlyingWeb.Controllers
                   return bookList;
               };
 
-            Func<int, object, bool> checkHourCurrent = (cacheHour, key) =>
-             {
-                 if (8 <= dateNow.Hour && dateNow.Hour <= 17 && cacheHour < dateNow.Hour)
-                 {
-                     _cache.Remove(key);
-                     return true;
-                 }
-                 return false;
-             };
+            IEnumerable<BookList> bookLists = _db.BookList.Where(bookList => bookList.UserId == userId)
+                                                            .Join(_db.Lab,
+                                                                  bookList => bookList.LabId,
+                                                                  lab => lab.Id,
+                                                                  joinItemName);
 
-            List<BookList> bookLists;
-            int cacheHour;
-
-            do
+            foreach (BookList bookList in bookLists)
             {
-                (bookLists, cacheHour) = await _cache.GetOrCreateAsync<(List<BookList>, int)>($"UserBooklist_{userId}", entry =>
-                  {
-                      IEnumerable<BookList> bookLists = _db.BookList.Where(bookList => bookList.UserId == userId)
-                                                                .Join(_db.Lab,
-                                                                      bookList => bookList.LabId,
-                                                                      lab => lab.Id,
-                                                                      joinItemName);
+                if (bookList.Status == BookList.StatusType.COMING)
+                {
+                    if (bookList.Date.AddHours(bookList.From) <= dateNow && dateNow < bookList.Date.AddHours(bookList.To))
+                    {
+                        bookList.Status = BookList.StatusType.USING;
+                        _db.BookList.Update(bookList);
+                    }
+                    else if (dateNow >= bookList.Date.AddHours(bookList.To))
+                    {
+                        bookList.Status = BookList.StatusType.FINISHED;
+                        _db.BookList.Update(bookList);
+                    }
+                }
+                if (bookList.Status == BookList.StatusType.USING)
+                {
+                    if (dateNow >= bookList.Date.AddHours(bookList.To))
+                    {
+                        bookList.Status = BookList.StatusType.FINISHED;
+                        _db.BookList.Update(bookList);
+                    }
+                }
+            }
+            await _db.SaveChangesAsync();
 
-                      foreach (BookList bookList in bookLists)
-                      {
-                          if (bookList.Status == BookList.StatusType.COMING)
-                          {
-                              if (bookList.Date.AddHours(bookList.From) <= dateNow && dateNow < bookList.Date.AddHours(bookList.To))
-                              {
-                                  bookList.Status = BookList.StatusType.USING;
-                                  _db.BookList.Update(bookList);
-                              }
-                              else if (dateNow >= bookList.Date.AddHours(bookList.To))
-                              {
-                                  bookList.Status = BookList.StatusType.FINISHED;
-                                  _db.BookList.Update(bookList);
-                              }
-                          }
-                          if (bookList.Status == BookList.StatusType.USING)
-                          {
-                              if (dateNow >= bookList.Date.AddHours(bookList.To))
-                              {
-                                  bookList.Status = BookList.StatusType.FINISHED;
-                                  _db.BookList.Update(bookList);
-                              }
-                          }
-                      }
+            List<BookList> bl = _cache.Set<List<BookList>>($"UserBooklist_{userId}", bookLists.OrderBy(bl => bl.Status)
+                                                                                              .ThenByDescending(bl => bl.Date)
+                                                                                              .ThenBy(bl => bl.From)
+                                                                                              .ThenBy(bl => bl.To)
+                                                                                              .ThenBy(bl => bl.LabId)
+                                                                                              .ToList(), new MemoryCacheEntryOptions()
+                                                                                              {
+                                                                                                  SlidingExpiration = TimeSpan.FromMinutes(1)
+                                                                                              });
 
-                      entry.SlidingExpiration = TimeSpan.FromMinutes(1);
-                      _db.SaveChanges();
-                      return Task.FromResult((bookLists.OrderBy(bl => bl.Status)
-                                                       .ThenByDescending(bl => bl.Date)
-                                                       .ThenBy(bl => bl.From)
-                                                       .ThenBy(bl => bl.To)
-                                                       .ThenBy(bl => bl.LabId)
-                                                       .ToList(), dateNow.Hour));
-                  });
-            } while (checkHourCurrent(cacheHour, $"UserBooklist_{userId}"));
-
-            return View(bookLists);
+            return View(bl.GetRange(0, System.Math.Min(bl.Count, 10)));
         }
 
         [HttpPost]
@@ -296,5 +289,35 @@ namespace SlothFlyingWeb.Controllers
             return Redirect("Booklist");
         }
 
+        // API
+        [HttpGet("/User/Booklist/{round:int}")]
+        public IActionResult BooklistLoader([FromRoute] int round)
+        {
+            if (HttpContext.Session.GetInt32("Id") == null)
+            {
+                return Unauthorized();
+            }
+
+            int userId = (int)HttpContext.Session.GetInt32("Id");
+            List<BookList> bookList = _cache.Get<List<BookList>>($"UserBooklist_{userId}");
+
+            if (bookList == null || round < 0 || bookList.Count <= round * 10)
+            {
+                return Json(new object[] { });
+            }
+
+            return Json(bookList.GetRange(round * 10, System.Math.Min(bookList.Count - round * 10, 10)).Select(bl =>
+                new
+                {
+                    Id = bl.Id,
+                    LabId = bl.LabId,
+                    ItemName = bl.ItemName,
+                    Date = bl.Date.ToString("ddd dd MMM yyyy"),
+                    From = $"{bl.From.ToString("D2")}.00",
+                    To = $"{bl.To.ToString("D2")}.00",
+                    Status = bl.Status
+                }
+            ));
+        }
     }
 }

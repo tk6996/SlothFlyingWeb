@@ -1,14 +1,10 @@
-using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
-using System.IO;
 using System.Threading.Tasks;
-using System.Text.RegularExpressions;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Caching.Memory;
 using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
 using SlothFlyingWeb.Models;
 using SlothFlyingWeb.Data;
@@ -20,12 +16,12 @@ namespace SlothFlyingWeb.Controllers
     {
         private readonly ILogger<AdminController> _logger;
         private readonly ApplicationDbContext _db;
-
-        public AdminController(ILogger<AdminController> logger, ApplicationDbContext db/*, IWebHostEnvironment hostEnvironment*/)
+        private readonly IMemoryCache _cache;
+        public AdminController(ILogger<AdminController> logger, ApplicationDbContext db, IMemoryCache cache)
         {
             _logger = logger;
             _db = db;
-            /*_hostEnvironment = hostEnvironment;*/
+            _cache = cache;
         }
 
         public IActionResult Login()
@@ -53,6 +49,7 @@ namespace SlothFlyingWeb.Controllers
 
         public IActionResult Logout()
         {
+            int adminId = HttpContext.Session.GetInt32("Id") ?? 0;
             if (HttpContext.Session.GetInt32("Id") != null)
             {
                 int id = (int)HttpContext.Session.GetInt32("Id");
@@ -62,6 +59,10 @@ namespace SlothFlyingWeb.Controllers
             else
             {
                 HttpContext.Session.Clear();
+            }
+            if (adminId > 0)
+            {
+                _cache.Remove($"SearchBooklist_{adminId}");
             }
             return RedirectToAction("Login", "Admin");
         }
