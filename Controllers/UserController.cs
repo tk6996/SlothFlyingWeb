@@ -244,7 +244,7 @@ namespace SlothFlyingWeb.Controllers
                                                                                                   SlidingExpiration = TimeSpan.FromMinutes(1)
                                                                                               });
 
-            return View(bl.GetRange(0, System.Math.Min(bl.Count, 10)));
+            return View(bl.GetRange(0, Math.Min(bl.Count, 10)));
         }
 
         [HttpPost]
@@ -291,7 +291,7 @@ namespace SlothFlyingWeb.Controllers
 
         // API
         [HttpGet("/User/Booklist/{round:int}")]
-        public IActionResult BooklistLoader([FromRoute] int round)
+        public IActionResult BooklistApi([FromRoute] int round)
         {
             if (HttpContext.Session.GetInt32("Id") == null)
             {
@@ -306,7 +306,7 @@ namespace SlothFlyingWeb.Controllers
                 return Json(new object[] { });
             }
 
-            return Json(bookList.GetRange(round * 10, System.Math.Min(bookList.Count - round * 10, 10)).Select(bl =>
+            return Json(bookList.GetRange(round * 10, Math.Min(bookList.Count - round * 10, 10)).Select(bl =>
                 new
                 {
                     Id = bl.Id,

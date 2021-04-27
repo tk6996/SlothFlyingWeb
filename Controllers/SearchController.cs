@@ -72,7 +72,9 @@ namespace SlothFlyingWeb.Controllers
                 IEnumerable<User> users = _db.User.Where(user => (user.FirstName.Length >= words[0].Length &&
                                                                   user.FirstName.Substring(0, words[0].Length).ToLower().Equals(words[0].ToLower())) ||
                                                                  (user.LastName.Length >= words[0].Length &&
-                                                                  user.LastName.Substring(0, words[0].Length).ToLower().Equals(words[0].ToLower())));
+                                                                  user.LastName.Substring(0, words[0].Length).ToLower().Equals(words[0].ToLower())))
+                                                  .OrderBy(user => user.FirstName.Length + user.LastName.Length)
+                                                  .Take(5);
                 return Json(users.Select(user => new
                 {
                     Id = user.Id,
@@ -91,7 +93,9 @@ namespace SlothFlyingWeb.Controllers
                                                                  ((user.FirstName.Length >= words[1].Length &&
                                                                    user.FirstName.Substring(0, words[1].Length).ToLower().Equals(words[1].ToLower())) &&
                                                                   (user.LastName.Length >= words[0].Length &&
-                                                                  user.LastName.Substring(0, words[0].Length).ToLower().Equals(words[0].ToLower()))));
+                                                                  user.LastName.Substring(0, words[0].Length).ToLower().Equals(words[0].ToLower()))))
+                                                   .OrderBy(user => user.FirstName.Length + user.LastName.Length)
+                                                   .Take(5);
                 return Json(users.Select(user => new
                 {
                     Id = user.Id,
@@ -211,7 +215,7 @@ namespace SlothFlyingWeb.Controllers
                                                                                                      SlidingExpiration = TimeSpan.FromMinutes(1)
                                                                                                  });
             ViewBag.UserId = user.Id;
-            return View(bl.GetRange(0, System.Math.Min(bl.Count, 10)));
+            return View(bl.GetRange(0, Math.Min(bl.Count, 10)));
         }
 
         [HttpPost]
@@ -253,7 +257,7 @@ namespace SlothFlyingWeb.Controllers
 
         //API
         [HttpGet("/Search/UserBooklist/{id}/{round:int}")]
-        public IActionResult BooklistLoader(int? id,[FromRoute] int round)
+        public IActionResult BooklistApi(int? id, [FromRoute] int round)
         {
             if (HttpContext.Session.GetInt32("AdminId") == null)
             {
@@ -273,7 +277,7 @@ namespace SlothFlyingWeb.Controllers
                 return Json(new object[] { });
             }
 
-            return Json(bookList.GetRange(round * 10, System.Math.Min(bookList.Count - round * 10, 10)).Select(bl =>
+            return Json(bookList.GetRange(round * 10, Math.Min(bookList.Count - round * 10, 10)).Select(bl =>
                 new
                 {
                     Id = bl.Id,

@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.Linq;
+using System;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
@@ -63,18 +64,25 @@ namespace SlothFlyingWeb.Controllers
             if (adminId > 0)
             {
                 _cache.Remove($"SearchBooklist_{adminId}");
+                _cache.Remove($"Blacklist_{adminId}");
             }
             return RedirectToAction("Login", "Admin");
         }
 
+        [HttpGet("/Admin/Blacklist")]
         public IActionResult Blacklist()
         {
             if (HttpContext.Session.GetInt32("AdminId") == null)
             {
                 return RedirectToAction("Login", "Admin");
             }
-            IEnumerable<User> users = _db.User.Where(user => user.BlackList == true);
-            return View(users);
+            int adminId = (int)HttpContext.Session.GetInt32("AdminId");
+            List<User> users = _cache.Set<List<User>>($"Blacklist_{adminId}", _db.User.Where(user => user.BlackList == true).ToList(), new MemoryCacheEntryOptions()
+            {
+                SlidingExpiration = TimeSpan.FromMinutes(1)
+            });
+
+            return View(users.GetRange(0, Math.Min(users.Count, 10)));
         }
 
         [HttpPost]
@@ -100,5 +108,31 @@ namespace SlothFlyingWeb.Controllers
             return RedirectToAction("Blacklist");
         }
 
+        [HttpGet("/Admin/Blacklist/{round:int}")]
+        public IActionResult BlacklistApi([FromRoute] int round)
+        {
+            if (HttpContext.Session.GetInt32("AdminId") == null)
+            {
+                return Unauthorized();
+            }
+            int adminId = (int)HttpContext.Session.GetInt32("AdminId");
+            List<User> users = _cache.Get<List<User>>($"Blacklist_{adminId}");
+
+            if (round < 0 || users.Count <= round * 10)
+            {
+                return Json(new object[] { });
+            }
+
+            return Json(users.GetRange(round * 10, Math.Min(users.Count - round * 10, 10)).Select(user =>
+                new
+                {
+                    Id = user.Id,
+                    ImageUrl = Url.Content(user.ImageUrl != "" ? user.ImageUrl : "~/assets/images/brand.jpg"),
+                    Name = $"{user.FirstName} {user.LastName}",
+                    Email = user.Email,
+                    Phone = $"{Convert.ToInt64(user.Phone):000-000-0000}"
+                }
+            ));
+        }
     }
 }
