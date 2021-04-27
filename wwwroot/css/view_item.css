@@ -109,7 +109,7 @@
   
 .book-list-range table {
     display: grid;
-    grid-template-columns: 0.5fr 0.75fr 1fr 0.5fr 0.5fr 0.5fr 0.5fr;
+    grid-template-columns: 0.5fr 0.75fr 1fr 0.5fr 0.5fr 0.5fr 0.75fr;
     min-width: 80%; 
 }
 
@@ -147,12 +147,25 @@
 
 .book-list-range i {
     font-size: 32px;
-    color: var(--red);
     cursor: pointer;
 }
+
+.book-list-range .cancel-button {
+    padding: 10px;
+    color: var(--red);
+}
+
+.book-list-range .view-button {
+    padding: 10px;
+    color: var(--blue);
+}
   
-.book-list-range i:active {
+.book-list-range .cancel-button:active {
     color: var(--darkred);
+}
+
+.book-list-range .view-button:active {
+    color: var(--darkblue);
 }
 
 .no-booklist {
