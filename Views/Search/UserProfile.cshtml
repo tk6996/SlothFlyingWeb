@@ -27,6 +27,8 @@
         <div id="phone">@($"{Convert.ToInt64(Model.Phone):000-000-0000}")</div>
         <div class="title">User ID</div>
         <div id="id">@Model.Id.ToString("D8")</div>
+        <div class="title">Joined</div>
+        <div id="CreateAt">@Model.CreateAt.ToString("dd MMM yyyy")</div>
         <div class="title">Status</div>
         <div id="Status" class=@(Model.BlackList ? "blacklisted" : "normal")>@(Model.BlackList ? "BLACKLISTED" :
             "NORMAL")</div>

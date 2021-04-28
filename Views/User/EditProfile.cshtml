@@ -1,83 +1,55 @@
 @model SlothFlyingWeb.Models.User
 
 @section Styles {
-    <link rel="stylesheet" href="~/css/edit_profile.css" />
+<link rel="stylesheet" href="~/css/edit_profile.css" />
 }
 
 @{
-    ViewData["Title"] = "Edit Profile";
+  ViewData["Title"] = "Edit Profile";
 }
 
 <form asp-asp-controller="User" asp-action="EditProfile" method="POST" enctype="multipart/form-data" class="container">
   <div class="image">
-    <img
-      src='@Url.Content(Model.ImageUrl != "" ? Model.ImageUrl : "~/assets/images/brand.jpg")'
-      alt="user_image"
-      id="user_image"
-    />
-    <input asp-for="ImageFile" type="file" name="ImageFile" id="ImageFile" accept="image/*" onchange="readUrl(this);" hidden/>
+    <img src='@Url.Content(Model.ImageUrl != "" ? Model.ImageUrl : "~/assets/images/brand.jpg")' alt="user_image"
+      id="user_image" />
+    <input asp-for="ImageFile" type="file" name="ImageFile" id="ImageFile" accept="image/*" onchange="readUrl(this);"
+      hidden />
     <label asp-for="ImageFile" class="upload">Upload a Photo</label>
   </div>
   <div class="information">
     <label asp-for="FirstName"></label>
     <div class="input-container">
-      <input
-        asp-for="FirstName"
-        type="text"
-        placeholder="First Name"
-        id="FirstName"
-        name="FirstName"
-      />
+      <input asp-for="FirstName" type="text" placeholder="First Name" id="FirstName" name="FirstName" />
       <span asp-validation-for="FirstName" class="warning"></span>
     </div>
     <label asp-for="LastName"></label>
     <div class="input-container">
-      <input
-        asp-for="LastName"
-        type="text"
-        placeholder="Last Name"
-        id="LastName"
-        name="LastName"
-      />
+      <input asp-for="LastName" type="text" placeholder="Last Name" id="LastName" name="LastName" />
       <span asp-validation-for="LastName" class="warning"></span>
     </div>
     <label asp-for="Email"></label>
     <div>
-      <input
-        asp-for="Email"
-        type="email"
-        placeholder="Email"
-        id="Email"
-        name="Email"
-        class="readonly"
-        readonly
-      />
+      <input asp-for="Email" type="email" placeholder="Email" id="Email" name="Email" class="readonly" readonly />
     </div>
     <label asp-for="Phone"></label>
     <div class="input-container">
-      <input
-        asp-for="Phone"
-        type="tel"
-        placeholder="Phone"
-        id="Phone"
-        name="Phone"
-      />
+      <input asp-for="Phone" type="tel" placeholder="Phone" id="Phone" name="Phone" />
       <span asp-validation-for="Phone" class="warning"></span>
     </div>
     <label asp-for="Id"></label>
     <div>
       <input asp-for="Id" type="text" id="Id" name="Id" class="readonly" readonly />
     </div>
+    <label asp-for="CreateAt">Joined</label>
+    <div>
+      <input asp-for="CreateAt" type="date" id="CreateAt" name="CreateAt" class="readonly" readonly />
+    </div>
   </div>
-  <button
-    type="submit"
-    onclick="window.location = './edit_profile'"
-    id="submit"
-  >
+  <button type="submit" onclick="window.location = './edit_profile'" id="submit">
     SAVE
   </button>
 </form>
 
 @section Scripts {
-    <script src="~/js/edit_profile.js"></script>
+<script src="~/js/edit_profile.js"></script>
 }
