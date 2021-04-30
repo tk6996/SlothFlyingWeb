@@ -352,7 +352,7 @@ namespace SlothFlyingWeb.Controllers
             });
         }
 
-        public async Task<IActionResult> GetBookList([FromHeader] string ApiKey)
+        public async Task<IActionResult> GetBooklist([FromHeader] string ApiKey)
         {
             ApiUser apiUser = _db.ApiUser.Where(apiUser => apiUser.Enable && apiUser.ApiKey == ApiKey).FirstOrDefault();
 
