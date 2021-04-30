@@ -73,10 +73,19 @@ else
           </tr>
         }
       }
+      @if (Model.Count() == 10)
+      {
+        <tr class="bottom">
+        </tr>
+      }
     </tbody>
   </table>
 }
 
 @section Modals {
 <p style="font-size: 24px;">Would you like to cancel this booklist ?</p>
+}
+
+@section Scripts {
+<script src="~/js/booklist.js"></script>
 }

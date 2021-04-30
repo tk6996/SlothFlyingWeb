@@ -15,5 +15,13 @@ namespace SlothFlyingWeb.Data
         public DbSet<BookSlot> BookSlot { get; set; }
 
         public DbSet<Admin> Admin { get; set; }
+
+        public DbSet<ApiUser> ApiUser { get; set; }
+        
+        public DbSet<ApiBookList> ApiBookList { get; set; }
+
+        public DbSet<ApiBookSlot> ApiBookSlot { get; set; }
+
+
     }
 }

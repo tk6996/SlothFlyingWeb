@@ -30,8 +30,11 @@ namespace SlothFlyingWeb
                 options.UseSqlite(Configuration.GetConnectionString("DefaultConnection")));
 
             // using Microsoft.AspNetCore.Session;
-            services.AddDistributedMemoryCache();
-            services.AddSession();
+            services.AddMemoryCache();
+            //services.AddDistributedMemoryCache();
+            services.AddSession(options => {
+                options.Cookie.IsEssential = true;
+            });
 
             services.AddControllersWithViews().AddRazorRuntimeCompilation();
         }

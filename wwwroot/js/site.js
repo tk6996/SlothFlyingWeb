@@ -1,4 +1,10 @@
-﻿function makeRequest(method, url, body, header) {
+﻿/**
+@param {string} method
+@param {string} url
+@param {object} body
+@param {object} header
+ */
+function makeRequest(method, url, body, header) {
   return new Promise((resolve, reject) => {
     let xhr = new XMLHttpRequest();
     xhr.open(method, url);
@@ -56,48 +62,4 @@ function confirmPopUpOnForm(object) {
       inputSection.appendChild(input);
     }
   }
-}
-
-// send object to server by json
-function confirmPopUpOnJson(object) {
-  return new Promise((resolve) => {
-    document.querySelector(".validation-error").innerHTML = "";
-    confirmPopUpOn();
-    const submit = document.querySelector("#submit");
-    const cancel = document.querySelector("#cancel");
-    const clickedSubmitEventHandler = async (event) => {
-      event.preventDefault();
-      submit.disabled = true;
-      cancel.disabled = true;
-
-      let token = document.querySelector(
-        'input[name="__RequestVerificationToken"]'
-      ).value;
-
-      let response;
-      try {
-        response = await makeRequest(
-          "POST",
-          window.location.pathname,
-          JSON.stringify(object),
-          {
-            RequestVerificationToken: token,
-            "Content-Type": "application/json;charset=utf-8",
-          }
-        );
-      } catch (error) {
-        console.error(error);
-        document.querySelector(".validation-error").innerHTML =
-          "Request error , You should to refresh pages.";
-      }
-      submit.disabled = false;
-      cancel.disabled = false;
-      resolve(response);
-    };
-
-    submit.addEventListener("click", clickedSubmitEventHandler);
-    cancel.addEventListener("click", () => {
-      submit.removeEventListener("click", clickedSubmitEventHandler);
-    });
-  });
 }

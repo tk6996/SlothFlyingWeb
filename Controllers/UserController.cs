@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using System.Text.RegularExpressions;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Caching.Memory;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
@@ -21,12 +22,14 @@ namespace SlothFlyingWeb.Controllers
         private readonly ILogger<UserController> _logger;
         private readonly ApplicationDbContext _db;
         private readonly IWebHostEnvironment _hostEnvironment;
+        private readonly IMemoryCache _cache;
 
-        public UserController(ILogger<UserController> logger, ApplicationDbContext db, IWebHostEnvironment hostEnvironment)
+        public UserController(ILogger<UserController> logger, ApplicationDbContext db, IWebHostEnvironment hostEnvironment, IMemoryCache cache)
         {
             _logger = logger;
             _db = db;
             _hostEnvironment = hostEnvironment;
+            _cache = cache;
         }
         public IActionResult Register()
         {
@@ -86,6 +89,7 @@ namespace SlothFlyingWeb.Controllers
 
         public IActionResult Logout()
         {
+            int id = HttpContext.Session.GetInt32("Id") ?? 0;
             if (HttpContext.Session.GetInt32("AdminId") != null)
             {
                 int adminId = (int)HttpContext.Session.GetInt32("AdminId");
@@ -95,6 +99,14 @@ namespace SlothFlyingWeb.Controllers
             else
             {
                 HttpContext.Session.Clear();
+            }
+            if (id > 0)
+            {
+                foreach (int labId in _db.Lab.Select(lab => lab.Id))
+                {
+                    _cache.Remove($"UserBooked_{labId}_{id}");
+                }
+                _cache.Remove($"UserBooklist_{id}");
             }
             return RedirectToAction("Index", "Home");
         }
@@ -174,6 +186,7 @@ namespace SlothFlyingWeb.Controllers
             return RedirectToAction("Profile");
         }
 
+        [HttpGet("/User/Booklist")]
         public async Task<IActionResult> Booklist()
         {
             if (HttpContext.Session.GetInt32("Id") == null)
@@ -190,10 +203,10 @@ namespace SlothFlyingWeb.Controllers
               };
 
             IEnumerable<BookList> bookLists = _db.BookList.Where(bookList => bookList.UserId == userId)
-                                                          .Join(_db.Lab,
-                                                                bookList => bookList.LabId,
-                                                                lab => lab.Id,
-                                                                joinItemName);
+                                                            .Join(_db.Lab,
+                                                                  bookList => bookList.LabId,
+                                                                  lab => lab.Id,
+                                                                  joinItemName);
 
             foreach (BookList bookList in bookLists)
             {
@@ -220,18 +233,35 @@ namespace SlothFlyingWeb.Controllers
                 }
             }
             await _db.SaveChangesAsync();
-            return View(bookLists.OrderBy(bl => bl.Status).ThenByDescending(bl => bl.Date).ThenBy(bl => bl.From).ThenBy(bl => bl.To).ThenBy(bl => bl.LabId));
+
+            List<BookList> bl = _cache.Set<List<BookList>>($"UserBooklist_{userId}", bookLists.OrderBy(bl => bl.Status)
+                                                                                              .ThenByDescending(bl => bl.Date)
+                                                                                              .ThenBy(bl => bl.From)
+                                                                                              .ThenBy(bl => bl.To)
+                                                                                              .ThenBy(bl => bl.LabId)
+                                                                                              .ToList(), new MemoryCacheEntryOptions()
+                                                                                              {
+                                                                                                  SlidingExpiration = TimeSpan.FromMinutes(1)
+                                                                                              });
+
+            return View(bl.GetRange(0, Math.Min(bl.Count, 10)));
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Booklist([FromForm] int id)
+        public async Task<IActionResult> Booklist([FromForm] int? id)
         {
             if (HttpContext.Session.GetInt32("Id") == null)
             {
                 return RedirectToAction("Login");
             }
             int userId = (int)HttpContext.Session.GetInt32("Id");
+
+            if (id == null || id < 0)
+            {
+                return BadRequest();
+            }
+
             BookList bookList = await _db.BookList.FindAsync(id);
 
             if (bookList == null)
@@ -248,7 +278,7 @@ namespace SlothFlyingWeb.Controllers
                 bookList.Status == BookList.StatusType.CANCEL ||
                 bookList.Status == BookList.StatusType.EJECT)
             {
-                return BadRequest("This booklist be canceled.");
+                return BadRequest("This booklist can't cancel.");
             }
 
             bookList.Status = BookList.StatusType.CANCEL;
@@ -259,7 +289,41 @@ namespace SlothFlyingWeb.Controllers
                 _db.BookSlot.Remove(bookSlot);
             }
             await _db.SaveChangesAsync();
+
+            _cache.Remove($"BookSlotTable_{bookList.LabId}");
+            _cache.Remove($"UserBooked_{bookList.LabId}_{userId}");
             return Redirect("Booklist");
+        }
+
+        // API
+        [HttpGet("/User/Booklist/{round:int}")]
+        public IActionResult BooklistApi([FromRoute] int round)
+        {
+            if (HttpContext.Session.GetInt32("Id") == null)
+            {
+                return Unauthorized();
+            }
+
+            int userId = (int)HttpContext.Session.GetInt32("Id");
+            List<BookList> bookList = _cache.Get<List<BookList>>($"UserBooklist_{userId}");
+
+            if (bookList == null || round < 0 || bookList.Count <= round * 10)
+            {
+                return Json(new object[] { });
+            }
+
+            return Json(bookList.GetRange(round * 10, Math.Min(bookList.Count - round * 10, 10)).Select(bl =>
+                new
+                {
+                    Id = bl.Id,
+                    LabId = bl.LabId,
+                    ItemName = bl.ItemName,
+                    Date = bl.Date.ToString("ddd dd MMM yyyy"),
+                    From = $"{bl.From.ToString("D2")}.00",
+                    To = $"{bl.To.ToString("D2")}.00",
+                    Status = bl.Status
+                }
+            ));
         }
     }
 }

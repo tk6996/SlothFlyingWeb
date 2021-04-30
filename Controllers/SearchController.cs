@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
 using System;
+using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Extensions.Logging;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -17,10 +18,12 @@ namespace SlothFlyingWeb.Controllers
     {
         private readonly ILogger<SearchController> _logger;
         private readonly ApplicationDbContext _db;
-        public SearchController(ILogger<SearchController> logger, ApplicationDbContext db)
+        private readonly IMemoryCache _cache;
+        public SearchController(ILogger<SearchController> logger, ApplicationDbContext db, IMemoryCache cache)
         {
             _logger = logger;
             _db = db;
+            _cache = cache;
         }
 
         public IActionResult Index()
@@ -40,7 +43,7 @@ namespace SlothFlyingWeb.Controllers
                 // "Your Session has Expired"
                 return Unauthorized();
             }
-            if (search == null)
+            if (string.IsNullOrEmpty(search))
                 return Json(new object[] { });
 
             search = search.Trim();
@@ -69,7 +72,9 @@ namespace SlothFlyingWeb.Controllers
                 IEnumerable<User> users = _db.User.Where(user => (user.FirstName.Length >= words[0].Length &&
                                                                   user.FirstName.Substring(0, words[0].Length).ToLower().Equals(words[0].ToLower())) ||
                                                                  (user.LastName.Length >= words[0].Length &&
-                                                                  user.LastName.Substring(0, words[0].Length).ToLower().Equals(words[0].ToLower())));
+                                                                  user.LastName.Substring(0, words[0].Length).ToLower().Equals(words[0].ToLower())))
+                                                  .OrderBy(user => user.FirstName.Length + user.LastName.Length)
+                                                  .Take(5);
                 return Json(users.Select(user => new
                 {
                     Id = user.Id,
@@ -88,7 +93,9 @@ namespace SlothFlyingWeb.Controllers
                                                                  ((user.FirstName.Length >= words[1].Length &&
                                                                    user.FirstName.Substring(0, words[1].Length).ToLower().Equals(words[1].ToLower())) &&
                                                                   (user.LastName.Length >= words[0].Length &&
-                                                                  user.LastName.Substring(0, words[0].Length).ToLower().Equals(words[0].ToLower()))));
+                                                                  user.LastName.Substring(0, words[0].Length).ToLower().Equals(words[0].ToLower()))))
+                                                   .OrderBy(user => user.FirstName.Length + user.LastName.Length)
+                                                   .Take(5);
                 return Json(users.Select(user => new
                 {
                     Id = user.Id,
@@ -142,6 +149,7 @@ namespace SlothFlyingWeb.Controllers
             return RedirectToAction("UserProfile");
         }
 
+        [HttpGet("/Search/UserBooklist/{id}")]
         public async Task<IActionResult> UserBooklist(int? id)
         {
             if (HttpContext.Session.GetInt32("AdminId") == null)
@@ -195,19 +203,39 @@ namespace SlothFlyingWeb.Controllers
                 }
             }
             await _db.SaveChangesAsync();
+
+            int adminId = (int)HttpContext.Session.GetInt32("AdminId");
+            List<BookList> bl = _cache.Set<List<BookList>>($"SearchBooklist_{adminId}", bookLists.OrderBy(bl => bl.Status)
+                                                                                                 .ThenByDescending(bl => bl.Date)
+                                                                                                 .ThenBy(bl => bl.From)
+                                                                                                 .ThenBy(bl => bl.To)
+                                                                                                 .ThenBy(bl => bl.LabId)
+                                                                                                 .ToList(), new MemoryCacheEntryOptions()
+                                                                                                 {
+                                                                                                     SlidingExpiration = TimeSpan.FromMinutes(1)
+                                                                                                 });
             ViewBag.UserId = user.Id;
-            return View(bookLists.OrderBy(bl => bl.Status).ThenByDescending(bl => bl.Date).ThenBy(bl => bl.From).ThenBy(bl => bl.To).ThenBy(bl => bl.LabId));
+            return View(bl.GetRange(0, Math.Min(bl.Count, 10)));
         }
 
-        [HttpPost]
+        [HttpPost("/Search/UserBooklist/{userId}")]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> UserBooklist([FromForm] int id)
+        public async Task<IActionResult> UserBooklist([FromRoute] int? userId, [FromForm] int? id)
         {
             if (HttpContext.Session.GetInt32("AdminId") == null)
             {
                 return RedirectToAction("Login", "Admin");
             }
 
+            if (userId == null || userId < 0)
+            {
+                return BadRequest("Url is not valid.");
+            }
+
+            if (id == null || id < 0)
+            {
+                return BadRequest("Body is not valid.");
+            }
 
             BookList bookList = await _db.BookList.FindAsync(id);
 
@@ -216,11 +244,16 @@ namespace SlothFlyingWeb.Controllers
                 return BadRequest("The Booklist not found.");
             }
 
+            if (bookList.UserId != userId)
+            {
+                return BadRequest("BooklistId and User not match.");
+            }
+
             if (bookList.Status == BookList.StatusType.FINISHED ||
                 bookList.Status == BookList.StatusType.CANCEL ||
                 bookList.Status == BookList.StatusType.EJECT)
             {
-                return BadRequest("This booklist be canceled.");
+                return BadRequest("This booklist can't eject.");
             }
 
             bookList.Status = BookList.StatusType.EJECT;
@@ -231,7 +264,45 @@ namespace SlothFlyingWeb.Controllers
                 _db.BookSlot.Remove(bookSlot);
             }
             await _db.SaveChangesAsync();
+            _cache.Remove($"BookSlotTable_{bookList.LabId}");
+            _cache.Remove($"UserBooked_{bookList.LabId}_{bookList.UserId}");
             return RedirectToAction("UserBooklist", "Search", $"{bookList.UserId}");
+        }
+
+        //API
+        [HttpGet("/Search/UserBooklist/{id}/{round:int}")]
+        public IActionResult BooklistApi(int? id, [FromRoute] int round)
+        {
+            if (HttpContext.Session.GetInt32("AdminId") == null)
+            {
+                return Unauthorized();
+            }
+
+            if (id == null || id <= 0)
+            {
+                return BadRequest();
+            }
+
+            int userId = (int)id;
+            List<BookList> bookList = _cache.Get<List<BookList>>($"SearchBooklist_{userId}");
+
+            if (bookList == null || round < 0 || bookList.Count <= round * 10)
+            {
+                return Json(new object[] { });
+            }
+
+            return Json(bookList.GetRange(round * 10, Math.Min(bookList.Count - round * 10, 10)).Select(bl =>
+                new
+                {
+                    Id = bl.Id,
+                    LabId = bl.LabId,
+                    ItemName = bl.ItemName,
+                    Date = bl.Date.ToString("ddd dd MMM yyyy"),
+                    From = $"{bl.From.ToString("D2")}.00",
+                    To = $"{bl.To.ToString("D2")}.00",
+                    Status = bl.Status
+                }
+            ));
         }
     }
 }

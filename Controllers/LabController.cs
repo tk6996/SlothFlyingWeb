@@ -2,6 +2,7 @@ using System.Threading.Tasks;
 using System.Collections.Generic;
 using System.Linq;
 using System;
+using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Extensions.Logging;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -15,10 +16,12 @@ namespace SlothFlyingWeb.Controllers
     {
         private readonly ILogger<LabController> _logger;
         private readonly ApplicationDbContext _db;
-        public LabController(ILogger<LabController> logger, ApplicationDbContext db)
+        private readonly IMemoryCache _cache;
+        public LabController(ILogger<LabController> logger, ApplicationDbContext db, IMemoryCache cache)
         {
             _logger = logger;
             _db = db;
+            _cache = cache;
         }
 
         public IActionResult Index()
@@ -44,6 +47,7 @@ namespace SlothFlyingWeb.Controllers
             }
 
             Lab lab = await _db.Lab.FindAsync(id);
+
             if (lab == null)
             {
                 return NotFound();
@@ -53,42 +57,96 @@ namespace SlothFlyingWeb.Controllers
 
             DateTime startDate = BangkokDateTime.now().Date;
             DateTime endDate = startDate.AddDays(14).Date;
+            DateTime cacheDate;
 
-            IEnumerable<BookSlot> bookSlots = _db.BookSlot.Where(bookSlot => bookSlot.LabId == lab.Id &&
-                                                                             startDate <= bookSlot.Date && bookSlot.Date < endDate);
+            Func<DateTime, object, bool> checkDateCurrent = (cacheDate, key) =>
+             {
+                 if (cacheDate < startDate)
+                 {
+                     _cache.Remove(key);
+                     return true;
+                 }
+                 return false;
+             };
 
-            //Console.WriteLine(bookSlots.Count());
-
-            lab.BookSlotTable = new int[9, 14];
-
-            for (int r = 0; r < 9; r++)
+            do
             {
-                for (int c = 0; c < 14; c++)
+                (lab.BookSlotTable, cacheDate) = await _cache.GetOrCreateAsync<(int[,], DateTime)>($"BookSlotTable_{lab.Id}", entry =>
                 {
-                    lab.BookSlotTable[r, c] = lab.Amount - bookSlots.Where(bookSlot => bookSlot.Date == startDate.AddDays(c).Date)
-                                                                    .Count(bookSlot => bookSlot.TimeSlot == r + 1);
-                }
-            }
+                    IEnumerable<BookSlot> bookSlots = _db.BookSlot.Where(bookSlot => bookSlot.LabId == lab.Id &&
+                                                                                     startDate <= bookSlot.Date && bookSlot.Date < endDate);
 
-            IEnumerable<BookList> bookLists = _db.BookList.Where(bl => bl.UserId == userId &&
-                                                                       bl.LabId == lab.Id &&
-                                                                       startDate <= bl.Date && bl.Date < endDate &&
-                                                                       bl.Status != BookList.StatusType.CANCEL && bl.Status != BookList.StatusType.EJECT);
+                    //Console.WriteLine(bookSlots.Count());
 
-            int[,] userBooked = new int[9, 14];
-            foreach (BookList bl in bookLists)
+                    int[,] bookSlotTable = new int[9, 14];
+
+                    for (int r = 0; r < 9; r++)
+                    {
+                        for (int c = 0; c < 14; c++)
+                        {
+                            bookSlotTable[r, c] = bookSlots.Where(bookSlot => bookSlot.Date == startDate.AddDays(c).Date)
+                                                           .Count(bookSlot => bookSlot.TimeSlot == r + 1);
+                        }
+                    }
+
+                    ApiUser apiUser = _db.ApiUser.Where(apiUser => apiUser.Enable && apiUser.LabId == lab.Id).FirstOrDefault();
+
+                    if (apiUser != null)
+                    {
+                        IEnumerable<ApiBookSlot> apiBookSlot = _db.ApiBookSlot.Where(bookSlot => bookSlot.LabId == lab.Id &&
+                                                                                     startDate <= bookSlot.Date && bookSlot.Date < endDate);
+                        for (int r = 0; r < 9; r++)
+                        {
+                            for (int c = 0; c < 14; c++)
+                            {
+                                if (bookSlotTable[r, c] < lab.Amount) // bookSlotTable is Full
+                                {
+                                    bookSlotTable[r, c] += apiBookSlot.Where(bookSlot => bookSlot.Date == startDate.AddDays(c).Date)
+                                                                      .Count(bookSlot => bookSlot.TimeSlot == r + 1);
+                                }
+                                // else
+                                // {
+                                //     // api check amount
+                                //     bookSlotTable[r, c] = lab.Amount - 1;
+                                // }
+                            }
+                        }
+                    }
+
+                    entry.SlidingExpiration = TimeSpan.FromMinutes(5);
+                    return Task.FromResult((bookSlotTable, startDate));
+                });
+            } while (checkDateCurrent(cacheDate, $"BookSlotTable_{lab.Id}"));
+
+            int[,] userBooked;
+            do
             {
-                for (int ts = bl.From; ts < bl.To; ts++)
+                (userBooked, cacheDate) = await _cache.GetOrCreateAsync<(int[,], DateTime)>($"UserBooked_{lab.Id}_{userId}", entry =>
                 {
-                    userBooked[ts - 8, (bl.Date.Date - startDate.Date).Days] = 1;
-                }
-            }
+                    IEnumerable<BookList> bookLists = _db.BookList.Where(bl => bl.UserId == userId &&
+                                                                               bl.LabId == lab.Id &&
+                                                                               startDate <= bl.Date && bl.Date < endDate &&
+                                                                               bl.Status != BookList.StatusType.CANCEL && bl.Status != BookList.StatusType.EJECT);
+
+                    int[,] booked = new int[9, 14];
+                    foreach (BookList bl in bookLists)
+                    {
+                        for (int ts = bl.From; ts < bl.To; ts++)
+                        {
+                            booked[ts - 8, (bl.Date.Date - startDate.Date).Days] = 1;
+                        }
+                    }
+
+                    entry.SlidingExpiration = TimeSpan.FromMinutes(1);
+                    return Task.FromResult((booked, startDate));
+                });
+            } while (checkDateCurrent(cacheDate, $"UserBooked_{lab.Id}_{userId}"));
 
             User user = await _db.User.FindAsync(userId);
 
             ViewBag.userBlacklist = user.BlackList;
             ViewBag.userBooked = userBooked;
-            ViewBag.startDate = startDate.Date;
+            ViewBag.startDate = startDate;
             return View(lab);
         }
 
@@ -103,8 +161,19 @@ namespace SlothFlyingWeb.Controllers
                 return Unauthorized();
             }
 
+            if (bookRanges == null)
+            {
+                return BadRequest();
+            }
+
             int userId = (int)HttpContext.Session.GetInt32("Id");
-            int labId = id;
+            Lab lab = _db.Lab.Find(id);
+
+            if (lab == null)
+            {
+                return BadRequest();
+            }
+
             DateTime startDate = BangkokDateTime.now().Date;
             int[,] BookSlotTable = new int[14, 9];
             lock (BookingLock._lock)
@@ -171,7 +240,16 @@ namespace SlothFlyingWeb.Controllers
                             // You have already booked this period.
                             return BadRequest();
                         }
-                        if (_db.BookSlot.Where(bs => bs.LabId == labId).Where(bs => bs.Date == dateValue).Count(bs => bs.TimeSlot == slot - 7) >= _db.Lab.Find(labId).Amount)
+
+                        int amountBooking = _db.BookSlot.Where(bs => bs.LabId == lab.Id && bs.Date == dateValue).Count(bs => bs.TimeSlot == slot - 7);
+                        ApiUser apiUser = _db.ApiUser.Where(apiUser => apiUser.Enable && apiUser.LabId == lab.Id).FirstOrDefault();
+                        if (apiUser != null)
+                        {
+                            int amountApiBooking = _db.ApiBookSlot.Where(bs => bs.LabId == apiUser.LabId && bs.Date == dateValue).Count(bs => bs.TimeSlot == slot - 7);
+                            amountBooking += amountApiBooking;
+                        }
+
+                        if (amountBooking >= lab.Amount)
                         {
                             // You cannot enter the period that items full.
                             return BadRequest();
@@ -199,7 +277,7 @@ namespace SlothFlyingWeb.Controllers
                             BookList bl = new BookList()
                             {
                                 UserId = userId,
-                                LabId = labId,
+                                LabId = lab.Id,
                                 Date = startDate.AddDays(date),
                                 From = start,
                                 To = end,
@@ -212,7 +290,7 @@ namespace SlothFlyingWeb.Controllers
                                 _db.BookSlot.Add(new BookSlot()
                                 {
                                     BookListId = bl.Id,
-                                    LabId = labId,
+                                    LabId = lab.Id,
                                     Date = startDate.AddDays(date),
                                     TimeSlot = slot - 7
                                 });
@@ -226,7 +304,7 @@ namespace SlothFlyingWeb.Controllers
                         BookList bl = new BookList()
                         {
                             UserId = userId,
-                            LabId = labId,
+                            LabId = lab.Id,
                             Date = startDate.AddDays(date),
                             From = start,
                             To = end,
@@ -239,7 +317,7 @@ namespace SlothFlyingWeb.Controllers
                             _db.BookSlot.Add(new BookSlot()
                             {
                                 BookListId = bl.Id,
-                                LabId = labId,
+                                LabId = lab.Id,
                                 Date = startDate.AddDays(date),
                                 TimeSlot = slot - 7
                             });
@@ -248,6 +326,8 @@ namespace SlothFlyingWeb.Controllers
                     }
                 }
             }
+            _cache.Remove($"BookSlotTable_{lab.Id}");
+            _cache.Remove($"UserBooked_{lab.Id}_{userId}");
             return Ok("Ok");
         }
     }
