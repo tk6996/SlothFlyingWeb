@@ -343,7 +343,7 @@ namespace SlothFlyingWeb.Controllers
             _cache.Remove($"BookSlotTable_{apiBookList.LabId}");
             return Json(new
             {
-                ItemName = apiBookList.LabId,
+                LabName = apiBookList.ItemName,
                 Date = apiBookList.Date.ToString("dd-MMM-yyyy"),
                 From = apiBookList.From,
                 To = apiBookList.To,
@@ -419,7 +419,7 @@ namespace SlothFlyingWeb.Controllers
                     To = bl.To,
                     Status = bl.Status.ToString()
                 }),
-                TimeSpan = BangkokDateTime.now().ToString("dd-MMM-yyyy HH:mm:ss")
+                TimeStamp = BangkokDateTime.now().ToString("dd-MMM-yyyy HH:mm:ss")
             });
         }
     }

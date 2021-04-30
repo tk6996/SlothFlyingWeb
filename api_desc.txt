@@ -1,0 +1,125 @@
+RouteName: CancelBooking
+HeaderRequired: ApiKey
+Description:
+    เป็น Api สำหรับยกเลิกรายการที่จองไว้
+ฺBody: 
+    Content-Type: application/json charset=utf-8
+    JsonSchema: { "id" : "integer" }
+Response: 
+    Content-Type: application/json charset=utf-8
+    JsonSchema: {
+        "labName": { "type": "string" },
+        "date": { "type": "string" },
+        "from": { "type": "integer" },
+        "to": { "type": "integer" },
+        "status": { 
+          "type": "string" , 
+          "enum" : [
+            "USING",
+            "COMING",
+            "FINISHED",
+            "CANCEL",
+            "EJECT"
+          ]
+        }
+        "TimeStamp": {
+          "type": "string"
+        }
+      }
+
+RouteName: GetBooking
+HeaderRequired: ApiKey
+Description:
+    เป็น Api สำหรับดึง จำนวนของที่สามารถยืมได้ที่เหลือในแต่ละช่วงเวลา
+Response: 
+    Content-Type: application/json charset=utf-8
+    JsonSchema: {
+        "labName": { "type": "string" },
+        "startDate": { "type": "string" },
+        "endDate": { "type": "string" },
+        "from": { "type": "integer" },
+        "to": { "type": "integer" },
+        "bookSlotTable": {
+          "type": "array",
+          "items": [
+              {
+                "type": "array",
+                "items": [ { "type": "integer" } ]
+              }
+            ]
+        }
+        "TimeStamp": {
+          "type": "string"
+        }
+      }
+
+RouteName: GetBooking
+HeaderRequired: ApiKey
+Description:
+    เป็น Api สำหรับดึง Booklist ที่ได้ทำการจองในระบบ
+Response: 
+    Content-Type: application/json charset=utf-8
+    JsonSchema: {
+        "bookLists": 
+          "type": "array",
+          "items": 
+              [
+                {
+                  "type": "object",
+                  "properties": {
+                    "id": { "type": "integer" },
+                    "labName": { "type": "string" },
+                    "date": { "type": "string" },
+                    "from": { "type": "integer" },
+                    "to": { "type": "integer" },
+                    "status": { 
+                      "type": "string" , 
+                      "enum" : [
+                        "USING",
+                        "COMING",
+                        "FINISHED",
+                        "CANCEL",
+                        "EJECT"
+                        ]
+                      }
+                  },
+                }
+              ]
+            },
+        "TimeStamp": {
+          "type": "string"
+        }
+      }
+
+RouteName: SetBooking
+HeaderRequired: ApiKey
+Description:
+    เป็น Api สำหรับจองตารางเวลาสำหรับยืม
+Body:
+    Content-Type: application/json charset=utf-8
+    JsonSchema: [
+        {
+            "date" : { "type": "integer" }, // Unix Time millisecond 
+            "from": { "type": "integer" }, // Hour 8 - 16
+            "to": { "type": "integer" } // Hour 9 - 17
+        }
+    ]
+Response: 
+    Content-Type: application/json charset=utf-8
+    JsonSchema: {
+        "labName": { "type": "string" },
+        "bookListResult": {
+          "type": "array",
+          "items": [
+              {
+                "bookListId" : { "type": "integer" },
+                "date" : { "type": "string" }, 
+                "from": { "type": "integer" },
+                "to": { "type": "integer" }
+              }
+            ]
+        }
+        "TimeStamp": {
+          "type": "string"
+        }
+      }
