@@ -24,6 +24,7 @@ namespace SlothFlyingWeb.Models
 
         [Required]
         [EmailAddress]
+        [DataType(DataType.EmailAddress)]
         public string Email { get; set; }
 
         [Required]

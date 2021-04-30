@@ -52,10 +52,11 @@ function createBooklistTable(booklist, date, timeslot) {
   let result = document.createElement("div");
   result.className = "book-list-range";
   let title = document.createElement("h2");
-  title.innerHTML = `${day[date.getDay()]} ${date.getDate()} ${month[date.getMonth()]
-    } @ ${String(timeslot + 7).padStart(2, "0")}.00 - ${String(
-      timeslot + 8
-    ).padStart(2, "0")}.00`;
+  title.innerHTML = `${day[date.getDay()]} ${date.getDate()} ${
+    month[date.getMonth()]
+  } @ ${String(timeslot + 7).padStart(2, "0")}.00 - ${String(
+    timeslot + 8
+  ).padStart(2, "0")}.00`;
   result.appendChild(title);
 
   if (booklist.length) {
@@ -87,7 +88,7 @@ function createBooklistTable(booklist, date, timeslot) {
       user_name = document.createElement("td");
       trBody.appendChild(user_name).appendChild(user_img);
       //user fullname
-      user_name.appendChild(document.createTextNode(booklist[i].fullname));
+      user_name.appendChild(document.createTextNode(booklist[i].fullName));
       //from
       trBody.appendChild(document.createElement("td")).innerHTML = `${String(
         booklist[i].from
@@ -110,12 +111,16 @@ function createBooklistTable(booklist, date, timeslot) {
       //icon
       tdIcon = document.createElement("td");
       //view user icon
-      v_icon = document.createElement("i");
-      v_icon.className = "fas fa-eye view-button";
-      v_icon.onclick = function () {
-        window.location.pathname = `Search/UserProfile/${booklist[i].userId}`;
-      };
-      trBody.appendChild(tdIcon).appendChild(v_icon);
+      if (booklist[i].userId < 1000000000) {
+        v_icon = document.createElement("i");
+        v_icon.className = "fas fa-eye view-button";
+        v_icon.onclick = () => {
+          window.location.pathname = `Search/UserProfile/${booklist[i].userId}`;
+        };
+        tdIcon.appendChild(v_icon);
+      }
+
+      trBody.appendChild(tdIcon);
       //cancel icon
       c_icon = document.createElement("i");
       if (
@@ -124,7 +129,10 @@ function createBooklistTable(booklist, date, timeslot) {
       ) {
         c_icon.className = "fas fa-times-circle cancel-button";
         c_icon.onclick = function () {
-          confirmPopUpOnForm({ id: booklist[i].booklistId });
+          confirmPopUpOnForm({
+            id: booklist[i].booklistId,
+            api: booklist[i].userId >= 1000000000,
+          });
         };
       }
       trBody.appendChild(tdIcon).appendChild(c_icon);

@@ -20,6 +20,11 @@ namespace SlothFlyingWeb.Data
             db.Admin.Add(admin);
             db.SaveChanges();
 
+            ApiUser apiUser = new ApiUser { Id = 1000000001 ,Name = "SlothFlying2", ApiKey = "U2xvdGhGbHlpbmcy", ImageUrl = "~/assets/images/brand.jpg", LabId = 1, Enable = false };
+
+            db.ApiUser.Add(apiUser);
+            db.SaveChanges();
+
             Lab[] labs = new Lab[]
             {
                 new Lab{Id = 1, ItemName = "Osciloscope",ImageUrl = "~/images/labs/Oscilloscope.png", Amount = 10},

@@ -218,15 +218,24 @@ namespace SlothFlyingWeb.Controllers
             return View(bl.GetRange(0, Math.Min(bl.Count, 10)));
         }
 
-        [HttpPost]
+        [HttpPost("/Search/UserBooklist/{userId}")]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> UserBooklist([FromForm] int id)
+        public async Task<IActionResult> UserBooklist([FromRoute] int? userId, [FromForm] int? id)
         {
             if (HttpContext.Session.GetInt32("AdminId") == null)
             {
                 return RedirectToAction("Login", "Admin");
             }
 
+            if (userId == null || userId < 0)
+            {
+                return BadRequest("Url is not valid.");
+            }
+
+            if (id == null || id < 0)
+            {
+                return BadRequest("Body is not valid.");
+            }
 
             BookList bookList = await _db.BookList.FindAsync(id);
 
@@ -235,11 +244,16 @@ namespace SlothFlyingWeb.Controllers
                 return BadRequest("The Booklist not found.");
             }
 
+            if (bookList.UserId != userId)
+            {
+                return BadRequest("BooklistId and User not match.");
+            }
+
             if (bookList.Status == BookList.StatusType.FINISHED ||
                 bookList.Status == BookList.StatusType.CANCEL ||
                 bookList.Status == BookList.StatusType.EJECT)
             {
-                return BadRequest("This booklist be canceled.");
+                return BadRequest("This booklist can't eject.");
             }
 
             bookList.Status = BookList.StatusType.EJECT;

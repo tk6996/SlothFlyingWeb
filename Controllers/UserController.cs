@@ -249,13 +249,19 @@ namespace SlothFlyingWeb.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Booklist([FromForm] int id)
+        public async Task<IActionResult> Booklist([FromForm] int? id)
         {
             if (HttpContext.Session.GetInt32("Id") == null)
             {
                 return RedirectToAction("Login");
             }
             int userId = (int)HttpContext.Session.GetInt32("Id");
+
+            if (id == null || id < 0)
+            {
+                return BadRequest();
+            }
+
             BookList bookList = await _db.BookList.FindAsync(id);
 
             if (bookList == null)
@@ -272,7 +278,7 @@ namespace SlothFlyingWeb.Controllers
                 bookList.Status == BookList.StatusType.CANCEL ||
                 bookList.Status == BookList.StatusType.EJECT)
             {
-                return BadRequest("This booklist be canceled.");
+                return BadRequest("This booklist can't cancel.");
             }
 
             bookList.Status = BookList.StatusType.CANCEL;
