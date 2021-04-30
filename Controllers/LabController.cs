@@ -34,6 +34,7 @@ namespace SlothFlyingWeb.Controllers
             return View(labs);
         }
 
+        //TODO: if connect API Booking
         public async Task<IActionResult> Booking(int? id)
         {
             if (HttpContext.Session.GetInt32("Id") == null)
@@ -151,6 +152,7 @@ namespace SlothFlyingWeb.Controllers
         }
 
         // API
+        //TODO: if Full booking API
         [HttpPost]
         [ValidateAntiForgeryToken]
         public IActionResult Booking(int id, [FromBody] IEnumerable<BookRange> bookRanges)

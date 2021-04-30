@@ -38,6 +38,7 @@ namespace SlothFlyingWeb.Controllers
             return View(labs);
         }
 
+        //TODO: if connect API Booking
         public async Task<IActionResult> ViewItem(int? id)
         {
             if (HttpContext.Session.GetInt32("AdminId") == null)
@@ -123,6 +124,7 @@ namespace SlothFlyingWeb.Controllers
             return View(lab);
         }
 
+        //TODO: if eject booklist -> cancel request
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> ViewItem([FromForm] int? id, [FromForm] bool api)
