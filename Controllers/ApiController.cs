@@ -104,7 +104,7 @@ namespace SlothFlyingWeb.Controllers
                 int[] arr = new int[9];
                 for (int c = 0; c < 9; c++)
                 {
-                    arr[c] = lab.BookSlotTable[c, r];
+                    arr[c] = lab.Amount > lab.BookSlotTable[c, r] ? lab.Amount - lab.BookSlotTable[c, r] : 0;
                 }
                 result[r] = arr;
             }
