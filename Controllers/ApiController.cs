@@ -328,7 +328,7 @@ namespace SlothFlyingWeb.Controllers
                 apiBookList.Status == ApiBookList.StatusType.CANCEL ||
                 apiBookList.Status == ApiBookList.StatusType.EJECT)
             {
-                return BadRequest("This booklist can not cancel.");
+                return BadRequest("This booklist can't cancel.");
             }
 
             apiBookList.Status = ApiBookList.StatusType.CANCEL;

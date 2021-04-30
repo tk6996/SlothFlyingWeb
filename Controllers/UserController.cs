@@ -296,6 +296,7 @@ namespace SlothFlyingWeb.Controllers
         }
 
         // API
+        //TODO: if eject booklist -> eject request
         [HttpGet("/User/Booklist/{round:int}")]
         public IActionResult BooklistApi([FromRoute] int round)
         {
