@@ -63,7 +63,8 @@ function appendList(booklist, index) {
     booklist.status == StatusType.USING ||
     booklist.status == StatusType.COMING
   ) {
-    cancelCell.className = "icon";
+    cancelDiv = document.createElement("div");
+    cancelDiv.className = "icon";
     const icon = document.createElement("i");
     icon.className = "fas fa-times-circle";
     icon.addEventListener("onclick", () =>
@@ -71,7 +72,11 @@ function appendList(booklist, index) {
         id: booklist.id,
       })
     );
-    cancelCell.appendChild(icon);
+    const tooltip = document.createElement("span");
+    tooltip.innerHTML = "Cancel"
+    tooltip.className = "tooltip"
+    cancelCell.appendChild(cancelDiv).appendChild(icon)
+    cancelDiv.appendChild(tooltip);
   }
 
   tr.appendChild(indexCell);
