@@ -63,3 +63,16 @@ function confirmPopUpOnForm(object) {
     }
   }
 }
+
+/**
+ * @param {HTMLElement} element
+ * @returns {[number,number]}
+ */
+function getPosition(element) {
+  let [x, y] = [0, 0];
+  while (element) {
+    [x, y] = [x + element.offsetLeft, y + element.offsetTop];
+    element = element.offsetParent;
+  }
+  return [x, y];
+}

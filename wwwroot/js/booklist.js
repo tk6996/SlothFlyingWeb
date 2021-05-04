@@ -67,15 +67,16 @@ function appendList(booklist, index) {
     cancelDiv.className = "icon";
     const icon = document.createElement("i");
     icon.className = "fas fa-times-circle";
-    icon.addEventListener("onclick", () =>
+    icon.addEventListener("click", () =>
       confirmPopUpOnForm({
         id: booklist.id,
       })
     );
+    icon.addEventListener("mouseover", setOverPosition);
     const tooltip = document.createElement("span");
-    tooltip.innerHTML = "Cancel"
-    tooltip.className = "tooltip"
-    cancelCell.appendChild(cancelDiv).appendChild(icon)
+    tooltip.innerHTML = "Cancel";
+    tooltip.className = "tooltip";
+    cancelCell.appendChild(cancelDiv).appendChild(icon);
     cancelDiv.appendChild(tooltip);
   }
 
@@ -97,7 +98,10 @@ function appendList(booklist, index) {
  */
 async function fetchList(round) {
   try {
-    let booklists = await makeRequest("GET", `${window.location.pathname}/${round}`);
+    let booklists = await makeRequest(
+      "GET",
+      `${window.location.pathname}/${round}`
+    );
     booklists = JSON.parse(booklists);
     if (booklists.length === 0) {
       document.querySelector("tbody").removeEventListener("scroll", loadScroll);
@@ -132,4 +136,19 @@ async function loadScroll() {
   }
 }
 
-document.querySelector("tbody").addEventListener("scroll", loadScroll);
+/**
+ * @param {Event} event
+ */
+function setOverPosition(event) {
+  const tbody = document.querySelector("tbody");
+  const icon = event.target;
+  const iconContainer = event.target.parentElement;
+  const tooltip = event.target.parentElement.children[1];
+  iconContainer.style.position = "static";
+  tooltip.style.top =
+    getPosition(icon)[1] - tbody.scrollTop - tooltip.offsetHeight - 70 + "px";
+}
+
+if (document.querySelector(".bottom")) {
+  document.querySelector("tbody").addEventListener("scroll", loadScroll);
+}

@@ -63,15 +63,22 @@ function appendList(booklist, index) {
     booklist.status == StatusType.USING ||
     booklist.status == StatusType.COMING
   ) {
-    cancelCell.className = "icon";
     const icon = document.createElement("i");
     icon.className = "fas fa-times-circle";
-    icon.addEventListener("onclick", () =>
+    icon.addEventListener("click", () =>
       confirmPopUpOnForm({
         id: booklist.id,
       })
     );
-    cancelCell.appendChild(icon);
+    icon.addEventListener("mouseover", setOverPosition);
+    const iconContainer = document.createElement("div");
+    const tooltip = document.createElement("span");
+    tooltip.innerHTML = "Cancel";
+    tooltip.className = "tooltip";
+    iconContainer.className = "icon";
+    iconContainer.appendChild(icon);
+    iconContainer.appendChild(tooltip);
+    cancelCell.appendChild(iconContainer);
   }
 
   tr.appendChild(indexCell);
@@ -92,7 +99,10 @@ function appendList(booklist, index) {
  */
 async function fetchList(round) {
   try {
-    let booklists = await makeRequest("GET", `${window.location.pathname}/${round}`);
+    let booklists = await makeRequest(
+      "GET",
+      `${window.location.pathname}/${round}`
+    );
     booklists = JSON.parse(booklists);
     if (booklists.length === 0) {
       document.querySelector("tbody").removeEventListener("scroll", loadScroll);
@@ -127,4 +137,19 @@ async function loadScroll() {
   }
 }
 
-document.querySelector("tbody").addEventListener("scroll", loadScroll);
+/**
+ * @param {Event} event
+ */
+function setOverPosition(event) {
+  const tbody = document.querySelector("tbody");
+  const icon = event.target;
+  const iconContainer = event.target.parentElement;
+  const tooltip = event.target.parentElement.children[1];
+  iconContainer.style.position = "static";
+  tooltip.style.top =
+    getPosition(icon)[1] - tbody.scrollTop - tooltip.offsetHeight - 90 + "px";
+}
+
+if (document.querySelector(".bottom")) {
+  document.querySelector("tbody").addEventListener("scroll", loadScroll);
+}

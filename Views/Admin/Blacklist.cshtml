@@ -50,9 +50,9 @@ else
                         }
                         <td>
                             <div class="icon"><a asp-controller="Search" asp-action="UserProfile" asp-route-Id="@user.Id"><i
-                                class="fas fa-eye view-button"></i></a><span class="tooltip">View</span></div>
+                                class="fas fa-eye view-button" onmouseover="setOverPositionView(event);"></i></a><span class="tooltip">View</span></div>
                             <div class="icon"><i class="fas fa-times-circle cancel-button"
-                            onclick="confirmPopUpOnForm({id : '@user.Id'});"></i><span class="tooltip">Unblacklist</span>
+                            onclick="confirmPopUpOnForm({id : '@user.Id'});" onmouseover="setOverPosition(event);"></i><span class="tooltip">Unblacklist</span>
                             </div>
                         </td>
                     </tr>
@@ -71,9 +71,6 @@ else
 <p style="font-size: 24px;">Would you like to unblacklist this user ?</p>
 }
 
-@if (Model.Count() > 0)
-{
-    @section Scripts {
+@section Scripts {
 <script src="~/js/blacklist.js"></script>
-}
 }

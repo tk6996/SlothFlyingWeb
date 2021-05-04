@@ -65,8 +65,8 @@ else
             @if (bookList.Status == BookList.StatusType.USING || bookList.Status == BookList.StatusType.COMING)
             {
               <td>
-                <div class="icon"><i class="fas fa-times-circle" onclick="confirmPopUpOnForm({id : '@bookList.Id'});"></i><span
-              class="tooltip">Cancel</span></div>
+                <div class="icon"><i class="fas fa-times-circle" onclick="confirmPopUpOnForm({id : '@bookList.Id'});"
+              onmouseover="setOverPosition(event);"></i><span class="tooltip">Cancel</span></div>
               </td>
             }
             else
