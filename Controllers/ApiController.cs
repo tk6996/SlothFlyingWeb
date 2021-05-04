@@ -104,7 +104,7 @@ namespace SlothFlyingWeb.Controllers
                 int[] arr = new int[9];
                 for (int c = 0; c < 9; c++)
                 {
-                    arr[c] = lab.BookSlotTable[c, r];
+                    arr[c] = lab.Amount > lab.BookSlotTable[c, r] ? lab.Amount - lab.BookSlotTable[c, r] : 0;
                 }
                 result[r] = arr;
             }
@@ -343,7 +343,7 @@ namespace SlothFlyingWeb.Controllers
             _cache.Remove($"BookSlotTable_{apiBookList.LabId}");
             return Json(new
             {
-                ItemName = apiBookList.LabId,
+                LabName = apiBookList.ItemName,
                 Date = apiBookList.Date.ToString("dd-MMM-yyyy"),
                 From = apiBookList.From,
                 To = apiBookList.To,
@@ -352,7 +352,7 @@ namespace SlothFlyingWeb.Controllers
             });
         }
 
-        public async Task<IActionResult> GetBookList([FromHeader] string ApiKey)
+        public async Task<IActionResult> GetBooklist([FromHeader] string ApiKey)
         {
             ApiUser apiUser = _db.ApiUser.Where(apiUser => apiUser.Enable && apiUser.ApiKey == ApiKey).FirstOrDefault();
 
@@ -401,12 +401,18 @@ namespace SlothFlyingWeb.Controllers
             }
             await _db.SaveChangesAsync();
 
-            IEnumerable<ApiBookList> apibl = apiBookLists.OrderBy(bl => bl.Status)
-                                                  .ThenByDescending(bl => bl.Date)
-                                                  .ThenBy(bl => bl.From)
-                                                  .ThenBy(bl => bl.To)
-                                                  .ThenBy(bl => bl.LabId)
-                                                  .ToList();
+            IEnumerable<ApiBookList> apibl = apiBookLists.Where(bl => bl.Status <= ApiBookList.StatusType.COMING)
+                                                         .OrderBy(bl => bl.Date)
+                                                         .ThenBy(bl => bl.From)
+                                                         .ThenBy(bl => bl.To)
+                                                         .ThenBy(bl => bl.LabId)
+                                                         .Concat(
+                                             apiBookLists.Where(bl => bl.Status > ApiBookList.StatusType.COMING)
+                                                         .OrderByDescending(bl => bl.Date)
+                                                         .ThenBy(bl => bl.From)
+                                                         .ThenBy(bl => bl.To)
+                                                         .ThenBy(bl => bl.LabId))
+                                                         .ToList();
 
             return Json(new
             {
@@ -419,7 +425,7 @@ namespace SlothFlyingWeb.Controllers
                     To = bl.To,
                     Status = bl.Status.ToString()
                 }),
-                TimeSpan = BangkokDateTime.now().ToString("dd-MMM-yyyy HH:mm:ss")
+                TimeStamp = BangkokDateTime.now().ToString("dd-MMM-yyyy HH:mm:ss")
             });
         }
     }

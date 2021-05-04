@@ -234,11 +234,17 @@ namespace SlothFlyingWeb.Controllers
             }
             await _db.SaveChangesAsync();
 
-            List<BookList> bl = _cache.Set<List<BookList>>($"UserBooklist_{userId}", bookLists.OrderBy(bl => bl.Status)
-                                                                                              .ThenByDescending(bl => bl.Date)
+            List<BookList> bl = _cache.Set<List<BookList>>($"UserBooklist_{userId}", bookLists.Where(bl => bl.Status <= BookList.StatusType.COMING)
+                                                                                              .OrderBy(bl => bl.Date)
                                                                                               .ThenBy(bl => bl.From)
                                                                                               .ThenBy(bl => bl.To)
                                                                                               .ThenBy(bl => bl.LabId)
+                                                                                              .Concat(
+                                                                                     bookLists.Where(bl => bl.Status > BookList.StatusType.COMING)
+                                                                                              .OrderByDescending(bl => bl.Date)
+                                                                                              .ThenBy(bl => bl.From)
+                                                                                              .ThenBy(bl => bl.To)
+                                                                                              .ThenBy(bl => bl.LabId))
                                                                                               .ToList(), new MemoryCacheEntryOptions()
                                                                                               {
                                                                                                   SlidingExpiration = TimeSpan.FromMinutes(1)

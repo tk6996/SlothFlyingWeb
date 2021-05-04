@@ -18,7 +18,14 @@
     <div class="title">Email</div>
     <div id="Email">@Model.Email</div>
     <div class="title">Phone</div>
-    <div id="Phone">@($"{Convert.ToInt64(Model.Phone):000-000-0000}")</div>
+    @if (Model.Phone.Length == 10)
+    {
+      <div id="phone">@($"{Convert.ToInt64(Model.Phone):000-000-0000}")</div>
+    }
+    else
+    {
+      <div id="phone">@($"{Convert.ToInt64(Model.Phone):000-000-000}")</div>
+    }
     <div class="title">User ID</div>
     <div id="Id">@Model.Id.ToString("D8")</div>
     <div class="title">Joined</div>

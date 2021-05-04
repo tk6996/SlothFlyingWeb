@@ -40,7 +40,14 @@ else
                         <td><img src='@Url.Content(user.ImageUrl != "" ? user.ImageUrl : "~/assets/images/brand.jpg")'
                         alt="user_image" /> @($"{user.FirstName} {user.LastName}")</td>
                         <td>@user.Email</td>
-                        <td>@($"{Convert.ToInt64(user.Phone):000-000-0000}")</td>
+                        @if (user.Phone.Length == 10)
+                        {
+                            <td>@($"{Convert.ToInt64(user.Phone):000-000-0000}")</td>
+                        }
+                        else
+                        {
+                            <td>@($"{Convert.ToInt64(user.Phone):000-000-000}")</td>
+                        }
                         <td class="icon">
                             <a asp-controller="Search" asp-action="UserProfile" asp-route-Id="@user.Id">
                                 <i class="fas fa-eye view-button"></i></a>
@@ -65,6 +72,6 @@ else
 @if (Model.Count() > 0)
 {
     @section Scripts {
-    <script src="~/js/blacklist.js"></script>
-    }
+<script src="~/js/blacklist.js"></script>
+}
 }
