@@ -401,12 +401,18 @@ namespace SlothFlyingWeb.Controllers
             }
             await _db.SaveChangesAsync();
 
-            IEnumerable<ApiBookList> apibl = apiBookLists.OrderBy(bl => bl.Status)
-                                                  .ThenByDescending(bl => bl.Date)
-                                                  .ThenBy(bl => bl.From)
-                                                  .ThenBy(bl => bl.To)
-                                                  .ThenBy(bl => bl.LabId)
-                                                  .ToList();
+            IEnumerable<ApiBookList> apibl = apiBookLists.Where(bl => bl.Status <= ApiBookList.StatusType.COMING)
+                                                         .OrderBy(bl => bl.Date)
+                                                         .ThenBy(bl => bl.From)
+                                                         .ThenBy(bl => bl.To)
+                                                         .ThenBy(bl => bl.LabId)
+                                                         .Concat(
+                                             apiBookLists.Where(bl => bl.Status > ApiBookList.StatusType.COMING)
+                                                         .OrderByDescending(bl => bl.Date)
+                                                         .ThenBy(bl => bl.From)
+                                                         .ThenBy(bl => bl.To)
+                                                         .ThenBy(bl => bl.LabId))
+                                                         .ToList();
 
             return Json(new
             {

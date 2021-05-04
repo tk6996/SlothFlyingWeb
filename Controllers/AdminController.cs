@@ -130,7 +130,7 @@ namespace SlothFlyingWeb.Controllers
                     ImageUrl = Url.Content(user.ImageUrl != "" ? user.ImageUrl : "~/assets/images/brand.jpg"),
                     Name = $"{user.FirstName} {user.LastName}",
                     Email = user.Email,
-                    Phone = $"{Convert.ToInt64(user.Phone):000-000-0000}"
+                    Phone = user.Phone.Length == 10 ? $"{Convert.ToInt64(user.Phone):000-000-0000}" : $"{Convert.ToInt64(user.Phone):000-000-000}"
                 }
             ));
         }
