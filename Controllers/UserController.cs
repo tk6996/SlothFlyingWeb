@@ -84,6 +84,8 @@ namespace SlothFlyingWeb.Controllers
                 return View(user);
             }
             HttpContext.Session.SetInt32("Id", loggedInUser.Id);
+            TempData["BlackList"] = loggedInUser.BlackList;
+            TempData.Save();
             return RedirectToAction("Index", "Lab");
         }
 

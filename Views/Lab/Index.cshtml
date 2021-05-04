@@ -23,3 +23,11 @@
         </div>
     }
 </div>
+
+@if (TempData["BlackList"] != null && (bool)TempData["BlackList"] == true)
+{
+    @section Scripts{
+<script>alert("You are blacklisted. Please contact the administrator.");</script>
+}
+    TempData.Clear();
+}
