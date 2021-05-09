@@ -110,20 +110,18 @@ function createBooklistTable(booklist, date, timeslot) {
       //icon
       tdIcon = document.createElement("td");
       //view user icon
-      if (booklist[i].userId < 1000000000) {
-        v_icon = document.createElement("i");
-        v_icon.className = "fas fa-eye view-button";
-        v_icon.onclick = () => {
-          window.location.pathname = `Search/UserProfile/${booklist[i].userId}`;
-        };
-        v_icon_div = document.createElement("div");
-        v_icon_div.className = "icon";
-        v_tooltip = document.createElement("span");
-        v_tooltip.innerHTML = "View";
-        v_tooltip.className = "tooltip";
-        tdIcon.appendChild(v_icon_div).appendChild(v_icon);
-        v_icon_div.appendChild(v_tooltip);
-      }
+      v_icon = document.createElement("i");
+      v_icon.className = "fas fa-eye view-button";
+      v_icon.onclick = () => {
+        window.location.pathname = `Search/UserProfile/${booklist[i].userId}`;
+      };
+      v_icon_div = document.createElement("div");
+      v_icon_div.className = "icon";
+      v_tooltip = document.createElement("span");
+      v_tooltip.innerHTML = "View";
+      v_tooltip.className = "tooltip";
+      tdIcon.appendChild(v_icon_div).appendChild(v_icon);
+      v_icon_div.appendChild(v_tooltip);
 
       //cancel icon
       c_icon = document.createElement("i");

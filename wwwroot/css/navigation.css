@@ -10,6 +10,7 @@
 .brand {
   display: flex;
   flex-direction: row;
+  text-decoration: none;
 }
 
 .brand-img {

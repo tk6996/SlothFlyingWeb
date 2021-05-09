@@ -4,10 +4,10 @@
 }
 
 <nav class="navbar">
-    <div class="brand">
+    <a asp-controller="Lab" asp-action="Index" class="brand">
         <img src="~/assets/images/brand.jpg" alt="logo" class="brand-img" />
         <div class="brand-text">Sloth Flying Lab</div>
-    </div>
+    </a>
     <div class="menu">
         <a id="lab" asp-controller="Lab" asp-action="Index" class='@("Lab" == controller ? "active" : "")'>Lab</a>
         <a id="booklist" asp-controller="User" asp-action="Booklist"
