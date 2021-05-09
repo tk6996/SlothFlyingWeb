@@ -34,7 +34,6 @@ namespace SlothFlyingWeb.Controllers
             return View(labs);
         }
 
-        //TODO: if connect API Booking
         public async Task<IActionResult> Booking(int? id)
         {
             if (HttpContext.Session.GetInt32("Id") == null)
@@ -90,30 +89,6 @@ namespace SlothFlyingWeb.Controllers
                         }
                     }
 
-                    ApiUser apiUser = _db.ApiUser.Where(apiUser => apiUser.Enable && apiUser.LabId == lab.Id).FirstOrDefault();
-
-                    if (apiUser != null)
-                    {
-                        IEnumerable<ApiBookSlot> apiBookSlot = _db.ApiBookSlot.Where(bookSlot => bookSlot.LabId == lab.Id &&
-                                                                                     startDate <= bookSlot.Date && bookSlot.Date < endDate);
-                        for (int r = 0; r < 9; r++)
-                        {
-                            for (int c = 0; c < 14; c++)
-                            {
-                                if (bookSlotTable[r, c] < lab.Amount) // bookSlotTable is Full
-                                {
-                                    bookSlotTable[r, c] += apiBookSlot.Where(bookSlot => bookSlot.Date == startDate.AddDays(c).Date)
-                                                                      .Count(bookSlot => bookSlot.TimeSlot == r + 1);
-                                }
-                                // else
-                                // {
-                                //     // api check amount
-                                //     bookSlotTable[r, c] = lab.Amount - 1;
-                                // }
-                            }
-                        }
-                    }
-
                     entry.SlidingExpiration = TimeSpan.FromMinutes(5);
                     return Task.FromResult((bookSlotTable, startDate));
                 });
@@ -152,7 +127,6 @@ namespace SlothFlyingWeb.Controllers
         }
 
         // API
-        //TODO: if Full booking API
         [HttpPost]
         [ValidateAntiForgeryToken]
         public IActionResult Booking(int id, [FromBody] IEnumerable<BookRange> bookRanges)
@@ -243,15 +217,7 @@ namespace SlothFlyingWeb.Controllers
                             return BadRequest();
                         }
 
-                        int amountBooking = _db.BookSlot.Where(bs => bs.LabId == lab.Id && bs.Date == dateValue).Count(bs => bs.TimeSlot == slot - 7);
-                        ApiUser apiUser = _db.ApiUser.Where(apiUser => apiUser.Enable && apiUser.LabId == lab.Id).FirstOrDefault();
-                        if (apiUser != null)
-                        {
-                            int amountApiBooking = _db.ApiBookSlot.Where(bs => bs.LabId == apiUser.LabId && bs.Date == dateValue).Count(bs => bs.TimeSlot == slot - 7);
-                            amountBooking += amountApiBooking;
-                        }
-
-                        if (amountBooking >= lab.Amount)
+                        if (_db.BookSlot.Where(bs => bs.LabId == lab.Id && bs.Date == dateValue).Count(bs => bs.TimeSlot == slot - 7) >= lab.Amount)
                         {
                             // You cannot enter the period that items full.
                             return BadRequest();

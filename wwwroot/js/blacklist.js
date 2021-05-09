@@ -25,17 +25,29 @@ function appendList(user, index) {
   imageCell.alt = "user_image";
   emailCell.innerHTML = user.email;
   phoneCell.innerHTML = user.phone;
-  buttonCell.className = "icon";
+  const icon = document.createElement("div");
+  icon.className = "icon";
+  buttonCell.appendChild(icon);
   const link = document.createElement("a");
   link.href = `/Search/UserProfile/${user.id}`;
   const viewIcon = document.createElement("i");
   viewIcon.className = "fas fa-eye view-button";
+  viewIcon.onmouseover = setOverPositionView;
   link.appendChild(viewIcon);
-  const ejectIcon = document.createElement("i");
-  ejectIcon.className = "fas fa-times-circle cancel-button";
-  ejectIcon.onclick = () => confirmPopUpOnForm({ id: user.id });
-  buttonCell.appendChild(link);
-  buttonCell.appendChild(ejectIcon);
+  const unblacklistIcon = document.createElement("i");
+  unblacklistIcon.className = "fas fa-times-circle cancel-button";
+  unblacklistIcon.onclick = () => confirmPopUpOnForm({ id: user.id });
+  unblacklistIcon.onmouseover = setOverPosition;
+  const spanView = document.createElement("span");
+  const spanUnblacklist = document.createElement("span");
+  spanView.innerHTML = "View";
+  spanView.className = "tooltip";
+  spanUnblacklist.innerHTML = "Unblacklist";
+  spanUnblacklist.className = "tooltip";
+  icon.appendChild(link);
+  icon.appendChild(spanView);
+  icon.appendChild(unblacklistIcon);
+  icon.appendChild(spanUnblacklist);
 
   tr.appendChild(indexCell);
   tr.appendChild(idCell);
@@ -93,5 +105,31 @@ async function loadScroll() {
     }
   }
 }
+/**
+ * @param {Event} event
+ */
+function setOverPositionView(event) {
+  const tbody = document.querySelector("tbody");
+  const icon = event.target;
+  const iconContainer = event.target.parentElement.parentElement;
+  const tooltip = event.target.parentElement.parentElement.children[0];
+  iconContainer.style.position = "static";
+  tooltip.style.top =
+    getPosition(icon)[1] - tbody.scrollTop - tooltip.offsetHeight - 90 + "px";
+}
+/**
+ * @param {Event} event
+ */
+function setOverPosition(event) {
+  const tbody = document.querySelector("tbody");
+  const icon = event.target;
+  const iconContainer = event.target.parentElement;
+  const tooltip = event.target.parentElement.children[0];
+  iconContainer.style.position = "static";
+  tooltip.style.top =
+    getPosition(icon)[1] - tbody.scrollTop - tooltip.offsetHeight - 90 + "px";
+}
 
-document.querySelector("tbody").addEventListener("scroll", loadScroll);
+if (document.querySelector(".bottom")) {
+  document.querySelector("tbody").addEventListener("scroll", loadScroll);
+}

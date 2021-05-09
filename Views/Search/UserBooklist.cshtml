@@ -70,8 +70,10 @@
                             </td>
                             @if (bookList.Status == BookList.StatusType.USING || bookList.Status == BookList.StatusType.COMING)
                             {
-                                <td class="icon"><i class="fas fa-times-circle"
-                            onclick="confirmPopUpOnForm({id : '@bookList.Id'});"></i></td>
+                                <td><div class="icon"><i class="fas fa-times-circle"
+                            onclick="confirmPopUpOnForm({id : '@bookList.Id'});"
+                            onmouseover="setOverPosition(event);"></i>
+                            <span class="tooltip">Cancel</span></div></td>
                             }
                             else
                             {
@@ -94,9 +96,6 @@
 <p style="font-size: 24px;">Would you like to eject this booklist ?</p>
 }
 
-@if (Model.Count() > 0)
-{
-    @section Scripts {
-    <script src="~/js/user_booklist.js"></script>
-    }
+@section Scripts {
+<script src="~/js/user_booklist.js"></script>
 }

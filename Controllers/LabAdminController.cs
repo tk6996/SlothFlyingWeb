@@ -38,7 +38,7 @@ namespace SlothFlyingWeb.Controllers
             return View(labs);
         }
 
-        //TODO: if connect API Booking
+        [HttpGet("/LabAdmin/ViewItem")]
         public async Task<IActionResult> ViewItem(int? id)
         {
             if (HttpContext.Session.GetInt32("AdminId") == null)
@@ -91,30 +91,6 @@ namespace SlothFlyingWeb.Controllers
                         }
                     }
 
-                    ApiUser apiUser = _db.ApiUser.Where(apiUser => apiUser.Enable && apiUser.LabId == lab.Id).FirstOrDefault();
-
-                    if (apiUser != null)
-                    {
-                        IEnumerable<ApiBookSlot> apiBookSlot = _db.ApiBookSlot.Where(bookSlot => bookSlot.LabId == lab.Id &&
-                                                                                     startDate <= bookSlot.Date && bookSlot.Date < endDate);
-                        for (int r = 0; r < 9; r++)
-                        {
-                            for (int c = 0; c < 14; c++)
-                            {
-                                if (bookSlotTable[r, c] < lab.Amount) // bookSlotTable is Full
-                                {
-                                    bookSlotTable[r, c] += apiBookSlot.Where(bookSlot => bookSlot.Date == startDate.AddDays(c).Date)
-                                                                      .Count(bookSlot => bookSlot.TimeSlot == r + 1);
-                                }
-                                // else
-                                // {
-                                //     // api check amount
-                                //     bookSlotTable[r, c] = lab.Amount - 1;
-                                // }
-                            }
-                        }
-                    }
-
                     entry.SlidingExpiration = TimeSpan.FromMinutes(5);
                     return Task.FromResult((bookSlotTable, startDate));
                 });
@@ -124,10 +100,9 @@ namespace SlothFlyingWeb.Controllers
             return View(lab);
         }
 
-        //TODO: if eject booklist -> cancel request
-        [HttpPost]
+        [HttpPost("/LabAdmin/ViewItem")]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> ViewItem([FromForm] int? id, [FromForm] bool api)
+        public async Task<IActionResult> ViewItemPost([FromForm] int? id)
         {
             if (HttpContext.Session.GetInt32("AdminId") == null)
             {
@@ -139,59 +114,30 @@ namespace SlothFlyingWeb.Controllers
                 return BadRequest("Id is not valid.");
             }
 
-            if (api == false)
+            BookList bookList = await _db.BookList.FindAsync(id);
+
+            if (bookList == null)
             {
-                BookList bookList = await _db.BookList.FindAsync(id);
-
-                if (bookList == null)
-                {
-                    return BadRequest("The Booklist not found.");
-                }
-
-                if (bookList.Status == BookList.StatusType.FINISHED ||
-                    bookList.Status == BookList.StatusType.CANCEL ||
-                    bookList.Status == BookList.StatusType.EJECT)
-                {
-                    return BadRequest("This booklist can't eject.");
-                }
-
-                bookList.Status = BookList.StatusType.EJECT;
-                _db.BookList.Update(bookList);
-                IEnumerable<BookSlot> bookSlots = _db.BookSlot.Where(bookSlot => bookSlot.BookListId == bookList.Id);
-                foreach (BookSlot bookSlot in bookSlots)
-                {
-                    _db.BookSlot.Remove(bookSlot);
-                }
-                await _db.SaveChangesAsync();
-                _cache.Remove($"BookSlotTable_{bookList.LabId}");
-                _cache.Remove($"UserBooked_{bookList.LabId}_{bookList.UserId}");
+                return BadRequest("The Booklist not found.");
             }
-            else
+
+            if (bookList.Status == BookList.StatusType.FINISHED ||
+                bookList.Status == BookList.StatusType.CANCEL ||
+                bookList.Status == BookList.StatusType.EJECT)
             {
-                ApiBookList apiBookList = await _db.ApiBookList.FindAsync(id);
-
-                if (apiBookList == null)
-                {
-                    return BadRequest("The Booklist not found.");
-                }
-
-                if (apiBookList.Status == ApiBookList.StatusType.FINISHED ||
-                    apiBookList.Status == ApiBookList.StatusType.CANCEL ||
-                    apiBookList.Status == ApiBookList.StatusType.EJECT)
-                {
-                    return BadRequest("This booklist can't eject.");
-                }
-
-                apiBookList.Status = ApiBookList.StatusType.EJECT;
-                _db.ApiBookList.Update(apiBookList);
-                IEnumerable<ApiBookSlot> apiBookSlots = _db.ApiBookSlot.Where(apiBookSlot => apiBookSlot.ApiBookListId == apiBookList.Id);
-                foreach (ApiBookSlot apiBookSlot in apiBookSlots)
-                {
-                    _db.ApiBookSlot.Remove(apiBookSlot);
-                }
-                await _db.SaveChangesAsync();
-                _cache.Remove($"BookSlotTable_{apiBookList.LabId}");
+                return BadRequest("This booklist can't eject.");
             }
+
+            bookList.Status = BookList.StatusType.EJECT;
+            _db.BookList.Update(bookList);
+            IEnumerable<BookSlot> bookSlots = _db.BookSlot.Where(bookSlot => bookSlot.BookListId == bookList.Id);
+            foreach (BookSlot bookSlot in bookSlots)
+            {
+                _db.BookSlot.Remove(bookSlot);
+            }
+            await _db.SaveChangesAsync();
+            _cache.Remove($"BookSlotTable_{bookList.LabId}");
+            _cache.Remove($"UserBooked_{bookList.LabId}_{bookList.UserId}");
 
             return RedirectToAction("ViewItem", "LabAdmin");
         }
@@ -254,7 +200,7 @@ namespace SlothFlyingWeb.Controllers
                 }
             }
 
-            IEnumerable<BookListLabAdmin> bl = bookLists.Select(bl => new BookListLabAdmin
+            return Json(bookLists.Select(bl => new BookListLabAdmin
             {
                 BooklistId = bl.Id,
                 UserId = bl.UserId,
@@ -263,67 +209,7 @@ namespace SlothFlyingWeb.Controllers
                 From = bl.From,
                 To = bl.To,
                 Status = (int)bl.Status,
-            });
-
-            ApiUser apiUser = _db.ApiUser.Where(apiUser => apiUser.Enable && apiUser.LabId == labId).FirstOrDefault();
-            if (apiUser != null)
-            {
-                Func<ApiBookList, ApiUser, ApiBookList> joinApiUser = (apiBookList, apiUser) =>
-             {
-                 apiBookList.Name = apiUser.Name;
-                 apiBookList.ApiUserImageUrl = apiUser.ImageUrl;
-                 return apiBookList;
-             };
-
-                IEnumerable<ApiBookList> apiBookLists = _db.ApiBookSlot.Where(bs => bs.LabId == labId && bs.Date == dateValue && bs.TimeSlot == timeslot)
-                                                                       .Join(
-                                                                       _db.ApiBookList,
-                                                                       bs => bs.ApiBookListId,
-                                                                       bl => bl.Id,
-                                                                       (bs, bl) => bl)
-                                                                       .Join(_db.ApiUser,
-                                                                       apiBookList => apiBookList.ApiUserId,
-                                                                       apiUser => apiUser.Id,
-                                                                       joinApiUser);
-                foreach (ApiBookList apiBookList in apiBookLists)
-                {
-                    if (apiBookList.Status == ApiBookList.StatusType.COMING)
-                    {
-                        if (apiBookList.Date.AddHours(apiBookList.From) <= dateNow && dateNow < apiBookList.Date.AddHours(apiBookList.To))
-                        {
-                            apiBookList.Status = ApiBookList.StatusType.USING;
-                            _db.ApiBookList.Update(apiBookList);
-                        }
-                        else if (dateNow >= apiBookList.Date.AddHours(apiBookList.To))
-                        {
-                            apiBookList.Status = ApiBookList.StatusType.FINISHED;
-                            _db.ApiBookList.Update(apiBookList);
-                        }
-                    }
-                    if (apiBookList.Status == ApiBookList.StatusType.USING)
-                    {
-                        if (dateNow >= apiBookList.Date.AddHours(apiBookList.To))
-                        {
-                            apiBookList.Status = ApiBookList.StatusType.FINISHED;
-                            _db.ApiBookList.Update(apiBookList);
-                        }
-                    }
-                }
-
-                IEnumerable<BookListLabAdmin> apibl = apiBookLists.Select(bl => new BookListLabAdmin
-                {
-                    BooklistId = bl.Id,
-                    UserId = bl.ApiUserId,
-                    UserImageUrl = Url.Content(bl.ApiUserImageUrl != "" ? bl.ApiUserImageUrl : "~/assets/images/brand.jpg"),
-                    FullName = bl.Name,
-                    From = bl.From,
-                    To = bl.To,
-                    Status = (int)bl.Status,
-                });
-                bl = bl.Concat(apibl);
-            }
-
-            return Json(bl);
+            }));
         }
 
         public async Task<IActionResult> EditItem(int? id)

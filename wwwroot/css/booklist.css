@@ -37,20 +37,20 @@ th {
   height: 60px;
   line-height: 60px;
   font-size: 24px;
-  padding: 0px 20px;
 }
 
 tbody {
   display: grid;
   grid-template-columns: 0.5fr 1fr 1fr 0.5fr 0.5fr 0.5fr 0.5fr;
   background-color: #ffffff;
+  overflow-x: hidden;
   overflow-y: overlay;
   padding-bottom: 100px;
 }
 
 td {
   border-bottom: 1px solid var(--blackgray);
-  padding: 15px 20px;
+  padding: 15px 0px;
 }
 
 th,
@@ -100,4 +100,29 @@ td:last-child {
   height: 50px;
   justify-content: center;
   align-items: center;
+}
+
+.icon {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  position: relative;
+}
+
+.tooltip {
+  visibility: hidden;
+  background-color: #ffffff;
+  color: var(--blackgray);
+  border: solid 1px var(--blackgray);
+  font-size: 10px;
+  text-align: center;
+  border-radius: 5px;
+  padding: 5px;
+  z-index: 1;
+  position: absolute;
+  margin-top: -25px;
+}
+
+.icon:hover .tooltip{
+  visibility: visible;
 }

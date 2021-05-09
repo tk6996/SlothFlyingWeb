@@ -52,11 +52,10 @@ function createBooklistTable(booklist, date, timeslot) {
   let result = document.createElement("div");
   result.className = "book-list-range";
   let title = document.createElement("h2");
-  title.innerHTML = `${day[date.getDay()]} ${date.getDate()} ${
-    month[date.getMonth()]
-  } @ ${String(timeslot + 7).padStart(2, "0")}.00 - ${String(
-    timeslot + 8
-  ).padStart(2, "0")}.00`;
+  title.innerHTML = `${day[date.getDay()]} ${date.getDate()} ${month[date.getMonth()]
+    } @ ${String(timeslot + 7).padStart(2, "0")}.00 - ${String(
+      timeslot + 8
+    ).padStart(2, "0")}.00`;
   result.appendChild(title);
 
   if (booklist.length) {
@@ -111,16 +110,19 @@ function createBooklistTable(booklist, date, timeslot) {
       //icon
       tdIcon = document.createElement("td");
       //view user icon
-      if (booklist[i].userId < 1000000000) {
-        v_icon = document.createElement("i");
-        v_icon.className = "fas fa-eye view-button";
-        v_icon.onclick = () => {
-          window.location.pathname = `Search/UserProfile/${booklist[i].userId}`;
-        };
-        tdIcon.appendChild(v_icon);
-      }
+      v_icon = document.createElement("i");
+      v_icon.className = "fas fa-eye view-button";
+      v_icon.onclick = () => {
+        window.location.pathname = `Search/UserProfile/${booklist[i].userId}`;
+      };
+      v_icon_div = document.createElement("div");
+      v_icon_div.className = "icon";
+      v_tooltip = document.createElement("span");
+      v_tooltip.innerHTML = "View";
+      v_tooltip.className = "tooltip";
+      tdIcon.appendChild(v_icon_div).appendChild(v_icon);
+      v_icon_div.appendChild(v_tooltip);
 
-      trBody.appendChild(tdIcon);
       //cancel icon
       c_icon = document.createElement("i");
       if (
@@ -134,10 +136,16 @@ function createBooklistTable(booklist, date, timeslot) {
             api: booklist[i].userId >= 1000000000,
           });
         };
+        c_tooltip_div = document.createElement("div");
+        c_tooltip_div.className = "icon"
+        c_tooltip = document.createElement("span");
+        c_tooltip.innerHTML = "Eject";
+        c_tooltip.className = "tooltip";
+        tdIcon.appendChild(c_tooltip_div).appendChild(c_icon);
+        c_tooltip_div.appendChild(c_tooltip);
       }
-      trBody.appendChild(tdIcon).appendChild(c_icon);
 
-      tbody.appendChild(trBody);
+      tbody.appendChild(trBody).appendChild(tdIcon);
     }
 
     table.appendChild(thead);
