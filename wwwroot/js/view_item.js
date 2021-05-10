@@ -133,7 +133,6 @@ function createBooklistTable(booklist, date, timeslot) {
         c_icon.onclick = function () {
           confirmPopUpOnForm({
             id: booklist[i].booklistId,
-            api: booklist[i].userId >= 1000000000,
           });
         };
         c_tooltip_div = document.createElement("div");
