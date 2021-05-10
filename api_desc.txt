@@ -4,7 +4,9 @@ Description:
 Response: 
     Content-Type: application/json charset=utf-8
     JsonSchema: {
+        "labId": { "type": "string" },
         "labName": { "type": "string" },
+        "labImage  ": { "type": "string" },
         "startDate": { "type": "string" },
         "endDate": { "type": "string" },
         "from": { "type": "integer" },

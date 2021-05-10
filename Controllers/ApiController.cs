@@ -85,9 +85,11 @@ namespace SlothFlyingWeb.Controllers
 
             return Json(new
             {
+                LabId = lab.Id,
                 LabName = lab.ItemName,
+                LabImageUrl = Url.Content(lab.ImageUrl),
                 StartDate = startDate.ToString("dd-MMM-yyyy"),
-                endDate = endDate.ToString("dd-MMM-yyyy"),
+                EndDate = endDate.ToString("dd-MMM-yyyy"),
                 From = 8,
                 To = 17,
                 BookSlotTable = result,
