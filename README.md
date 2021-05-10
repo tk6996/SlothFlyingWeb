@@ -5,10 +5,6 @@
 $ dotnet restore
 ```
 
-หลังจากนั้นถ้ายังไม่ติดตั้ง Entity Framework Core tools ใช้คำสั่ง
-```shell
-$ dotnet tool install --global dotnet-ef
-```
 เสร็จแล้วสามารถ Run เพื่อใช้งาน
 ```shell
 $ dotnet watch run
