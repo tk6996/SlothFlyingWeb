@@ -1,6 +1,6 @@
 RouteName: GetBooking
 Description:
-    เป็น Api สำหรับดึง จำนวนของที่สามารถยืมได้ที่เหลือในแต่ละช่วงเวลา
+    เป็น Api สำหรับดึงจำนวนอุปกรณ์ที่สามารถยืมได้ที่เหลือในแต่ละช่วงเวลา
 Response: 
     Content-Type: application/json charset=utf-8
     JsonSchema: {
