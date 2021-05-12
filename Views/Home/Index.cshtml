@@ -7,19 +7,17 @@
 }
 
 <div class="body">
-  <div class="main_container">
-    <div class="container">
-      <img src="~/assets/images/brand.jpg" alt="logo" class="logo" />
-      <div class="container-label">
-        <div class="label">Welcome To<br />Sloth Flying Laboratory</div>
-        <a asp-controller="User" asp-action="Login" id="login" class="start">Let’s Start</a>
-      </div>
+  <div class="container">
+    <img src="~/assets/images/brand.jpg" alt="logo" class="logo" />
+    <div class="container-label">
+      <div class="label">Welcome To <br />Sloth Flying Laboratory</div>
+      <a asp-controller="User" asp-action="Login" id="login" class="start">Let’s Start</a>
     </div>
-    <button class="btn-member" id="myBtn" onclick="visibleModal();">
-      <i class="fas fa-user-friends"></i>
-      <span>Members</span>
-    </button>
   </div>
+  <button class="btn-member" id="myBtn" onclick="visibleModal();">
+    <i class="fas fa-user-friends"></i>
+    <span>Members</span>
+  </button>
 </div>
 
 <partial name="~/Views/Home/_MemberModal.cshtml" />
