@@ -52,5 +52,5 @@ jobs:
       with:
         app-name: 'SlothFlying'
         slot-name: 'production'
-        publish-profile: ${{ secrets.AzureAppService_PublishProfile_ff9316ad17414eb1abeb0ddf81cdecf9 }}
+        publish-profile: ${{ secrets.AzureAppService_PublishProfile_5ea6fd3fe54a452c991e6438ae7520d2 }}
         package: .
