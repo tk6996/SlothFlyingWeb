@@ -1,5 +1,4 @@
 .body {
-  height: 100vh;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -13,9 +12,6 @@
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  width: 70%;
-  min-height: 600px;
-  height: 80%;
 }
 
 .container > * {
@@ -30,11 +26,11 @@
 }
 
 .register-form {
-  display: grid;
-  grid-template-columns: auto auto;
-  grid-template-rows: auto auto auto;
-  column-gap: 80px;
   row-gap: 20px;
+  display: grid;
+  column-gap: 10%;
+  width: 100%;
+  justify-content: center;
 }
 
 .field-data {
@@ -117,4 +113,45 @@
   font-size: 14px;
   text-align: center;
   margin: 0;
+}
+
+@media screen and (max-width: 499px) {
+  .container {
+    padding: 30px;
+    width: 100%;
+    height: 100%;
+    border-radius: 0;
+    box-shadow: initial;
+  }
+  .register-form {
+    grid-template-columns: auto;
+  }
+}
+
+@media screen and  (min-width: 500px) and (max-width: 800px) {
+  .container {
+    margin: 20px;
+    padding: 30px;
+    width: 70%;
+  }
+  .register-form {
+    grid-template-columns: auto;
+  }
+}
+
+@media screen and (min-width: 801px) {
+  .body {
+    height: 100vh;
+  }
+
+  .container {
+    min-height: 600px;
+    height: 80%;
+    min-width: 800px;
+    width: 70%;
+  }
+
+  .register-form {
+    grid-template-columns: auto auto;
+  }
 }
