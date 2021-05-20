@@ -1,0 +1,52 @@
+@model SlothFlyingWeb.Models.CoLabBooking
+
+@{
+  ViewData["Title"] = "Co-Lab Table Page";
+}
+
+@section Styles{
+<link rel="stylesheet" href="~/css/booking.css">
+}
+
+<div class="container">
+    <div class="title">
+        <h1>Laboratory @(Model.id)</h1>
+        <h2>จำนวนอุปกรณ์ที่ว่างในแต่ละวัน</h2>
+    </div>
+    <table>
+        <tr>
+            <th>Time \ Date</th>
+            @{
+                DateTime startDate = ViewBag.startDate;
+                for (int c = 0; c < 14; c++)
+                {
+                    DateTime date = startDate.AddDays(c);
+                    <th
+                    class='@(date.DayOfWeek == DayOfWeek.Saturday || date.DayOfWeek == DayOfWeek.Sunday ? "lab-close" : "")'>
+                        @date.ToString("ddd")<br>
+                        @date.ToString("dd")<br>
+                        @date.ToString("MMM")
+                    </th>
+                }
+            }
+        </tr>
+        @for (int r = 0; r < 9; r++)
+        {
+            <tr>
+                <th>@($"{(r+8).ToString("D2")}.00 - {(r+9).ToString("D2")}.00")</th>
+                @for (int c = 0; c < 14; c++)
+                {
+                    DateTime date = startDate.AddDays(c);
+                    if (date.DayOfWeek == DayOfWeek.Saturday || date.DayOfWeek == DayOfWeek.Sunday)
+                    {
+                        <td class="not-enable"></td>
+                    }
+                    else
+                    {
+                        <td>@Model.bookSlotTable[c][r]</td>
+                    }
+                }
+            </tr>
+        }
+    </table>
+</div>

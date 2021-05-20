@@ -1,0 +1,38 @@
+@model IEnumerable<SlothFlyingWeb.Models.CoLab>
+
+@{
+    ViewData["Title"] = "Co-Lab Page";
+}
+
+@section Styles{
+<link rel="stylesheet" href="~/css/lab.css">
+}
+
+@if (Model != null)
+{
+    <div class="container">
+
+        @foreach (CoLab lab in Model)
+        {
+        <div class="lab">
+            <div>
+                <img src="@Url.Content(lab.imageUrl)" alt="logo" class="lab-img">
+            </div>
+            <div>
+                <div>Laboratory @lab.id</div>
+                <div>@lab.itemName</div>
+                <a class="view-button" asp-controller="CoLab" asp-action="Lab" asp-route-Id="@lab.id">View</a>
+            </div>
+        </div>
+        }
+    </div>
+}
+
+else
+{
+    <div style="text-align: center; margin-top: 100px;">
+        <h1>
+            Co-Lab Not Found.
+        </h1>
+    </div>
+}

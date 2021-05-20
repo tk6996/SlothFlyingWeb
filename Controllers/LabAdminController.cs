@@ -109,7 +109,7 @@ namespace SlothFlyingWeb.Controllers
                 return RedirectToAction("Login", "Admin");
             }
 
-            if (id == null || id < 0)
+            if (id == null || id <= 0)
             {
                 return BadRequest("Id is not valid.");
             }
