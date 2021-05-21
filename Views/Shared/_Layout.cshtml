@@ -24,19 +24,18 @@
         string controller = ViewContext.RouteData.Values["Controller"].ToString();
         string action = ViewContext.RouteData.Values["Action"].ToString();
         // user navigation bar
-        if (("User" == controller || "Lab" == controller) && Context.Session.GetInt32("Id") != null)
-        {
-            <header>
-                <partial name="~/Views/Shared/_NavigationUser.cshtml" />
-            </header>
-        }
-
-        if (("Search" == controller || "LabAdmin" == controller || "Blacklist" == action) &&
-        Context.Session.GetInt32("AdminId") !=
-        null)
+        if (("Search" == controller || "LabAdmin" == controller || "Blacklist" == action || "CoLab" == controller) &&
+        Context.Session.GetInt32("AdminId") != null)
         {
             <header>
                 <partial name="~/Views/Shared/_NavigationAdmin.cshtml" />
+            </header>
+        }
+        else if (("User" == controller || "Lab" == controller || "CoLab" == controller) && Context.Session.GetInt32("Id") !=
+        null)
+        {
+            <header>
+                <partial name="~/Views/Shared/_NavigationUser.cshtml" />
             </header>
         }
     }
