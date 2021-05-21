@@ -11,6 +11,8 @@
     <div class="menu">
         <a id="lab" asp-controller="LabAdmin" asp-action="Index"
             class='@("LabAdmin" == controller ? "active" : "")'>Lab</a>
+        <a id="colab" asp-controller="CoLab" asp-action="Index" 
+            class='@("CoLab" == controller ? "active" : "")'>Co-Lab</a>
         <a id="search" asp-controller="Search" asp-action="Index"
             class='@("Search" == controller ? "active" : "")'>Search</a>
         <a id="blacklist" asp-controller="Admin" asp-action="Blacklist"
