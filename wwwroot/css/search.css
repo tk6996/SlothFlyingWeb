@@ -39,16 +39,22 @@
 
 .user-container {
   display: flex;
-  column-gap: 2vh;
-  row-gap: 1vh;
-  justify-content: flex-start;
-  flex-wrap: wrap;
-  padding: 15px 30px;
   align-items: center;
+  column-gap: 2vh;
+  padding: 15px 30px;
   border-radius: 10px;
   margin: 0 10px 10px 10px;
   background-color: #ffffff;
   filter: drop-shadow(0 0.2rem 0.25rem var(--shadow));
+}
+
+.information {
+  display: flex;
+  column-gap: 2vh;
+  row-gap: 1vh;
+  justify-content: flex-start;
+  align-items: center;
+  flex-wrap: wrap;
 }
 
 .user-img {
