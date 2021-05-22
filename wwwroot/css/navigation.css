@@ -63,3 +63,17 @@
 .logout:active {
   background-color: var(--darkgreen);
 }
+
+.icon {
+  display: none;
+}
+
+@media screen and (max-width: 600px) {
+  c.menu a:not(:first-child) {
+    display: none;
+  }
+  .menu a.icon {
+    float: right;
+    display: block;
+  }
+}
