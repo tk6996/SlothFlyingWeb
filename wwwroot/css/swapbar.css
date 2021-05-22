@@ -10,7 +10,6 @@
 .swap-page a {
   color: var(--blackgray);
   height: 40px;
-  width: 120px;
   text-align: center;
   line-height: 40px;
   cursor: pointer;
@@ -22,14 +21,12 @@
   border-style: solid;
   border-color: var(--blackgray);
   border-width: 2px;
-  border-radius: 5px 0 0 5px;
 }
 
 .swap-page a:last-child {
   border-style: solid;
   border-color: var(--blackgray);
   border-width: 2px;
-  border-radius: 0 5px 5px 0;
 }
 
 .swap-page a.active,
@@ -41,4 +38,35 @@
 .swap-page a.non-active:hover {
   background-color: #33333380;
   color: #ffffff;
+}
+
+@media screen and (min-width: 871px) {
+  .swap-page a {
+    border-radius: 5px;
+    width: 120px;
+  }
+
+  .swap-page a:first-child {
+    border-radius: 5px 0 0 5px;
+  }
+
+  .swap-page a:last-child {
+    border-radius: 0 5px 5px 0;
+  }
+}
+
+@media screen and (min-width: 501px) and (max-width: 870px) {
+  .swap-page a.active {
+    display: none;
+  }
+  .swap-page a {
+    border-radius: 5px;
+    width: 15vw;
+  }
+}
+
+@media screen and (max-width: 500px) {
+  .swap-page a {
+    display: none;
+  }
 }

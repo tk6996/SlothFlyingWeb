@@ -4,6 +4,16 @@
   align-items: center;
   padding: 2% 7.5% 2% 7.5%;
 }
+
+.book-table {
+  width: 100%;
+  overflow-x: auto;
+}
+
+table {
+  min-width: 835px;
+}
+
 table,
 th,
 td {
@@ -31,24 +41,24 @@ th {
 }
 
 td {
-  background-color: #49B84E;
+  background-color: #49b84e;
 }
 
 .not-enable {
-  background-color: #E8EBF4;
+  background-color: #e8ebf4;
 }
 
 .late {
-  background-color: #6D7185;
+  background-color: #6d7185;
 }
 
 .booked {
-  background-color: #D2D03A;
+  background-color: #d2d03a;
 }
 
 .full,
 .lab-close {
-  background-color: #BA4157;
+  background-color: #ba4157;
 }
 
 .title {
@@ -81,7 +91,7 @@ select {
 }
 
 .book {
-  padding: 30px;
+  padding: 30px 0;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -189,4 +199,34 @@ select:focus {
   border: none;
   padding: 20px;
   border-bottom: 1px solid var(--blackgray);
+}
+
+@media screen and (max-width: 500px) {
+  .book-inline {
+    flex-wrap: wrap;
+    row-gap: 30px;
+    max-width: 300px;
+  }
+}
+
+@media screen and (max-width: 370px) {
+  .book-inline {
+    flex-direction: column;
+    flex-wrap: wrap;
+    row-gap: 30px;
+    max-width: 300px;
+    align-items: flex-start;
+  }
+
+  .message-error {
+    top: 100%;
+  }
+
+  .book-inline:first-child > .add-remove::before{
+    content: "Add Booklist";
+  }
+
+  .book-inline:not(:first-child) > .add-remove::before{
+    content: "Remove This";
+  }
 }
