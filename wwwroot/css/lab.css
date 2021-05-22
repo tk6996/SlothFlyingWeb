@@ -1,13 +1,14 @@
-.container {
+@media screen and (min-width: 876px) {
+  .container {
     padding: 4% 7.5% 8% 7.5%;
     display: grid;
     grid-template-columns: auto auto auto;
     grid-gap: 10%;
     justify-content: center;
     align-items: center;
-}
+  }
 
-.lab {
+  .lab {
     border-radius: 50px;
     text-align: center;
     display: grid;
@@ -16,9 +17,9 @@
     width: 12em;
     height: 16em;
     background-color: white;
-} 
+  }
 
-.lab > div:last-child {
+  .lab > div:last-child {
     padding: 10px;
     display: flex;
     flex-direction: column;
@@ -26,25 +27,25 @@
     justify-content: center;
     background-color: var(--whitegray);
     border-radius: 0 0 50px 50px;
-}
+  }
 
-.lab > div > div {
+  .lab > div > div {
     padding: 0% 0% 5% 0%;
-}
+  }
 
-.lab > div > div:first-child {
+  .lab > div > div:first-child {
     font-weight: bold;
     font-size: larger;
-}
+  }
 
-.lab-img {
+  .lab-img {
     width: 100%;
     height: 100%;
     border-radius: 50px 50px 0 0;
     object-fit: cover;
-}
+  }
 
-.lab a {
+  .lab a {
     text-decoration: none;
     text-align: center;
     color: white;
@@ -56,33 +57,214 @@
     margin-top: 6%;
     font-size: large;
     width: 45%;
-}
+  }
 
-.lab a:hover {
+  .lab a:hover {
     cursor: pointer;
-}
+  }
 
-.lab .view-button {
+  .lab .view-button {
     background-color: var(--green);
     box-shadow: 0 4px 4px 0 var(--greenshadow);
-}
+  }
 
-.lab .view-button:active {
+  .lab .view-button:active {
     background-color: var(--darkgreen);
-}
+  }
 
-.lab .edit-button {
+  .lab .edit-button {
     background-color: var(--blue);
     box-shadow: 0 4px 4px 0 var(--blueshadow);
-}
+  }
 
-.lab .edit-button:active {
+  .lab .edit-button:active {
     background-color: var(--darkblue);
-}
+  }
 
-.lab .button {
+  .lab .button {
     display: flex;
     flex-direction: row;
     justify-content: space-around;
     width: 90%;
+  }
+}
+@media screen and (max-width: 875px) {
+  .container {
+    padding: 4% 7.5% 8% 7.5%;
+    display: grid;
+    grid-template-columns: auto auto;
+    grid-gap: 5% 10%;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .lab {
+    border-radius: 50px;
+    text-align: center;
+    display: grid;
+    grid-template-rows: 50% 50%;
+    box-shadow: 0 4px 8px 0 var(--shadow), 0 6px 20px 0 var(--shadow);
+    width: 12em;
+    height: 16em;
+    background-color: white;
+  }
+
+  .lab > div:last-child {
+    padding: 10px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    background-color: var(--whitegray);
+    border-radius: 0 0 50px 50px;
+  }
+
+  .lab > div > div {
+    padding: 0% 0% 5% 0%;
+  }
+
+  .lab > div > div:first-child {
+    font-weight: bold;
+    font-size: larger;
+  }
+
+  .lab-img {
+    width: 100%;
+    height: 100%;
+    border-radius: 50px 50px 0 0;
+    object-fit: cover;
+  }
+
+  .lab a {
+    text-decoration: none;
+    text-align: center;
+    color: white;
+    display: block;
+    padding: 3.5% 0;
+    border-radius: 10px;
+    width: fit-content;
+    line-height: calc(7% + 18px); /*padding-top + padding-bottom + font-size*/
+    margin-top: 6%;
+    font-size: large;
+    width: 45%;
+  }
+
+  .lab a:hover {
+    cursor: pointer;
+  }
+
+  .lab .view-button {
+    background-color: var(--green);
+    box-shadow: 0 4px 4px 0 var(--greenshadow);
+  }
+
+  .lab .view-button:active {
+    background-color: var(--darkgreen);
+  }
+
+  .lab .edit-button {
+    background-color: var(--blue);
+    box-shadow: 0 4px 4px 0 var(--blueshadow);
+  }
+
+  .lab .edit-button:active {
+    background-color: var(--darkblue);
+  }
+
+  .lab .button {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+    width: 90%;
+  }
+}
+@media screen and (max-width: 550px) {
+  .container {
+    padding: 4% 7.5% 8% 7.5%;
+    display: grid;
+    grid-template-columns: auto;
+    grid-gap: 5% 10%;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .lab {
+    border-radius: 50px;
+    text-align: center;
+    display: grid;
+    grid-template-rows: 50% 50%;
+    box-shadow: 0 4px 8px 0 var(--shadow), 0 6px 20px 0 var(--shadow);
+    width: 12em;
+    height: 16em;
+    background-color: white;
+  }
+
+  .lab > div:last-child {
+    padding: 10px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    background-color: var(--whitegray);
+    border-radius: 0 0 50px 50px;
+  }
+
+  .lab > div > div {
+    padding: 0% 0% 5% 0%;
+  }
+
+  .lab > div > div:first-child {
+    font-weight: bold;
+    font-size: larger;
+  }
+
+  .lab-img {
+    width: 100%;
+    height: 100%;
+    border-radius: 50px 50px 0 0;
+    object-fit: cover;
+  }
+
+  .lab a {
+    text-decoration: none;
+    text-align: center;
+    color: white;
+    display: block;
+    padding: 3.5% 0;
+    border-radius: 10px;
+    width: fit-content;
+    line-height: calc(7% + 18px); /*padding-top + padding-bottom + font-size*/
+    margin-top: 6%;
+    font-size: large;
+    width: 45%;
+  }
+
+  .lab a:hover {
+    cursor: pointer;
+  }
+
+  .lab .view-button {
+    background-color: var(--green);
+    box-shadow: 0 4px 4px 0 var(--greenshadow);
+  }
+
+  .lab .view-button:active {
+    background-color: var(--darkgreen);
+  }
+
+  .lab .edit-button {
+    background-color: var(--blue);
+    box-shadow: 0 4px 4px 0 var(--blueshadow);
+  }
+
+  .lab .edit-button:active {
+    background-color: var(--darkblue);
+  }
+
+  .lab .button {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+    width: 90%;
+  }
 }
