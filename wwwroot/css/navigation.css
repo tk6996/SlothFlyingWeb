@@ -106,7 +106,6 @@
   color: #ffffff;
 }
 
-
 .sidenav .closebtn {
   position: absolute;
   top: 0;
@@ -120,5 +119,11 @@
   }
   .menu a.menu-icon {
     display: block;
+  }
+}
+
+@media screen and (max-width: 500px) {
+  .brand-text {
+    font-size: 24px;
   }
 }
