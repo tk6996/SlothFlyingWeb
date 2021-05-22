@@ -68,6 +68,7 @@ main {
   --shadow: rgba(0, 0, 0, 0.25);
   --blackgray:#282a35;
   --green: #04AA6D;
+  --greenbg: #e5fef1;
   --darkgreen: #09532E;
   --greenshadow: rgba(40, 167, 69, 0.2);
   --white80: rgba(255, 255, 255, 0.5);

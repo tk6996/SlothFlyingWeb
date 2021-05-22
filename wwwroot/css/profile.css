@@ -9,13 +9,13 @@
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  padding: 30px;
+  padding: 10px;
   min-height: 100%;
-  background-color: white;
+  background-color: #ffffff;
   width: 70%;
   border-radius: 5rem;
   box-shadow: 0px 4px 4px var(--shadow);
-  margin: 20px 0px 20px 0px;
+  margin: 20px 0px;
 }
 
 @media screen and (max-width: 699px) {
@@ -39,7 +39,7 @@
 
 @media screen and (max-width: 499px) {
   .body {
-    background-color: white;
+    background-color: var(--greenbg);
   }
   
   .container {
@@ -47,10 +47,20 @@
     height: 100%;
     border-radius: 0;
     box-shadow: initial;
+    background-color: var(--greenbg);
   }
 
   .information {
+    row-gap: 10px;
     grid-template-columns: auto;
+  }
+
+  .information div:not([class="title"]) {
+    margin-bottom: 15px;
+  }
+  
+  #edit {
+    margin-top: 10px;
   }
 }
 
