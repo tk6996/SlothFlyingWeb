@@ -6,7 +6,7 @@
 }
   
 .head > * {
-    width: 12.5%;
+    width: 200px;
     color: var(--blackgray);
     display: flex;
     background-color: #ffffff;
@@ -115,4 +115,33 @@ input:focus,button:focus {
 
 .title {
     font-weight: bold;
+}
+
+@media screen and (max-width: 699px) {
+    .head {
+        justify-content: space-between;
+    }
+
+    #profile_nav, #booklist_nav {
+        width: 50%;
+    }
+}
+
+@media screen and (max-width: 499px) {
+    .information {
+        row-gap: 10px;
+        grid-template-columns: auto;
+    }
+    
+    .information div:not([class="title"]) {
+        margin-bottom: 15px;
+    }
+      
+    #blacklist, #unblacklist {
+        margin-top: 10px;
+    }
+
+    .container button {
+        width: 300px;
+    }
 }

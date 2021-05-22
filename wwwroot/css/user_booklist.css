@@ -6,7 +6,7 @@
 }
 
 .head > * {
-  width: 12.5%;
+  width: 200px;
   color: var(--blackgray);
   display: flex;
   background-color: #ffffff;
@@ -177,4 +177,14 @@ td:last-child {
   height: 50px;
   justify-content: center;
   align-items: center;
+}
+
+@media screen and (max-width: 699px) {
+  .head {
+      justify-content: space-between;
+  }
+
+  #profile_nav, #booklist_nav {
+      width: 50%;
+  }
 }
