@@ -1,20 +1,43 @@
 @{
-    string controller = ViewContext.RouteData.Values["Controller"].ToString();
-    string action = ViewContext.RouteData.Values["Action"].ToString();
+  string controller = ViewContext.RouteData.Values["Controller"].ToString();
+  string action = ViewContext.RouteData.Values["Action"].ToString();
 }
 
 <nav class="navbar">
-    <a asp-controller="Lab" asp-action="Index" class="brand">
-        <img src="~/assets/images/brand.jpg" alt="logo" class="brand-img" />
-        <div class="brand-text">Sloth Flying Lab</div>
-    </a>
-    <div class="menu">
-        <a id="lab" asp-controller="Lab" asp-action="Index" class='@("Lab" == controller ? "active" : "")'>Lab</a>
-        <a id="colab" asp-controller="CoLab" asp-action="Index" class='@("CoLab" == controller ? "active" : "")'>Co-Lab</a>
-        <a id="booklist" asp-controller="User" asp-action="Booklist"
-            class='@("Booklist" == action ? "active" : "")'>Booklist</a>
-        <a id="profile" asp-controller="User" asp-action="Profile" class='@("Profile" == action ||
+  <a asp-controller="Lab" asp-action="Index" class="brand">
+    <img src="~/assets/images/brand.jpg" alt="logo" class="brand-img" />
+    <div class="brand-text">Sloth Flying Lab</div>
+  </a>
+  <div class="menu" id="myTopnav">
+    <a id="lab" asp-controller="Lab" asp-action="Index" class='@("Lab" == controller ? "active" : "")'>Lab</a>
+    <a id="colab" asp-controller="CoLab" asp-action="Index" class='@("CoLab" == controller ? "active" : "")'>Co-Lab</a>
+    <a id="booklist" asp-controller="User" asp-action="Booklist"
+      class='@("Booklist" == action ? "active" : "")'>Booklist</a>
+    <a id="profile" asp-controller="User" asp-action="Profile" class='@("Profile" == action ||
                         "EditProfile" == action ? "active" : "")'>Profile</a>
-        <a id="logout" asp-controller="User" asp-action="Logout" class="logout">Logout</a>
-    </div>
+    <a id="logout" asp-controller="User" asp-action="Logout" class="logout">Logout</a>
+    <a href="javascript:void(0);" class="icon" onclick="myFunction()"><i class="fa fa-bars"></i></a>
+  </div>
+  <div id="mySidenav" class="sidenav">
+    <a href="javascript:void(0)" class="closebtn" onclick="myFunction()">&times;</a>
+    <a id="lab" asp-controller="Lab" asp-action="Index" class='@("Lab" == controller ? "active" : "")'>Lab</a>
+    <a id="colab" asp-controller="CoLab" asp-action="Index" class='@("CoLab" == controller ? "active" : "")'>Co-Lab</a>
+    <a id="booklist" asp-controller="User" asp-action="Booklist"
+      class='@("Booklist" == action ? "active" : "")'>Booklist</a>
+    <a id="profile" asp-controller="User" asp-action="Profile" class='@("Profile" == action ||
+                        "EditProfile" == action ? "active" : "")'>Profile</a>
+    <a id="logout" asp-controller="User" asp-action="Logout" class="logout">Logout</a>
+  </div>
 </nav>
+<script>
+  function myFunction() {
+    var x = document.getElementById("myTopnav");
+    if (x.className === "menu") {
+      x.className += " responsive";
+      document.getElementById("mySidenav").style.width = "250px";
+    } else {
+      x.className = "menu";
+      document.getElementById("mySidenav").style.width = "0";
+    }
+  }
+</script>
