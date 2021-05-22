@@ -8,10 +8,23 @@
         <img src="~/assets/images/brand.jpg" alt="logo" class="brand-img" />
         <div class="brand-text">Sloth Flying Lab</div>
     </a>
-    <div class="menu">
+    <div class="menu" id="myTopnav">
         <a id="lab" asp-controller="LabAdmin" asp-action="Index"
             class='@("LabAdmin" == controller ? "active" : "")'>Lab</a>
-        <a id="colab" asp-controller="CoLab" asp-action="Index" 
+        <a id="colab" asp-controller="CoLab" asp-action="Index"
+            class='@("CoLab" == controller ? "active" : "")'>Co-Lab</a>
+        <a id="search" asp-controller="Search" asp-action="Index"
+            class='@("Search" == controller ? "active" : "")'>Search</a>
+        <a id="blacklist" asp-controller="Admin" asp-action="Blacklist"
+            class='@("Blacklist" == action ? "active" : "")'>Blacklist</a>
+        <a id="logout" asp-controller="Admin" asp-action="Logout" class="logout">Logout</a>
+        <a href="javascript:void(0);" class="icon" onclick="myFunction()"><i class="fa fa-bars"></i></a>
+    </div>
+    <div id="mySidenav" class="sidenav">
+        <a href="javascript:void(0)" class="closebtn" onclick="myFunction()">&times;</a>
+        <a id="lab" asp-controller="LabAdmin" asp-action="Index"
+            class='@("LabAdmin" == controller ? "active" : "")'>Lab</a>
+        <a id="colab" asp-controller="CoLab" asp-action="Index"
             class='@("CoLab" == controller ? "active" : "")'>Co-Lab</a>
         <a id="search" asp-controller="Search" asp-action="Index"
             class='@("Search" == controller ? "active" : "")'>Search</a>
@@ -20,3 +33,15 @@
         <a id="logout" asp-controller="Admin" asp-action="Logout" class="logout">Logout</a>
     </div>
 </nav>
+<script>
+    function myFunction() {
+        var x = document.getElementById("myTopnav");
+        if (x.className === "menu") {
+            x.className += " responsive";
+            document.getElementById("mySidenav").style.width = "250px";
+        } else {
+            x.className = "menu";
+            document.getElementById("mySidenav").style.width = "0";
+        }
+    }
+</script>
