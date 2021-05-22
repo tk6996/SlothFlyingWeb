@@ -1,12 +1,26 @@
+RouteName: GetLab
+Description:
+    เป็น Api สำหรับดึงข้อมูลแลปททั้งหมด
+Response: 
+    Content-Type: application/json charset=utf-8
+    JsonSchema: [
+      {
+        "Id": { "type": "number" },
+        "ItemName": { "type": "string" },
+        "Image  ": { "type": "string" },
+      }
+    ]
+      
+
 RouteName: GetBooking
 Description:
-    เป็น Api สำหรับดึง จำนวนของที่สามารถยืมได้ที่เหลือในแต่ละช่วงเวลา
+    เป็น Api สำหรับดึงจำนวนอุปกรณ์ที่สามารถยืมได้ที่เหลือในแต่ละช่วงเวลา
 Response: 
     Content-Type: application/json charset=utf-8
     JsonSchema: {
-        "labId": { "type": "string" },
-        "labName": { "type": "string" },
-        "labImage  ": { "type": "string" },
+        "Id": { "type": "number" },
+        "ItemName": { "type": "string" },
+        "Image  ": { "type": "string" },
         "startDate": { "type": "string" },
         "endDate": { "type": "string" },
         "from": { "type": "integer" },

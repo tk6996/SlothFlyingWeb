@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
 using System.IO;
 using System.Threading.Tasks;
@@ -265,7 +264,7 @@ namespace SlothFlyingWeb.Controllers
             }
             int userId = (int)HttpContext.Session.GetInt32("Id");
 
-            if (id == null || id < 0)
+            if (id == null || id <= 0)
             {
                 return BadRequest();
             }
@@ -304,7 +303,6 @@ namespace SlothFlyingWeb.Controllers
         }
 
         // API
-        //TODO: if eject booklist -> eject request
         [HttpGet("/User/Booklist/{round:int}")]
         public IActionResult BooklistApi([FromRoute] int round)
         {

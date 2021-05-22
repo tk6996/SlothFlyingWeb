@@ -23,6 +23,18 @@ namespace SlothFlyingWeb.Controllers
             _cache = cache;
         }
 
+        public IActionResult GetLab()
+        {
+            IEnumerable<Lab> labs = _db.Lab;
+            
+            return Json(labs.Select(lab => new {
+                Id = lab.Id,
+                ItemName = lab.ItemName,
+                ImageUrl = Url.Content(lab.ImageUrl)
+            }));
+        }
+
+
         public async Task<IActionResult> GetBooking(int? id)
         {
             Lab lab = await _db.Lab.FindAsync(id);
@@ -85,9 +97,9 @@ namespace SlothFlyingWeb.Controllers
 
             return Json(new
             {
-                LabId = lab.Id,
-                LabName = lab.ItemName,
-                LabImageUrl = Url.Content(lab.ImageUrl),
+                Id = lab.Id,
+                ItemName = lab.ItemName,
+                ImageUrl = Url.Content(lab.ImageUrl),
                 StartDate = startDate.ToString("dd-MMM-yyyy"),
                 EndDate = endDate.ToString("dd-MMM-yyyy"),
                 From = 8,

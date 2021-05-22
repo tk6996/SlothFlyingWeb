@@ -16,6 +16,9 @@ wwwroot/
 │  ├─ Blacklist
 │  ├─ Login
 │  └─ Logout
+├─ CoLab/
+│  ├─ Index
+│  └─ Lab{labId}
 ├─ Home/
 │  ├─ Error
 │  └─ Index
