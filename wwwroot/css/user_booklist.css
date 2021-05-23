@@ -58,13 +58,17 @@
   width: 100%;
 }
 
+.scroll-table {
+  width: 100%;
+  overflow-x: auto;
+}
+
 table {
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
-  margin: 50px 7.5%;
-  grid-template-columns: 0.5fr 1fr 1fr 0.5fr 0.5fr 0.5fr 0.5fr;
   background-color: #ffffff;
+  min-width: 850px;
   width: 100%;
   height: calc(100vh - 230px);
 }
@@ -75,13 +79,13 @@ tr {
 
 thead {
   display: grid;
-  grid-template-columns: 0.5fr 1fr 1fr 0.5fr 0.5fr 0.5fr 0.5fr;
+  grid-template-columns: 0.5fr 1fr 1fr 0.5fr 0.5fr 0.75fr 0.5fr;
   background-color: var(--blackgray);
 }
 
 tbody {
   display: grid;
-  grid-template-columns: 0.5fr 1fr 1fr 0.5fr 0.5fr 0.5fr 0.5fr;
+  grid-template-columns: 0.5fr 1fr 1fr 0.5fr 0.5fr 0.75fr 0.5fr;
   background-color: #ffffff;
   overflow-x: hidden;
   overflow-y: overlay;
@@ -186,5 +190,22 @@ td:last-child {
 
   #profile_nav, #booklist_nav {
       width: 50%;
+  }
+
+  h1 {
+    font-size: 24px;
+    text-align: center;
+  }
+}
+
+@media screen and (max-width: 1112px) {
+  th {
+    font-size: 18px;
+  }
+  td {
+    font-size: 16px;
+  }
+  .icon i {
+    font-size: 24px;
   }
 }
