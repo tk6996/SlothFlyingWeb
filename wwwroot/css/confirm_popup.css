@@ -26,6 +26,11 @@
   padding: 50px;
 }
 
+.card p {
+  font-size: 24px;
+  text-align: center;
+}
+
 .button-field {
   position: relative;
   display: flex;
@@ -104,5 +109,56 @@
   }
   100% {
     transform: rotate(360deg);
+  }
+}
+
+@media screen and (max-width: 999px) {
+  .button-field button {
+    width: 100px;
+    height: 40px;
+    font-size: 20px;
+  }
+
+  .card p {
+    font-size: 22px;
+  }
+
+  .card {
+    padding: 40px;
+  }
+}
+
+@media screen and (max-width: 799px) {
+  .button-field button {
+    width: 90px;
+    height: 35px;
+    font-size: 18px;
+  }
+
+  .card p {
+    font-size: 20px;
+  }
+
+  .card {
+    padding: 30px;
+    row-gap: 30px;
+  }
+}
+
+@media screen and (max-width: 499px) {
+  .button-field button {
+    width: 80px;
+    height: 30px;
+    font-size: 16px;
+  }
+
+  .card p {
+    font-size: 18px;
+  }
+
+  .card {
+    padding: 30px;
+    margin: 20px;
+    row-gap: 20px;
   }
 }
