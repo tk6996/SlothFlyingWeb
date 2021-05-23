@@ -32,62 +32,386 @@ thead {
   background-color: var(--blackgray);
 }
 
-tbody {
-  display: grid;
-  grid-template-columns: 0.5fr 0.75fr 1fr 1fr 0.5fr 0.5fr;
-  background-color: #ffffff;
-  overflow-x: hidden;
-  overflow-y: overlay;
-  padding-bottom: 100px;
+  .header-empty {
+    font-size: 34px;
+  }
+
+  .title {
+    font-size: 38px;
+  }
+  
+  thead {
+    display: grid;
+    grid-template-columns: 0.25fr 0.5fr 1fr 1fr 0.75fr 0.25fr;
+    background-color: var(--blackgray);
+  }
+  
+  tbody {
+    display: grid;
+    grid-template-columns: 0.25fr 0.5fr 1fr 1fr 0.75fr 0.25fr;
+    background-color: #ffffff;
+    overflow-x: hidden;
+    overflow-y: overlay;
+    padding-bottom: 100px;
+  }
+  
+  th,
+  td {
+    display: inline-flex;
+    align-items: center;
+  }
+  
+  th {
+    background-color: var(--blackgray);
+    color: #ffffff;
+    height: 60px;
+    line-height: 60px;
+    font-size: 24px;
+  }
+  
+  td {
+    border-bottom: 1px solid var(--blackgray);
+    padding: 15px 0px;
+    font-size: 20px;
+  }
+  
+  .icon i {
+    font-size: 32px;
+    cursor: pointer;
+  }
+  
+  .icon i.cancel-button {
+    padding: 10px;
+    color: var(--red);
+  }
+  
+  .icon i.cancel-button:active {
+    color: var(--darkred);
+  }
+  
+  .icon i.view-button {
+    padding: 10px;
+    color: var(--blue);
+  }
+  
+  .icon i.view-button:active {
+    color: var(--darkblue);
+  }
+  
+  tbody > tr > td > img {
+    height: 50px;
+    width: 50px;
+    border-radius: 50%;
+    margin-right: 10px;
+  }
 }
 
-th,
-td {
-  display: inline-flex;
-  align-items: center;
+@media screen and (max-width: 1107px) {
+
+  .header-empty {
+    font-size: 30px;
+  }
+
+  .title {
+    font-size: 34px;
+  }
+
+  thead {
+    display: grid;
+    grid-template-columns: 0.25fr 0.5fr 1fr 1fr 0.75fr 0.25fr;
+    background-color: var(--blackgray);
+  }
+  
+  tbody {
+    display: grid;
+    grid-template-columns: 0.25fr 0.5fr 1fr 1fr 0.75fr 0.25fr;
+    background-color: #ffffff;
+    overflow-x: hidden;
+    overflow-y: overlay;
+    padding-bottom: 100px;
+  }
+  
+  th,
+  td {
+    display: inline-flex;
+    align-items: center;
+  }
+  
+  th {
+    background-color: var(--blackgray);
+    color: #ffffff;
+    height: 60px;
+    line-height: 60px;
+    font-size: 20px;
+  }
+  
+  td {
+    border-bottom: 1px solid var(--blackgray);
+    padding: 15px 0px;
+    font-size: 16px;
+  }
+  
+  .icon i {
+    font-size: 24px;
+    cursor: pointer;
+  }
+  
+  .icon i.cancel-button {
+    padding: 7px;
+    color: var(--red);
+  }
+  
+  .icon i.cancel-button:active {
+    color: var(--darkred);
+  }
+  
+  .icon i.view-button {
+    padding: 7px;
+    color: var(--blue);
+  }
+  
+  .icon i.view-button:active {
+    color: var(--darkblue);
+  }
+  
+  tbody > tr > td > img {
+    height: 40px;
+    width: 40px;
+    border-radius: 50%;
+    margin-right: 7px;
+  }
 }
 
-th {
-  background-color: var(--blackgray);
-  color: #ffffff;
-  height: 60px;
-  line-height: 60px;
-  font-size: 24px;
+@media screen and (max-width: 946px) {
+
+  .header-empty {
+    font-size: 26px;
+  }
+
+  .title {
+    font-size: 30px;
+  }
+
+  thead {
+    display: grid;
+    grid-template-columns: 0.25fr 0.5fr 1fr 1fr 0.75fr 0.25fr;
+    background-color: var(--blackgray);
+  }
+  
+  tbody {
+    display: grid;
+    grid-template-columns: 0.25fr 0.5fr 1fr 1fr 0.75fr 0.25fr;
+    background-color: #ffffff;
+    overflow-x: hidden;
+    overflow-y: overlay;
+    padding-bottom: 100px;
+  }
+  
+  th,
+  td {
+    display: inline-flex;
+    align-items: center;
+  }
+  
+  th {
+    background-color: var(--blackgray);
+    color: #ffffff;
+    height: 60px;
+    line-height: 60px;
+    font-size: 16px;
+  }
+  
+  td {
+    border-bottom: 1px solid var(--blackgray);
+    padding: 15px 0px;
+    font-size: 14px;
+  }
+  
+  .icon i {
+    font-size: 20px;
+    cursor: pointer;
+  }
+  
+  .icon i.cancel-button {
+    padding: 5px;
+    color: var(--red);
+  }
+  
+  .icon i.cancel-button:active {
+    color: var(--darkred);
+  }
+  
+  .icon i.view-button {
+    padding: 5px;
+    color: var(--blue);
+  }
+  
+  .icon i.view-button:active {
+    color: var(--darkblue);
+  }
+  
+  tbody > tr > td > img {
+    height: 30px;
+    width: 30px;
+    border-radius: 50%;
+    margin-right: 5px;
+  }
 }
 
-td {
-  border-bottom: 1px solid var(--blackgray);
-  padding: 15px 0px;
+@media screen and (max-width: 700px) {
+
+  .header-empty {
+    font-size: 25px;
+  }
+
+  .title {
+    font-size: 25px;
+  }
+
+  thead {
+    display: grid;
+    grid-template-columns: 0.25fr 0.5fr 1fr 1fr 0.75fr 0.25fr;
+    background-color: var(--blackgray);
+  }
+  
+  tbody {
+    display: grid;
+    grid-template-columns: 0.25fr 0.5fr 1fr 1fr 0.75fr 0.25fr;
+    background-color: #ffffff;
+    overflow-x: hidden;
+    overflow-y: overlay;
+    padding-bottom: 100px;
+  }
+  
+  th,
+  td {
+    display: inline-flex;
+    align-items: center;
+  }
+  
+  th {
+    background-color: var(--blackgray);
+    color: #ffffff;
+    height: 60px;
+    line-height: 60px;
+    font-size: 14px;
+  }
+  
+  td {
+    border-bottom: 1px solid var(--blackgray);
+    padding: 15px 0px;
+    font-size: 12px;
+  }
+  
+  .icon i {
+    font-size: 16px;
+    cursor: pointer;
+  }
+  
+  .icon i.cancel-button {
+    padding: 3px;
+    color: var(--red);
+  }
+  
+  .icon i.cancel-button:active {
+    color: var(--darkred);
+  }
+  
+  .icon i.view-button {
+    padding: 3px;
+    color: var(--blue);
+  }
+  
+  .icon i.view-button:active {
+    color: var(--darkblue);
+  }
+  
+  tbody > tr > td > img {
+    height: 20px;
+    width: 20px;
+    border-radius: 50%;
+    margin-right: 3px;
+  }
 }
 
-.icon i {
-  font-size: 32px;
-  cursor: pointer;
+@media screen and (max-width: 600px) {
+
+  .header-empty {
+    font-size: 20px;
+  }
+
+  .title {
+    font-size: 20px;
+  }
+
+  thead {
+    display: grid;
+    grid-template-columns: 0.25fr 0.60fr 0.7fr 1fr 0.68fr 0.20fr;
+    background-color: var(--blackgray);
+  }
+  
+  tbody {
+    display: grid;
+    grid-template-columns: 0.25fr 0.6fr 0.7fr 1fr 0.68fr 0.20fr;
+    background-color: #ffffff;
+    overflow-x: hidden;
+    overflow-y: overlay;
+    padding-bottom: 100px;
+  }
+  
+  th,
+  td {
+    display: inline-flex;
+    align-items: center;
+  }
+  
+  th {
+    background-color: var(--blackgray);
+    color: #ffffff;
+    height: 60px;
+    line-height: 60px;
+    font-size: 12px;
+  }
+  
+  td {
+    border-bottom: 1px solid var(--blackgray);
+    padding: 15px 0px;
+    font-size: 10px;
+  }
+  
+  .icon i {
+    font-size: 12px;
+    cursor: pointer;
+  }
+  
+  .icon i.cancel-button {
+    padding: 3px;
+    color: var(--red);
+  }
+  
+  .icon i.cancel-button:active {
+    color: var(--darkred);
+  }
+  
+  .icon i.view-button {
+    padding: 3px;
+    color: var(--blue);
+  }
+  
+  .icon i.view-button:active {
+    color: var(--darkblue);
+  }
+  
+  tbody > tr > td > img {
+    height: 20px;
+    width: 20px;
+    border-radius: 50%;
+    margin-right: 3px;
+  }
 }
 
-.icon i.cancel-button {
-  padding: 10px;
-  color: var(--red);
-}
-
-.icon i.cancel-button:active {
-  color: var(--darkred);
-}
-
-.icon i.view-button {
-  padding: 10px;
-  color: var(--blue);
-}
-
-.icon i.view-button:active {
-  color: var(--darkblue);
-}
-
-tbody > tr > td > img {
-  height: 50px;
-  width: 50px;
-  border-radius: 50%;
-  margin-right: 10px;
+.icon i.cancel-button { 
+  padding-right: 20px; 
 }
 
 th:first-child,
@@ -130,3 +454,4 @@ td:last-child {
 .icon:hover .tooltip{
   visibility: visible;
 }
+
