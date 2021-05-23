@@ -95,27 +95,30 @@
 .booklist-table {
   display: flex;
   flex-direction: column;
-  align-items: center;
+  align-items: flex-start;
   width: 100%;
 }
 
 .book-list-range {
   display: flex;
   flex-direction: column;
-  align-items: center;
   width: 100%;
   margin-top: 50px;
+  overflow-x: auto;
 }
 
 .book-list-range > h2 {
   text-align: center;
+  width: 100%;
   margin-bottom: 20px;
 }
 
 .book-list-range table {
   display: grid;
   grid-template-columns: 0.5fr 0.75fr 1fr 0.5fr 0.5fr 0.5fr 0.75fr;
-  min-width: 80%;
+  min-width: 750px;
+  max-width: 1112px;
+  width: 100%;
 }
 
 .book-list-range thead,
@@ -132,7 +135,6 @@
 
 .book-list-range th {
   color: #ffffff;
-  font-size: 24px;
   background-color: var(--blackgray);
   padding: 20px;
 }
@@ -187,9 +189,9 @@
 }
 
 .status > span {
-  padding: 8px;
-  width: 120px;
+  padding: 8px 0;
   color: #ffffff;
+  width: 120px;
   border-radius: 15px;
   background-color: var(--gray);
   text-align: center;
@@ -256,5 +258,37 @@
 @media screen and (max-width: 370px) {
   .detail-header {
     display: none;
+  }
+}
+
+@media screen and (min-width: 1113px) {
+  .book-list-range {
+    align-items: center;
+  }
+
+  .book-list-range th {
+    font-size: 24px;
+  }
+
+  .book-list-range td {
+    font-size: 16px;
+  }
+}
+
+@media screen and (max-width: 1112px) {
+  .book-list-range {
+    align-items: flex-start;
+  }
+
+  .book-list-range th {
+    font-size: 18px;
+  }
+
+  .book-list-range td {
+    font-size: 14px;
+  }
+
+  .book-list-range .icon i {
+    font-size: 24px;
   }
 }

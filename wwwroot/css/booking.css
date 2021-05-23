@@ -222,7 +222,7 @@ select:focus {
   .book-inline {
     flex-direction: column;
     flex-wrap: wrap;
-    row-gap: 30px;
+    row-gap: 20px;
     max-width: 300px;
     align-items: flex-start;
   }
@@ -232,10 +232,12 @@ select:focus {
   }
 
   .book-inline:first-child > .add-remove::before{
-    content: "Add Booklist";
+    content: "Add Booklist ";
+    white-space: pre;
   }
 
   .book-inline:not(:first-child) > .add-remove::before{
-    content: "Remove This";
+    content: "Remove This ";
+    white-space: pre;
   }
 }
