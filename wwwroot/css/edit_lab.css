@@ -4,6 +4,7 @@
     flex-direction: column;
     row-gap: 20px;
     align-items: center;
+    margin-bottom: 30px;
   }
 
   .container {
@@ -162,13 +163,14 @@
     flex-direction: column;
     row-gap: 20px;
     align-items: center;
+    margin-bottom: 30px;
   }
 
   .container {
     display: grid;
     grid-template-columns: 1fr;
     grid-template-rows: 3fr;
-    margin-top: 100px;
+    margin-top: 50px;
     row-gap: 20px;
     column-gap: 40px;
   }
@@ -316,6 +318,12 @@
 
   button[type="submit"]:hover {
     cursor: pointer;
+  }
+}
+
+@media screen and (max-width: 500px) {
+  .container {
+    margin-top: 10px;
   }
 }
 
