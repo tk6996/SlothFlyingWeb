@@ -236,10 +236,13 @@
   }
 }
 
-@media screen and (min-width: 500px) {
+@media screen and (max-width: 700px) {
+  .title > h1 {
+    font-size: 32px;
+  }
   .detail-header {
     font-weight: bold;
-    font-size: 20px;
+    font-size: 18px;
   }
 }
 
@@ -253,11 +256,17 @@
   h3 {
     font-size: 1em;
   }
+  .title > h1 {
+    font-size: 28px;
+  }
 }
 
 @media screen and (max-width: 370px) {
   .detail-header {
     display: none;
+  }
+  .title > h1 {
+    font-size: 24px;
   }
 }
 

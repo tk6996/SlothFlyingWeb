@@ -210,11 +210,29 @@ select:focus {
   }
 }
 
+@media screen and (max-width: 700px) {
+  .title > h1 {
+    font-size: 32px;
+  }
+
+  .title > h2 {
+    font-size: 24px;
+  }
+}
+
 @media screen and (max-width: 500px) {
   .book-inline {
     flex-wrap: wrap;
     row-gap: 30px;
     max-width: 300px;
+  }
+
+  .title > h1 {
+    font-size: 30px;
+  }
+
+  .title > h2 {
+    font-size: 22px;
   }
 }
 
@@ -239,5 +257,13 @@ select:focus {
   .book-inline:not(:first-child) > .add-remove::before{
     content: "Remove This ";
     white-space: pre;
+  }
+
+  .title > h1 {
+    font-size: 24px;
+  }
+
+  .title > h2 {
+    font-size: 18px;
   }
 }

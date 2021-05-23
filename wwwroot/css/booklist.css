@@ -154,9 +154,9 @@ td:last-child {
   
 }
 
-@media screen and (min-width: 501px) {
+@media screen and (max-width: 700px) {
   .title {
-    font-size: 38px;
+    font-size: 28px;
   }
 }
 
