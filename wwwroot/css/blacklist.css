@@ -42,13 +42,13 @@ thead {
   
   thead {
     display: grid;
-    grid-template-columns: 0.25fr 0.5fr 1fr 1fr 0.75fr 0.25fr;
+    grid-template-columns: 0.25fr 0.5fr 1fr 1fr 0.5fr 0.5fr;
     background-color: var(--blackgray);
   }
   
   tbody {
     display: grid;
-    grid-template-columns: 0.25fr 0.5fr 1fr 1fr 0.75fr 0.25fr;
+    grid-template-columns: 0.25fr 0.5fr 1fr 1fr 0.5fr 0.5fr;
     background-color: #ffffff;
     overflow-x: hidden;
     overflow-y: overlay;
@@ -104,7 +104,6 @@ thead {
     border-radius: 50%;
     margin-right: 10px;
   }
-}
 
 @media screen and (max-width: 1107px) {
 
@@ -118,13 +117,13 @@ thead {
 
   thead {
     display: grid;
-    grid-template-columns: 0.25fr 0.5fr 1fr 1fr 0.75fr 0.25fr;
+    grid-template-columns: 0.25fr 0.5fr 1fr 1fr 0.5fr 0.5fr;
     background-color: var(--blackgray);
   }
   
   tbody {
     display: grid;
-    grid-template-columns: 0.25fr 0.5fr 1fr 1fr 0.75fr 0.25fr;
+    grid-template-columns: 0.25fr 0.5fr 1fr 1fr 0.5fr 0.5fr;
     background-color: #ffffff;
     overflow-x: hidden;
     overflow-y: overlay;
@@ -194,13 +193,13 @@ thead {
 
   thead {
     display: grid;
-    grid-template-columns: 0.25fr 0.5fr 1fr 1fr 0.75fr 0.25fr;
+    grid-template-columns: 0.25fr 0.5fr 1fr 1fr 0.5fr 0.5fr;
     background-color: var(--blackgray);
   }
   
   tbody {
     display: grid;
-    grid-template-columns: 0.25fr 0.5fr 1fr 1fr 0.75fr 0.25fr;
+    grid-template-columns: 0.25fr 0.5fr 1fr 1fr 0.5fr 0.5fr;
     background-color: #ffffff;
     overflow-x: hidden;
     overflow-y: overlay;
@@ -270,13 +269,13 @@ thead {
 
   thead {
     display: grid;
-    grid-template-columns: 0.25fr 0.5fr 1fr 1fr 0.75fr 0.25fr;
+    grid-template-columns: 0.25fr 0.5fr 1fr 1fr 0.5fr 0.5fr;
     background-color: var(--blackgray);
   }
   
   tbody {
     display: grid;
-    grid-template-columns: 0.25fr 0.5fr 1fr 1fr 0.75fr 0.25fr;
+    grid-template-columns: 0.25fr 0.5fr 1fr 1fr 0.5fr 0.5fr;
     background-color: #ffffff;
     overflow-x: hidden;
     overflow-y: overlay;
@@ -346,13 +345,13 @@ thead {
 
   thead {
     display: grid;
-    grid-template-columns: 0.25fr 0.60fr 0.7fr 1fr 0.68fr 0.20fr;
+    grid-template-columns: 0.25fr 0.60fr 0.7fr 1fr 0.5fr 0.5fr;
     background-color: var(--blackgray);
   }
   
   tbody {
     display: grid;
-    grid-template-columns: 0.25fr 0.6fr 0.7fr 1fr 0.68fr 0.20fr;
+    grid-template-columns: 0.25fr 0.6fr 0.7fr 1fr 0.5fr 0.5fr;
     background-color: #ffffff;
     overflow-x: hidden;
     overflow-y: overlay;

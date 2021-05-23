@@ -228,6 +228,12 @@
   visibility: visible;
 }
 
+@media screen and (max-width: 1200px) {
+  .book-table {
+    align-items: flex-start;
+  }
+}
+
 @media screen and (min-width: 500px) {
   .detail-header {
     font-weight: bold;

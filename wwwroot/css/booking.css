@@ -7,6 +7,9 @@
 
 .book-table {
   width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
   overflow-x: auto;
 }
 
@@ -199,6 +202,12 @@ select:focus {
   border: none;
   padding: 20px;
   border-bottom: 1px solid var(--blackgray);
+}
+
+@media screen and (max-width: 1200px) {
+  .book-table {
+    align-items: flex-start;
+  }
 }
 
 @media screen and (max-width: 500px) {
