@@ -142,6 +142,21 @@ input:focus,button:focus {
     }
 
     .container button {
-        width: 300px;
+        width: 250px;
+        font-size: 20px;
+        margin-bottom: 10px;
+    }
+
+    .head {
+        margin: 20px 20px 0 20px;
+    }
+
+    .container {
+        margin: 0 20px 20px 20px;
+    }
+
+    .container .image > img{
+        height: 150px;
+        width: 150px;
     }
 }

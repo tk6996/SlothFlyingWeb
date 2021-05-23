@@ -188,3 +188,13 @@ td:last-child {
       width: 50%;
   }
 }
+
+@media screen and (max-width: 499px) {
+  .head {
+      margin: 20px 20px 0 20px;
+  }
+
+  .container {
+      margin: 0 20px 20px 20px;
+  }
+}
