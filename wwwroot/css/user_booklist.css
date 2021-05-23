@@ -170,7 +170,7 @@ td:last-child {
   margin-top: -25px;
 }
 
-.icon:hover .tooltip{
+.icon:hover .tooltip {
   visibility: visible;
 }
 
@@ -185,11 +185,12 @@ td:last-child {
 
 @media screen and (max-width: 699px) {
   .head {
-      justify-content: space-between;
+    justify-content: space-between;
   }
 
-  #profile_nav, #booklist_nav {
-      width: 50%;
+  #profile_nav,
+  #booklist_nav {
+    width: 50%;
   }
 
   h1 {
@@ -207,5 +208,15 @@ td:last-child {
   }
   .icon i {
     font-size: 24px;
+  }
+}
+
+@media screen and (max-width: 499px) {
+  .head {
+    margin: 20px 20px 0 20px;
+  }
+
+  .container {
+    margin: 0 20px 20px 20px;
   }
 }
