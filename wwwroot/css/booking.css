@@ -13,7 +13,7 @@
   overflow-x: auto;
 }
 
-table {
+.book-table table {
   min-width: 835px;
 }
 
@@ -151,7 +151,6 @@ select:focus {
 
 #book-list-range {
   width: 100%;
-  padding: 30px;
   display: flex;
   flex-direction: column;
   row-gap: 50px;
@@ -186,7 +185,7 @@ select:focus {
 #header-list th {
   color: #ffffff;
   font-size: 24px;
-  padding: 15px;
+  padding: 15px 0;
   border: none;
 }
 
@@ -200,7 +199,7 @@ select:focus {
 #body-list td {
   background-color: #ffffff;
   border: none;
-  padding: 20px;
+  padding: 20px 0;
   border-bottom: 1px solid var(--blackgray);
 }
 
@@ -208,15 +207,77 @@ select:focus {
   .book-table {
     align-items: flex-start;
   }
+  #book-list-range table {
+    width: 700px;
+  }
+  #header-list th {
+    font-size: 22px;
+  }
+  #body-list td {
+    font-size: 18px;
+  }
+  #book-list-range h2 {
+    font-size: 26px;
+  }
+}
+
+@media screen and (max-width: 999px) {
+  #book-list-range {
+    row-gap: 40px;
+  }
+  #book-list-range table {
+    width: 600px;
+  }
+  #header-list th {
+    font-size: 20px;
+  }
+  #body-list td {
+    font-size: 16px;
+  }
+  #book-list-range h2 {
+    font-size: 24px;
+  }
+}
+
+@media screen and (max-width: 799px) {
+  #book-list-range {
+    row-gap: 30px;
+  }
+  #book-list-range table {
+    width: 500px;
+  }
+  #header-list th {
+    font-size: 18px;
+  }
+  #body-list td {
+    font-size: 14px;
+  }
+  #book-list-range h2 {
+    font-size: 22px;
+  }
 }
 
 @media screen and (max-width: 700px) {
   .title > h1 {
     font-size: 32px;
   }
-
   .title > h2 {
     font-size: 24px;
+  }
+}
+
+@media screen and (max-width: 600px) {
+  #book-list-range table {
+    width: 400px;
+  }
+  #book-list-range {
+    row-gap: 25px;
+  }
+  #header-list th {
+    padding: 18px 0;
+  }
+  #body-list td {
+    padding: 12px 0;
   }
 }
 
@@ -226,13 +287,32 @@ select:focus {
     row-gap: 30px;
     max-width: 300px;
   }
-
   .title > h1 {
     font-size: 30px;
   }
-
   .title > h2 {
     font-size: 22px;
+  }
+
+  #book-list-range {
+    row-gap: 20px;
+  }
+  #book-list-range table {
+    width: 100%;
+  }
+  #header-list th {
+    font-size: 16px;
+    padding: 15px 0;
+  }
+  #body-list td {
+    font-size: 12px;
+    padding: 10px 0;
+  }
+  #book-list-range h2 {
+    font-size: 20px;
+  }
+  .card {
+    padding: 20px;
   }
 }
 
