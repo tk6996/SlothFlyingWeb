@@ -6,7 +6,7 @@
 }
 
 .head > * {
-  width: 12.5%;
+  width: 200px;
   color: var(--blackgray);
   display: flex;
   background-color: #ffffff;
@@ -58,13 +58,17 @@
   width: 100%;
 }
 
+.scroll-table {
+  width: 100%;
+  overflow-x: auto;
+}
+
 table {
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
-  margin: 50px 7.5%;
-  grid-template-columns: 0.5fr 1fr 1fr 0.5fr 0.5fr 0.5fr 0.5fr;
   background-color: #ffffff;
+  min-width: 850px;
   width: 100%;
   height: calc(100vh - 230px);
 }
@@ -75,13 +79,13 @@ tr {
 
 thead {
   display: grid;
-  grid-template-columns: 0.5fr 1fr 1fr 0.5fr 0.5fr 0.5fr 0.5fr;
+  grid-template-columns: 0.5fr 1fr 1fr 0.5fr 0.5fr 0.75fr 0.5fr;
   background-color: var(--blackgray);
 }
 
 tbody {
   display: grid;
-  grid-template-columns: 0.5fr 1fr 1fr 0.5fr 0.5fr 0.5fr 0.5fr;
+  grid-template-columns: 0.5fr 1fr 1fr 0.5fr 0.5fr 0.75fr 0.5fr;
   background-color: #ffffff;
   overflow-x: hidden;
   overflow-y: overlay;
@@ -166,7 +170,7 @@ td:last-child {
   margin-top: -25px;
 }
 
-.icon:hover .tooltip{
+.icon:hover .tooltip {
   visibility: visible;
 }
 
@@ -177,4 +181,42 @@ td:last-child {
   height: 50px;
   justify-content: center;
   align-items: center;
+}
+
+@media screen and (max-width: 699px) {
+  .head {
+    justify-content: space-between;
+  }
+
+  #profile_nav,
+  #booklist_nav {
+    width: 50%;
+  }
+
+  h1 {
+    font-size: 24px;
+    text-align: center;
+  }
+}
+
+@media screen and (max-width: 1112px) {
+  th {
+    font-size: 18px;
+  }
+  td {
+    font-size: 16px;
+  }
+  .icon i {
+    font-size: 24px;
+  }
+}
+
+@media screen and (max-width: 499px) {
+  .head {
+    margin: 20px 20px 0 20px;
+  }
+
+  .container {
+    margin: 0 20px 20px 20px;
+  }
 }

@@ -23,77 +23,79 @@
     }
     else
     {
-        <table>
-            <thead>
-                <tr>
-                    <th>#</th>
-                    <th>Lab</th>
-                    <th>Date</th>
-                    <th>From</th>
-                    <th>To</th>
-                    <th>Status</th>
-                    <th></th>
-                </tr>
-            </thead>
-            <tbody>
-                @{
-                    int index = 0;
-                    @foreach (BookList bookList in Model)
-                    {
-                        index++;
-                        <tr>
-                            <td>@index</td>
-                            <td>Lab @bookList.LabId @bookList.ItemName</td>
-                            <td>@bookList.Date.ToString("ddd dd MMM yyyy")</td>
-                            <td>@(bookList.From.ToString("D2")).00</td>
-                            <td>@(bookList.To.ToString("D2")).00</td>
-                            <td class="status">
-                                @switch (bookList.Status)
+        <div class="scroll-table">
+            <table>
+                <thead>
+                    <tr>
+                        <th>#</th>
+                        <th>Lab</th>
+                        <th>Date</th>
+                        <th>From</th>
+                        <th>To</th>
+                        <th>Status</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @{
+                        int index = 0;
+                        @foreach (BookList bookList in Model)
+                        {
+                            index++;
+                            <tr>
+                                <td>@index</td>
+                                <td>Lab @bookList.LabId @bookList.ItemName</td>
+                                <td>@bookList.Date.ToString("ddd dd MMM yyyy")</td>
+                                <td>@(bookList.From.ToString("D2")).00</td>
+                                <td>@(bookList.To.ToString("D2")).00</td>
+                                <td class="status">
+                                    @switch (bookList.Status)
+                                    {
+                                        case BookList.StatusType.USING:
+                                            <span class="using">Using</span>
+                                            break;
+                                        case BookList.StatusType.COMING:
+                                            <span class="coming">Coming</span>
+                                            break;
+                                        case BookList.StatusType.FINISHED:
+                                            <span>Finished</span>
+                                            break;
+                                        case BookList.StatusType.CANCEL:
+                                            <span>Cancel</span>
+                                            break;
+                                        case BookList.StatusType.EJECT:
+                                            <span>Eject</span>
+                                            break;
+                                        default: break;
+                                    }
+                                </td>
+                                @if (bookList.Status == BookList.StatusType.USING || bookList.Status == BookList.StatusType.COMING)
                                 {
-                                    case BookList.StatusType.USING:
-                                        <span class="using">Using</span>
-                                        break;
-                                    case BookList.StatusType.COMING:
-                                        <span class="coming">Coming</span>
-                                        break;
-                                    case BookList.StatusType.FINISHED:
-                                        <span>Finished</span>
-                                        break;
-                                    case BookList.StatusType.CANCEL:
-                                        <span>Cancel</span>
-                                        break;
-                                    case BookList.StatusType.EJECT:
-                                        <span>Eject</span>
-                                        break;
-                                    default: break;
+                                    <td><div class="icon"><i class="fas fa-times-circle"
+                                onclick="confirmPopUpOnForm({id : '@bookList.Id'});"
+                                onmouseover="setOverPosition(event);"></i>
+                                <span class="tooltip">Cancel</span></div></td>
                                 }
-                            </td>
-                            @if (bookList.Status == BookList.StatusType.USING || bookList.Status == BookList.StatusType.COMING)
-                            {
-                                <td><div class="icon"><i class="fas fa-times-circle"
-                            onclick="confirmPopUpOnForm({id : '@bookList.Id'});"
-                            onmouseover="setOverPosition(event);"></i>
-                            <span class="tooltip">Cancel</span></div></td>
-                            }
-                            else
-                            {
-                                <td></td>
-                            }
+                                else
+                                {
+                                    <td></td>
+                                }
+                            </tr>
+                        }
+                    }
+                    @if (Model.Count() == 10)
+                    {
+                        <tr class="bottom">
                         </tr>
                     }
-                }
-                @if (Model.Count() == 10)
-                {
-                    <tr class="bottom">
-                    </tr>
-                }
-            </tbody>
-        </table>
+                </tbody>
+            </table>
+        </div>
     }
 </div>
 
 @section Modals {
-<p style="font-size: 24px;">Would you like to eject this booklist ?</p>
+<p>Would you like to eject this booklist ?</p>
 }
 
 @section Scripts {

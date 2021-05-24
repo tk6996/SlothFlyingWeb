@@ -6,12 +6,15 @@ function createResultElement(user) {
   user_img.setAttribute("src", user.imageUrl);
   user_img.className = "user-img";
   result.appendChild(user_img);
-  result.appendChild(document.createElement("div")).innerHTML = String(
+  let infomation = document.createElement("div");
+  infomation.className = "information";
+  infomation.appendChild(document.createElement("div")).innerHTML = String(
     user.id
     // Number with leading zero 8 places
   ).padStart(8, "0");
-  result.appendChild(document.createElement("div")).innerHTML = user.firstName;
-  result.appendChild(document.createElement("div")).innerHTML = user.lastName;
+  infomation.appendChild(document.createElement("div")).innerHTML = user.firstName;
+  infomation.appendChild(document.createElement("div")).innerHTML = user.lastName;
+  result.appendChild(infomation);
   result.onclick = () => {
     window.location.pathname = `Search/UserProfile/${user.id}`;
   };

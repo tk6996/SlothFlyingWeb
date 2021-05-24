@@ -14,6 +14,7 @@ namespace SlothFlyingWeb.Controllers
 {
     public class LabController : Controller
     {
+        public static object _lock = new object();
         private readonly ILogger<LabController> _logger;
         private readonly ApplicationDbContext _db;
         private readonly IMemoryCache _cache;
@@ -152,7 +153,7 @@ namespace SlothFlyingWeb.Controllers
 
             DateTime startDate = BangkokDateTime.now().Date;
             int[,] BookSlotTable = new int[14, 9];
-            lock (BookingLock._lock)
+            lock (_lock)
             {
                 IEnumerable<BookList> bookLists = _db.BookList.Where(bl => bl.UserId == userId &&
                                                                            bl.LabId == id &&

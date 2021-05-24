@@ -8,13 +8,31 @@
         <img src="~/assets/images/brand.jpg" alt="logo" class="brand-img" />
         <div class="brand-text">Sloth Flying Lab</div>
     </a>
-    <div class="menu">
+    <div id="Topnav" class="menu">
         <a id="lab" asp-controller="LabAdmin" asp-action="Index"
             class='@("LabAdmin" == controller ? "active" : "")'>Lab</a>
+        <a id="colab" asp-controller="CoLab" asp-action="Index"
+            class='@("CoLab" == controller ? "active" : "")'>Co-Lab</a>
         <a id="search" asp-controller="Search" asp-action="Index"
             class='@("Search" == controller ? "active" : "")'>Search</a>
         <a id="blacklist" asp-controller="Admin" asp-action="Blacklist"
             class='@("Blacklist" == action ? "active" : "")'>Blacklist</a>
         <a id="logout" asp-controller="Admin" asp-action="Logout" class="logout">Logout</a>
+        <a href="javascript:void(0);" class="menu-icon" onclick="slideBar()"><i class="fa fa-bars"></i></a>
+    </div>
+    <div id="Sidenav" class="sidenav">
+        <a href="javascript:void(0)" class="closebtn" onclick="slideBar()">&times;</a>
+        <a id="lab" asp-controller="LabAdmin" asp-action="Index"
+            class='@("LabAdmin" == controller ? "active" : "")'>Lab</a>
+        <a id="colab" asp-controller="CoLab" asp-action="Index"
+            class='@("CoLab" == controller ? "active" : "")'>Co-Lab</a>
+        <a id="search" asp-controller="Search" asp-action="Index"
+            class='@("Search" == controller ? "active" : "")'>Search</a>
+        <a id="blacklist" asp-controller="Admin" asp-action="Blacklist"
+            class='@("Blacklist" == action ? "active" : "")'>Blacklist</a>
+        <a id="logout" asp-controller="Admin" asp-action="Logout">Logout</a>
     </div>
 </nav>
+<script>
+    
+</script>

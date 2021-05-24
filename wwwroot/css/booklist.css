@@ -12,14 +12,19 @@
   color: var(--blackgray);
 }
 
+.scroll-table {
+  margin: 2em 7.5% 60px 7.5%;
+  overflow-x: auto;
+}
+
 table {
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
-  margin: 0 7.5% 60px 7.5%;
   height: calc(100vh - 230px);
   background-color: #ffffff;
-  margin-top: 2em;
+  min-width: 850px;
+  width: 100%;
 }
 
 tr {
@@ -28,7 +33,7 @@ tr {
 
 thead {
   display: grid;
-  grid-template-columns: 0.5fr 1fr 1fr 0.5fr 0.5fr 0.5fr 0.5fr;
+  grid-template-columns: 0.5fr 1fr 1fr 0.5fr 0.5fr 0.75fr 0.5fr;
   background-color: var(--blackgray);
 }
 
@@ -41,7 +46,7 @@ th {
 
 tbody {
   display: grid;
-  grid-template-columns: 0.5fr 1fr 1fr 0.5fr 0.5fr 0.5fr 0.5fr;
+  grid-template-columns: 0.5fr 1fr 1fr 0.5fr 0.5fr 0.75fr 0.5fr;
   background-color: #ffffff;
   overflow-x: hidden;
   overflow-y: overlay;
@@ -125,4 +130,38 @@ td:last-child {
 
 .icon:hover .tooltip{
   visibility: visible;
+}
+
+@media screen and (min-width: 1113px) {
+  th {
+    font-size: 24px;
+  }
+  td {
+    font-size: 20px;
+  }
+}
+
+@media screen and (max-width: 1112px) {
+  th {
+    font-size: 18px;
+  }
+  td {
+    font-size: 16px;
+  }
+  .icon i {
+    font-size: 24px;
+  }
+  
+}
+
+@media screen and (max-width: 700px) {
+  .title {
+    font-size: 28px;
+  }
+}
+
+@media screen and (max-width: 500px) {
+  .title {
+    font-size: 24px;
+  }
 }

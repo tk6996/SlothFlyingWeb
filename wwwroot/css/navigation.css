@@ -63,3 +63,67 @@
 .logout:active {
   background-color: var(--darkgreen);
 }
+
+.menu-icon {
+  display: none;
+}
+
+.sidenav {
+  display: none;
+}
+
+.sidenav {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  width: 0;
+  position: fixed;
+  z-index: 100;
+  top: 0;
+  right: 0;
+  background-color: var(--blackgray);
+  overflow-x: hidden;
+  overflow-y: auto;
+  transition: 0.5s;
+  padding-top: 60px;
+}
+
+.sidenav a {
+  padding: 8px 8px 8px 32px;
+  text-decoration: none;
+  font-size: 25px;
+  color: var(--gray);
+  display: block;
+  transition: 0.3s;
+}
+
+.sidenav a:hover {
+  color: #ffffff;
+}
+
+.sidenav a.active {
+  background-color: var(--green);
+  color: #ffffff;
+}
+
+.sidenav .closebtn {
+  position: absolute;
+  top: 0;
+  right: 25px;
+  font-size: 36px;
+}
+
+@media screen and (max-width: 970px) {
+  .menu a {
+    display: none;
+  }
+  .menu a.menu-icon {
+    display: block;
+  }
+}
+
+@media screen and (max-width: 500px) {
+  .brand-text {
+    font-size: 24px;
+  }
+}

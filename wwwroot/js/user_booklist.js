@@ -141,13 +141,20 @@ async function loadScroll() {
  * @param {Event} event
  */
 function setOverPosition(event) {
+  const scrollTable = document.querySelector(".scroll-table");
   const tbody = document.querySelector("tbody");
   const icon = event.target;
   const iconContainer = event.target.parentElement;
   const tooltip = event.target.parentElement.children[1];
   iconContainer.style.position = "static";
   tooltip.style.top =
-    getPosition(icon)[1] - tbody.scrollTop - tooltip.offsetHeight - 90 + "px";
+    getPosition(icon)[1] - tbody.scrollTop - tooltip.offsetHeight - 85 + "px";
+  tooltip.style.left = tooltip.style.left =
+    getPosition(icon)[0] -
+    scrollTable.scrollLeft +
+    icon.offsetWidth / 2 -
+    tooltip.offsetWidth / 2 +
+    "px";
 }
 
 if (document.querySelector(".bottom")) {

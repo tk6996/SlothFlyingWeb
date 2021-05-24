@@ -8,31 +8,33 @@
   ViewData["Title"] = "Profile";
 }
 
-<div class="container">
-  <div class="image">
-    <img src='@Url.Content(Model.ImageUrl != "" ? Model.ImageUrl : "~/assets/images/brand.jpg")' alt="user_image" />
-  </div>
-  <div class="information">
-    <div class="title">Name</div>
-    <div id="FullName">@($"{Model.FirstName} {Model.LastName}")</div>
-    <div class="title">Email</div>
-    <div id="Email">@Model.Email</div>
-    <div class="title">Phone</div>
-    @if (Model.Phone.Length == 10)
-    {
-      <div id="phone">@($"{Convert.ToInt64(Model.Phone):000-000-0000}")</div>
-    }
-    else
-    {
-      <div id="phone">@($"{Convert.ToInt64(Model.Phone):000-000-000}")</div>
-    }
-    <div class="title">User ID</div>
-    <div id="Id">@Model.Id.ToString("D8")</div>
-    <div class="title">Joined</div>
-    <div id="CreateAt">@Model.CreateAt.ToString("dd MMM yyyy")</div>
-    <div class="title">Status</div>
-    <div id="Status" class=@(Model.BlackList ? "blacklisted" : "normal")>@(Model.BlackList ? "BLACKLISTED" : "NORMAL")
+<div class="body">
+  <div class="container">
+    <div class="image">
+      <img src='@Url.Content(Model.ImageUrl != "" ? Model.ImageUrl : "~/assets/images/brand.jpg")' alt="user_image" />
     </div>
+    <div class="information">
+      <div class="title">Name</div>
+      <div id="FullName">@($"{Model.FirstName} {Model.LastName}")</div>
+      <div class="title">Email</div>
+      <div id="Email">@Model.Email</div>
+      <div class="title">Phone</div>
+      @if (Model.Phone.Length == 10)
+      {
+        <div id="phone">@($"{Convert.ToInt64(Model.Phone):000-000-0000}")</div>
+      }
+      else
+      {
+        <div id="phone">@($"{Convert.ToInt64(Model.Phone):000-000-000}")</div>
+      }
+      <div class="title">User ID</div>
+      <div id="Id">@Model.Id.ToString("D8")</div>
+      <div class="title">Joined</div>
+      <div id="CreateAt">@Model.CreateAt.ToString("dd MMM yyyy")</div>
+      <div class="title">Status</div>
+      <div id="Status" class=@(Model.BlackList ? "blacklisted" : "normal")>@(Model.BlackList ? "BLACKLISTED" : "NORMAL")
+      </div>
+    </div>
+    <a asp-asp-controller="User" asp-action="EditProfile" id="edit">Edit Profile</a>
   </div>
-  <a asp-asp-controller="User" asp-action="EditProfile" id="edit">Edit Profile</a>
 </div>

@@ -1,8 +1,6 @@
 using System.Threading.Tasks;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Text.RegularExpressions;
 using System;
 using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Extensions.Logging;
@@ -233,12 +231,12 @@ namespace SlothFlyingWeb.Controllers
                 return RedirectToAction("Login", "Admin");
             }
 
-            if (userId == null || userId < 0)
+            if (userId == null || userId <= 0)
             {
                 return BadRequest("Url is not valid.");
             }
 
-            if (id == null || id < 0)
+            if (id == null || id <= 0)
             {
                 return BadRequest("Body is not valid.");
             }
