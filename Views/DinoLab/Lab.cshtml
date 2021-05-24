@@ -1,7 +1,7 @@
-@model SlothFlyingWeb.Models.CoLabBooking
+@model SlothFlyingWeb.Models.DinoLab
 
 @{
-    ViewData["Title"] = "Co-Lab Table Page";
+    ViewData["Title"] = "DinoLab Table Page";
 }
 
 @section Styles{
@@ -10,7 +10,7 @@
 
 <div class="container">
     <div class="title">
-        <h1>Laboratory @(Model.id)</h1>
+        <h1>@(Model.name) Laboratory</h1>
         <h2>จำนวนอุปกรณ์ที่ว่างในแต่ละวัน</h2>
     </div>
     <div class="book-table">
@@ -19,11 +19,12 @@
                 <th>Time \ Date</th>
                 @{
                     DateTime startDate = ViewBag.startDate;
-                    for (int c = 0; c < 14; c++)
+                    int row = Model.bookTable.Length > 0 ? Model.bookTable[0].Length : 0;
+                    int col = Model.bookTable.Length;
+                    for (int c = 0; c < col; c++)
                     {
                         DateTime date = startDate.AddDays(c);
-                        <th
-                        class='@(date.DayOfWeek == DayOfWeek.Saturday || date.DayOfWeek == DayOfWeek.Sunday ? "lab-close" : "")'>
+                        <th>
                             @date.ToString("ddd")<br>
                             @date.ToString("dd")<br>
                             @date.ToString("MMM")
@@ -31,20 +32,19 @@
                     }
                 }
             </tr>
-            @for (int r = 0; r < 9; r++)
+            @for (int r = 0; r < row; r++)
             {
                 <tr>
-                    <th>@($"{(r+8).ToString("D2")}.00 - {(r+9).ToString("D2")}.00")</th>
-                    @for (int c = 0; c < 14; c++)
+                    <th>@($"{(r+9).ToString("D2")}.00 - {(r+10).ToString("D2")}.00")</th>
+                    @for (int c = 0; c < col; c++)
                     {
-                        DateTime date = startDate.AddDays(c);
-                        if (date.DayOfWeek == DayOfWeek.Saturday || date.DayOfWeek == DayOfWeek.Sunday)
+                        if (c == 0 && r + 9 < BangkokDateTime.now().Hour)
                         {
-                            <td class="not-enable"></td>
+                            <td class="late">@Model.bookTable[c][r]</td>
                         }
                         else
                         {
-                            <td>@Model.bookSlotTable[c][r]</td>
+                            <td>@Model.bookTable[c][r]</td>
                         }
                     }
                 </tr>

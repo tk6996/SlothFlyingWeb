@@ -16,7 +16,7 @@ wwwroot/
 │  ├─ Blacklist
 │  ├─ Login
 │  └─ Logout
-├─ CoLab/
+├─ DinoLab/
 │  ├─ Index
 │  └─ Lab{labId}
 ├─ Home/
