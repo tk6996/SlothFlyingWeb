@@ -37,7 +37,7 @@ namespace SlothFlyingWeb.Controllers
                 List<DinoLab> dinoLabList = new List<DinoLab>();
                 HttpClient client = new HttpClient();
                 client.BaseAddress = new Uri(_config.GetValue<string>("DinoLabApi:ApiUri"));
-                for (int id = 0; id < 5; id++)
+                for (int id = 1; id <= 5; id++)
                 {
                     HttpResponseMessage response = await client.GetAsync(_config.GetValue<string>("DinoLabApi:GetLabPath") + $"/{id}");
                     if (response.IsSuccessStatusCode)
