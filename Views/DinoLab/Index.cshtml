@@ -1,0 +1,38 @@
+@model IEnumerable<SlothFlyingWeb.Models.DinoLab>
+
+@{
+    ViewData["Title"] = "DinoLab Page";
+}
+
+@section Styles{
+<link rel="stylesheet" href="~/css/lab.css">
+}
+
+@if (Model.Count() > 0)
+{
+    <div class="container">
+
+        @foreach (DinoLab lab in Model)
+        {
+        <div class="lab">
+            <div>
+                <img src="https://dinolabkmitl.azurewebsites.net/Dino_item.png" alt="logo" class="lab-img">
+            </div>
+            <div>
+                <div>@lab.name Laboratory</div>
+                <div>@lab.item</div>
+                <a class="view-button" asp-controller="DinoLab" asp-action="Lab" asp-route-Id="@lab.id">View</a>
+            </div>
+        </div>
+        }
+    </div>
+}
+
+else
+{
+    <div style="text-align: center; margin-top: 100px;">
+        <h1>
+            DinoLab Not Found.
+        </h1>
+    </div>
+}
