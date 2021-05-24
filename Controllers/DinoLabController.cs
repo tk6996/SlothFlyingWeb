@@ -32,22 +32,25 @@ namespace SlothFlyingWeb.Controllers
                 return RedirectToAction("Login", "User");
             }
 
-            List<DinoLab> dinoLabList = new List<DinoLab>();
-            HttpClient client = new HttpClient();
-
-            client.BaseAddress = new Uri(_config.GetValue<string>("DinoLabApi:ApiUri"));
-
-
-            for (int id = 0; id < 5; id++)
+            List<DinoLab> dinoLabs = await _cache.GetOrCreateAsync<List<DinoLab>>("DinoLab", async entry =>
             {
-                HttpResponseMessage response = await client.GetAsync(_config.GetValue<string>("DinoLabApi:GetLabPath") + $"/{id}");
-                if (response.IsSuccessStatusCode)
+                List<DinoLab> dinoLabList = new List<DinoLab>();
+                HttpClient client = new HttpClient();
+                client.BaseAddress = new Uri(_config.GetValue<string>("DinoLabApi:ApiUri"));
+                for (int id = 0; id < 5; id++)
                 {
-                    dinoLabList.Add(await JsonSerializer.DeserializeAsync<DinoLab>(await response.Content.ReadAsStreamAsync()));
+                    HttpResponseMessage response = await client.GetAsync(_config.GetValue<string>("DinoLabApi:GetLabPath") + $"/{id}");
+                    if (response.IsSuccessStatusCode)
+                    {
+                        dinoLabList.Add(await JsonSerializer.DeserializeAsync<DinoLab>(await response.Content.ReadAsStreamAsync()));
+                    }
                 }
-            }
+                entry.SlidingExpiration = TimeSpan.FromMinutes(5);
+                return dinoLabList;
+            });
 
-            return View(dinoLabList);
+
+            return View(dinoLabs);
         }
 
         public async Task<IActionResult> Lab(int id)
