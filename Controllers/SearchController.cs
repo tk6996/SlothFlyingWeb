@@ -203,7 +203,7 @@ namespace SlothFlyingWeb.Controllers
             await _db.SaveChangesAsync();
 
             int adminId = (int)HttpContext.Session.GetInt32("AdminId");
-            List<BookList> bl = _cache.Set<List<BookList>>($"SearchBooklist_{adminId}", bookLists.Where(bl => bl.Status <= BookList.StatusType.COMING)
+            List<BookList> bl = _cache.Set<List<BookList>>($"SearchBooklist_{user.Id}", bookLists.Where(bl => bl.Status <= BookList.StatusType.COMING)
                                                                                                  .OrderBy(bl => bl.Date)
                                                                                                  .ThenBy(bl => bl.From)
                                                                                                  .ThenBy(bl => bl.To)

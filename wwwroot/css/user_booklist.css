@@ -170,10 +170,6 @@ td:last-child {
   margin-top: -25px;
 }
 
-.icon:hover .tooltip {
-  visibility: visible;
-}
-
 .bottom {
   display: flex;
   grid-column-start: 1;

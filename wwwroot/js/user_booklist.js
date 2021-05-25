@@ -71,6 +71,7 @@ function appendList(booklist, index) {
       })
     );
     icon.addEventListener("mouseover", setOverPosition);
+    icon.addEventListener("mouseout", resetTooltip);
     const iconContainer = document.createElement("div");
     const tooltip = document.createElement("span");
     tooltip.innerHTML = "Cancel";
@@ -147,6 +148,7 @@ function setOverPosition(event) {
   const iconContainer = event.target.parentElement;
   const tooltip = event.target.parentElement.children[1];
   iconContainer.style.position = "static";
+  tooltip.style.visibility = "visible";
   tooltip.style.top =
     getPosition(icon)[1] - tbody.scrollTop - tooltip.offsetHeight - 85 + "px";
   tooltip.style.left = tooltip.style.left =
@@ -155,6 +157,16 @@ function setOverPosition(event) {
     icon.offsetWidth / 2 -
     tooltip.offsetWidth / 2 +
     "px";
+}
+
+/**
+ * @param {Event} event
+ */
+ function resetTooltip(event) {
+  const tooltip = event.target.parentElement.children[1];
+  const iconContainer = event.target.parentElement;
+  tooltip.style = null;
+  iconContainer.style = null;
 }
 
 if (document.querySelector(".bottom")) {

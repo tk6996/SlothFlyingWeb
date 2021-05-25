@@ -33,11 +33,13 @@ function appendList(user, index) {
   const viewIcon = document.createElement("i");
   viewIcon.className = "fas fa-eye view-button";
   viewIcon.onmouseover = setOverPositionView;
+  viewIcon.onmouseout = resetTooltipView;
   link.appendChild(viewIcon);
   const unblacklistIcon = document.createElement("i");
   unblacklistIcon.className = "fas fa-times-circle cancel-button";
   unblacklistIcon.onclick = () => confirmPopUpOnForm({ id: user.id });
   unblacklistIcon.onmouseover = setOverPosition;
+  unblacklistIcon.onmouseout = resetTooltip;
   const spanView = document.createElement("span");
   const spanUnblacklist = document.createElement("span");
   spanView.innerHTML = "View";
@@ -115,6 +117,7 @@ function setOverPositionView(event) {
   const iconContainer = event.target.parentElement.parentElement;
   const tooltip = event.target.parentElement.parentElement.children[1];
   iconContainer.style.position = "static";
+  tooltip.style.visibility = "visible";
   tooltip.style.top =
     getPosition(icon)[1] - tbody.scrollTop - tooltip.offsetHeight - 60 + "px";
   tooltip.style.left =
@@ -134,6 +137,7 @@ function setOverPosition(event) {
   const iconContainer = event.target.parentElement;
   const tooltip = event.target.parentElement.children[1];
   iconContainer.style.position = "static";
+  tooltip.style.visibility = "visible";
   tooltip.style.top =
     getPosition(icon)[1] - tbody.scrollTop - tooltip.offsetHeight - 60 + "px";
   tooltip.style.left =
@@ -143,6 +147,26 @@ function setOverPosition(event) {
     tooltip.offsetWidth / 2 -
     5 +
     "px";
+}
+
+/**
+ * @param {Event} event
+ */
+ function resetTooltipView(event) {
+  const tooltip = event.target.parentElement.parentElement.children[1];
+  const iconContainer = event.target.parentElement;
+  tooltip.style = null;
+  iconContainer.style = null;
+}
+
+/**
+ * @param {Event} event
+ */
+ function resetTooltip(event) {
+  const tooltip = event.target.parentElement.children[1];
+  const iconContainer = event.target.parentElement;
+  tooltip.style = null;
+  iconContainer.style = null;
 }
 
 if (document.querySelector(".bottom")) {
